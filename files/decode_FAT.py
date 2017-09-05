@@ -72,7 +72,7 @@ root  = """
  """
 
 def format_as_bytes(text):
-    return [ ''.join([a,b]) for a,b in zip(text[0::2], text[1::2])]
+    return [''.join([a,b]) for a,b in zip(text[0::2], text[1::2])]
 
 def hexdump_to_bytes(text):
     hex_string = ""
@@ -123,13 +123,21 @@ directorie_structure = [
 (28, 4, "File Size (in bytes)", get_size),
 ]
 
-dict_file = {}
-for _, length, description, parsing_method in directorie_structure:
-    # Extract bytes.
-    attrib_byte_list = string[:length:]
-    # Remove bytes from string.
-    string = string[length:]
-    if parsing_method:
-        dict_file[description] = parsing_method(attrib_byte_list)
+def grab_next_file(string):
+    dict_file = {}
+    for _, length, description, parsing_method in directorie_structure:
+        # Extract bytes.
+        attrib_byte_list = string[:length:]
+        # Remove bytes from string.
+        string = string[length:]
+        if parsing_method:
+            dict_file[description] = parsing_method(attrib_byte_list)
+    return dict_file, string
 
-print(dict_file)
+files = []
+while string:
+    dict_file, string = grab_next_file(string)
+    files.append(dict_file)
+
+for file_dict in files:
+    print(file_dict['Filename'])
