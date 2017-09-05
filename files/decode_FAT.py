@@ -81,7 +81,7 @@ def hexdump_to_bytes(text):
         if not line:
             continue
         tokens = re.split(r'\s+', line)
-        hexes = tokens[1:8]
+        hexes = tokens[1:9]
         hex_string += ''.join(hexes)
     return format_as_bytes(hex_string)
 
