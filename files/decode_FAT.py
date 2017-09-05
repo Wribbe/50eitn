@@ -86,4 +86,50 @@ def hexdump_to_bytes(text):
     return format_as_bytes(hex_string)
 
 string = hexdump_to_bytes(root)
-print(string)
+
+def hex_to_char(hexvalue):
+    return chr(int(hexvalue, 16))
+
+def bytelist_to_char(byte_list):
+    return ''.join([hex_to_char(value) for value in byte_list])
+
+def parse_dict_attributes(byte_list):
+    return "NOT IMPLEMENTED"
+
+def get_time(byte_list):
+    return "NOT IMPLEMENTED"
+
+def get_date(byte_list):
+    return "NOT IMPLEMENTED"
+
+def get_cluster(byte_list):
+    return "NOT IMPLEMENTED"
+
+def get_size(byte_list):
+    return "NOT IMPLEMENTED"
+
+directorie_structure = [
+( 0, 8, "Filename", bytelist_to_char),
+( 8, 3, "Extension", bytelist_to_char),
+(11, 1, "Attributes", parse_dict_attributes),
+(12, 2, "Reserved", None),
+(14, 2, "Creation Time", get_time),
+(16, 2, "Creation Date", get_date),
+(18, 2, "Last Access Date", get_date),
+(20, 2, "Ignore", None),
+(22, 2, "Last Write Time", get_time),
+(24, 2, "Last Write Date", get_date),
+(26, 2, "First Logical Cluster", get_cluster),
+(28, 4, "File Size (in bytes)", get_size),
+]
+
+dict_file = {}
+for _, length, description, parsing_method in directorie_structure:
+    # Extract bytes.
+    attrib_byte_list = string[:length:]
+    # Remove bytes from string.
+    string = string[length:]
+    if parsing_method:
+        dict_file[description] = parsing_method(attrib_byte_list)
+
+print(dict_file)
