@@ -88,13 +88,32 @@ def hexdump_to_bytes(text):
 string = hexdump_to_bytes(root)
 
 def hex_to_char(hexvalue):
-    return chr(int(hexvalue, 16))
+    return chr(int(hexvalue, 16)).replace('\x00','')
 
 def bytelist_to_char(byte_list):
     return ''.join([hex_to_char(value) for value in byte_list])
 
 def parse_dict_attributes(byte_list):
-    return "NOT IMPLEMENTED"
+
+    attribute_structure = [
+    (0, 0x01, "Read-only"),
+    (1, 0x02, "Hidden"),
+    (2, 0x04, "System"),
+    (3, 0x08, "Volume label"),
+    (4, 0x10, "Subdirectory"),
+    (5, 0x20, "Archive"),
+    (6, 0x40, None),
+    (7, 0x80, None),
+    ]
+
+    byte = int(byte_list[0], 16)
+    attribute_list = []
+    for _, mask, attribute in attribute_structure:
+        if not attribute:
+            continue
+        boolean =  byte & mask != 0
+        attribute_list.append("{:<12} = {}".format(attribute, boolean))
+    return attribute_list
 
 def get_time(byte_list):
     return "NOT IMPLEMENTED"
@@ -140,4 +159,15 @@ while string:
     files.append(dict_file)
 
 for file_dict in files:
-    print(file_dict['Filename'])
+    name = file_dict['Filename']
+    if not name.strip():
+        continue
+    for key, value in file_dict.items():
+        print("{}:".format(key))
+        if type(value) == list:
+            for v in value:
+                print("  {}".format(v))
+        else:
+            print("  {}".format(value))
+
+    print("\n---\n")
