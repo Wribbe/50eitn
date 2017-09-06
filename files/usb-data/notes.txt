@@ -1,0 +1,8 @@
+fsstat:
+-------
+  * Could not determine file type of flash0.
+  * Rest dumped in flashX.E01
+
+fls:
+  * Using fls -r on flash02, dumping content to fls_r_flash02.txt
+  * use -m to output in 'body' format.
