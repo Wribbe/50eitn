@@ -212,3 +212,58 @@ Because hidden_data may also be encrypted?
 ### Mirai botnet: what are its main phases?
 
 ### Mirai botnet: what is attacked and by how many?
+
+# TPM
+
+Right now only notes
+
+SGX = ?
+
+## Trusted Platform Module
+"An international standard for a cryptoprocessor, which is a dedicated microprocessor designed to secure hardware by integrating cryptographic keys into devices."
+"providing asymmetric key generation and storage."
+TPM is a passive device, only answers to commands from the outside.
+
+**Root of Trust (RoT)** - the start of a trust chain. Aka the part of a system we consider trustworthy.
+
+    RTS (RoT for Storage) 
+        A computing engine that protects use and access to data/keys
+    RTM (RoT for Measurement) 
+        A computing engine capable of making reliable integrity measurements
+    RTR (RoT for Reporting) 
+        A computing engine capable of reliably reporting information held by the RTS
+
+TCG:s take on it is:
+
+    -----------------------------
+    |           TPM             |
+    |                           |
+    |  -------      -------     |
+    |  | RTS |      | RTR |     |
+    |  -------      -------     |
+    -----------------------------
+
+
+### Keys
+EK
+AIK (Attestation Identity Key)
+__SRK__ = Storage Root Key
+    The root of the key tree structure in a TPM. To get any other key in the tre, one has to go through this parent of parents.
+
+**Migratable vs. non-migratable** keys = indicates whether the private portion of the key can be oved between TPMs.
+
+Key creation
+
+Key migration
+
+File encryption
+
+Authentication
+
+**Attestation** = "Attestation is a mechanism used to obtain a proof that the right software was loaded (by recording its hash in a PCR)."
+
+**PCRs** = PlatformConfiguration Registers
+
+**Binding** = ? binding a key to a TPM?
+
+**Key blob** = 
