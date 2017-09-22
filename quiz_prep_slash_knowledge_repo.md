@@ -226,7 +226,7 @@ Reduced attack surface (App + processor)
 
 If looks at enclave from outside 0xFFFFF.., from inside: data
 
-**Intel TXT** - Intel Trusted eXecution Technology
+**Intel TXT** - Intel Trusted eXecution Technology. Intel's implementation of the dynamic RTM model (see further down + slides lect 4)
 
 ## Trusted Platform Module
 "An international standard for a cryptoprocessor, which is a dedicated microprocessor designed to secure hardware by integrating cryptographic keys into devices."
@@ -240,6 +240,9 @@ TPM is a passive device, only answers to commands from the outside.
         A computing engine that protects use and access to data/keys
     RTM (RoT for Measurement) 
         A computing engine capable of making reliable integrity measurements
+
+        CRTM (Core RoT for Measurements)
+            Static and dynamic RTM
     RTR (RoT for Reporting) 
         A computing engine capable of reliably reporting information held by the RTS
 
@@ -256,6 +259,10 @@ TCG:s take on it is:
 
 "On a high level TCG wants to foster technology that promotes and defines and promote hardware-based root of trust, an RoT."
 
+**Platform and TPM vendor certificates** - platform: I put the TPM so-and-so on my motherboard with this firmware. Signed ASUS ; TPM vendor: I put this pubKey in this genuine TPM that I made. Signed Infineon
+
+TPM certificate "actually called" the Endorsement credential
+
 **Protected Capabilities** - Protected capabilities is a set of commands that grant the user issuing the command access to protected locations, memory
 (storage), registers, etc.
 
@@ -270,16 +277,19 @@ reporting is to attest the integrity measurements that are recorded in these loc
 
 **OEM** - Original Equipment Manufacturer
 ### Keys
-EK
-AIK (Attestation Identity Key)
-__SRK__ = Storage Root Key
+#### Main keys, always remains inside TPM
+* **EK** - Endorsement Key. Created at manufacturing time, cannot be changed, used for attestation. Only used for encryption, not signing.
+* **AIK** - Attestation Identity Key(s)
+* **SRK** = Storage Root Key.
     The root of the key tree structure in a TPM. To get any other key in the tre, one has to go through this parent of parents.
+    Used for implementing encrypted storage. Created after running.
+    *  TPM_TakeOwnership ( OwnerPassword, ..)
 
 **Migratable vs. non-migratable** keys = indicates whether the private portion of the key can be oved between TPMs.
 
 Key creation
 
-Key migration
+Key migration - between TPMs
 
 File encryption
 
@@ -287,15 +297,15 @@ Authentication
 
 **Attestation** = "Attestation is a mechanism used to obtain a proof that the right software was loaded (by recording its hash in a PCR)."
 
-**PCRs** = Platform Configuration Registers
+**PCRs** = Platform Configuration Registers - a register that contains a SHA1 hash and is used to accumulate “measurements”
 
-**Binding** = ? binding a key to a TPM? Taking ownership of?
+**Binding** - binds data to a certain value of the PCR. Then the TPM can only decrypt (unseal) if the PCR value(s) is the same as when encryption happened (seal)
 
-**Key blob** = 
+**Key blob** - (EK+SRK)*. Only EK+SRK stored inside TPM, others stored outside using the public key of storage parent key and loaded internally as needed during processing. The encrypted object is called a key blob. When a key € (EK+SRK)\* is generated we get a key blob.
 
 **SHIM** - 
 
-**Hypervisors** - hardware w/ OS on top. HYpervisor is virtual instance of hardware. Aka virtual machine manager. Basically VM? Yeah, probs. Cmp Hyper-V as virtualization in Windows.
+**Hypervisors** - hardware w/ OS on top. Hypervisor is virtual instance of hardware. Aka virtual machine manager. Basically VM? Yeah, probs. Cmp Hyper-V as virtualization in Windows.
 
 **Geo-fencing** - prove that computing is performed inside a geographical area. E. g. policy in certain countries w/ medical computations that should be done inside of the country.
 
@@ -308,4 +318,4 @@ Testing that the platform itself functions properly may still live on. That TPM 
 
 In last project: use idea of trusted computing to shield camera from all kinds of attacks -> apply what we learned in this part of the course.
 
-Philosophical five minutes w/ Ben: Security always comes at a price. "Nature wants chaos, to bring order in that chaos cost energy" -> making a device trustworthy costs time and money. "Convince people that achieving trustworthiness in the cloud is feasible -> make money!"
+*Philosophical five minutes w/ Ben*: Security always comes at a price. "Nature wants chaos, to bring order in that chaos cost energy" -> making a device trustworthy costs time and money. "Convince people that achieving trustworthiness in the cloud is feasible -> make money!"
