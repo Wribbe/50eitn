@@ -217,12 +217,22 @@ Because hidden_data may also be encrypted?
 
 Right now only notes
 
-SGX = ?
+### **SGX** = Software Guard eXtensions. Intel
+Reduced attack surface (App + processor)
+
+**Enclaves** - isolated memory regions of code and data. Also encrypted
+
+*Enclave Page Cache (EPC)* -a part of physical memory (RAM) is reserved for enclaves
+
+If looks at enclave from outside 0xFFFFF.., from inside: data
+
+**Intel TXT** - Intel Trusted eXecution Technology
 
 ## Trusted Platform Module
 "An international standard for a cryptoprocessor, which is a dedicated microprocessor designed to secure hardware by integrating cryptographic keys into devices."
 "providing asymmetric key generation and storage."
 TPM is a passive device, only answers to commands from the outside.
+"TPM has non-volatile RAM."
 
 **Root of Trust (RoT)** - the start of a trust chain. Aka the part of a system we consider trustworthy.
 
@@ -233,6 +243,7 @@ TPM is a passive device, only answers to commands from the outside.
     RTR (RoT for Reporting) 
         A computing engine capable of reliably reporting information held by the RTS
 
+**TCG** = Trusted Computing Group. "Founded in 1999 by Compaq, HP, IBM, Intel and Microsoft" 
 TCG:s take on it is:
 
     -----------------------------
@@ -243,7 +254,21 @@ TCG:s take on it is:
     |  -------      -------     |
     -----------------------------
 
+"On a high level TCG wants to foster technology that promotes and defines and promote hardware-based root of trust, an RoT."
 
+**Protected Capabilities** - Protected capabilities is a set of commands that grant the user issuing the command access to protected locations, memory
+(storage), registers, etc.
+
+**Attestation** - Attestation is the process of verifying the accuracy of information and the characteristics of the TPM chip current state.
+
+**Integrity (Measurement and Reporting )** - Integrity measurement is the process of obtaining metrics of the platform characteristics and storing the information digest in a protected locations (registers) in the TPM chip. Integrity
+reporting is to attest the integrity measurements that are recorded in these locations.
+
+**Opt-in policy of TPM** - The user decides if they want to use the TPM module or not. If they want to use it, they need to **take ownership** of it.
+
+**UEFi** - 
+
+**OEM** - Original Equipment Manufacturer
 ### Keys
 EK
 AIK (Attestation Identity Key)
@@ -262,8 +287,25 @@ Authentication
 
 **Attestation** = "Attestation is a mechanism used to obtain a proof that the right software was loaded (by recording its hash in a PCR)."
 
-**PCRs** = PlatformConfiguration Registers
+**PCRs** = Platform Configuration Registers
 
-**Binding** = ? binding a key to a TPM?
+**Binding** = ? binding a key to a TPM? Taking ownership of?
 
 **Key blob** = 
+
+**SHIM** - 
+
+**Hypervisors** - hardware w/ OS on top. HYpervisor is virtual instance of hardware. Aka virtual machine manager. Basically VM? Yeah, probs. Cmp Hyper-V as virtualization in Windows.
+
+**Geo-fencing** - prove that computing is performed inside a geographical area. E. g. policy in certain countries w/ medical computations that should be done inside of the country.
+
+**ARM Trustzone** - "poor man's enclave". Uses a REE and a TEE, the TEE is like an enclave but unencrypted. REE & TEE also here (a)ka 'normal world' and 'secure world'. Difference cmp to SGX: only one 'enclave'(-ish).
+
+~~(Sidenote: Ben Smeets favours AMD solution over Intel's SGX)~~
+
+Future for TPMs: Safeguarding keys for application may become obsolete.
+Testing that the platform itself functions properly may still live on. That TPM is a separate module may also disappear, instead integrated into CPUs. 
+
+In last project: use idea of trusted computing to shield camera from all kinds of attacks -> apply what we learned in this part of the course.
+
+Philosophical five minutes w/ Ben: Security always comes at a price. "Nature wants chaos, to bring order in that chaos cost energy" -> making a device trustworthy costs time and money. "Convince people that achieving trustworthiness in the cloud is feasible -> make money!"
