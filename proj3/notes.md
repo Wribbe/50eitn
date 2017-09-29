@@ -46,13 +46,47 @@ TSS:
 
     tpmbios
     sudo -E /usr/local/sbin/tcsd -e -f
+		TCSD TDDL ioctl: (25) Inappropriate ioctl for device
+		TCSD TDDL Falling back to Read/Write device support.
+		TCSD trousers 0.3.13: TCSD up and running.
+Opened new terminal window on TSS:
+
     createek
 
-Here terminal window on TPM1 running ``tpm_server`` was searched by scrolling for keys.  
+Here terminal window on TPM1 running ``tpm_server`` was searched by scrolling for keys, and the keys were copied and pasted here:  
 
-(Note: had to abort session due to f*ckin utrymningsövning.. Will copy keys next time..)
+	...
+	TPM_RSAGenerateKeyPair: length of n,p,q,d = 256 / 128 / 128 / 256
+	TPM_Key_GenerateRSA: Public key n cf c5 c3 b9
+	TPM_Key_GenerateRSA: Exponent length 3
+	01 00 01 
+	TPM_Key_GenerateRSA: Private prime p fb 20 5d 01
+	TPM_Key_GenerateRSA: Private prime q d3 ce 03 15
+	TPM_Key_GenerateRSA: Private key d c5 e9 b1 0d
+	...
+	TPM_SymmetricKeyData_SetKeys:
+	TPM_SymmetricKeyData_SetKeys: userKey af 41 64 4c
+	...
+Thus,
+* Public key = **cf c5 c3 b**
+* Private key = **c5 e9 b1 0d**
 
 ### Memorize 'take ownership' passwords:
+TSS:
 
+	takeown -pwdo superhemligt_o -pwds superhemligt_s
 
 ### **Grading criterion**: report should contain a dump SRK pubkey and description how it was obtained, 2 points.
+
+TSS (atm):
+	
+	tss@TSS ~ $ getpubkey
+	Missing key handle.
+
+	getpubkey -ha <key handle> -pwdk keypassword
+
+
+	tss@TSS ~ $ getpubkey -ha 40000000 -pwdk superhemligt_s
+	Error Invalid key handle from TPM_GetPubKey
+
+Will have to try smth else, gotta leave now
