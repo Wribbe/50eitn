@@ -285,7 +285,7 @@ reporting is to attest the integrity measurements that are recorded in these loc
     Used for implementing encrypted storage. Created after running.
     *  TPM_TakeOwnership ( OwnerPassword, ..)
 
-**Migratable vs. non-migratable** keys = indicates whether the private portion of the key can be oved between TPMs.
+**Migratable vs. non-migratable** keys = indicates whether the private portion of the key can be moved between TPMs.
 
 Key creation
 
@@ -299,13 +299,15 @@ Authentication
 
 **PCRs** = Platform Configuration Registers - a register that contains a SHA1 hash and is used to accumulate “measurements”
 
-**Binding** - binds data to a certain value of the PCR. Then the TPM can only decrypt (unseal) if the PCR value(s) is the same as when encryption happened (seal)
+**Binding** - (may be wrong? prob sealing) binds data to a certain value of the PCR. Then the TPM can only decrypt (unseal) if the PCR value(s) is the same as when encryption happened (seal)
+
+Binding is encrypting data using a the public key of a bind key. If the bind key is non-migratable the encrypted data is binded to the TPM where the secret portion of the bind key resides.
 
 **Key blob** - (EK+SRK)*. Only EK+SRK stored inside TPM, others stored outside using the public key of storage parent key and loaded internally as needed during processing. The encrypted object is called a key blob. When a key € (EK+SRK)\* is generated we get a key blob.
 
 **SHIM** - 
 
-**Hypervisors** - hardware w/ OS on top. Hypervisor is virtual instance of hardware. Aka virtual machine manager. Basically VM? Yeah, probs. Cmp Hyper-V as virtualization in Windows.
+**Hypervisors** - hardware w/ OS on top. Hypervisor is virtual instance of hardware. Aka virtual machine manager. Basically VM? Yeah, probs. Cmp Hyper-V as virtualization in Windows. **(!) Hypervisor = VMM = Virtual Machine Manager**
 
 **Geo-fencing** - prove that computing is performed inside a geographical area. E. g. policy in certain countries w/ medical computations that should be done inside of the country.
 
@@ -323,59 +325,205 @@ In last project: use idea of trusted computing to shield camera from all kinds o
 # TPM Quiz prep
 ## TCG goals and impact:
 ### What are the functions the TCG RoT should provide?
+* verification of data authenticity and integrity;
+* provision and protection of secure storage for secret keys; 
+* secure reporting of specific machine states; and secure activation.
+* Protected capabilities
+    * Protected capabilities is a set of commands that grant the user issuing the command access to protected locations, memory (storage), registers, etc.
+* Attestation
+    * Attestation is the process of verifying the accuracy of information and the characteristics of the TPM chip current state.
+* Integrity (Measurement and Reporting)
+    - Integrity measurement is the process of obtaining metrics of the platform characteristics and storing the information digest in a protected locations (registers) in the TPM chip. Integrity reporting is to attest the integrity measurements that are recorded in these locations.
+* *etc.*
 ### How is the TPM integrated in a traditional PC/Server system?
+As a microchip, attached to the PC's/server's motherboard. Part of the boot mechanism.
 ### What components in a traditional PC system are at least affected by adding TPM support?
+BIOS, CPU, Southbridge(?) = *"The southbridge is one of the two chips in the core logic chipset on a personal computer (PC) motherboard, the other being the northbridge. The southbridge typically implements the slower capabilities of the motherboard in a northbridge/southbridge chipset computer architecture"* - Wikipedia
 ## TPM Internal
 ### How many PCR registers does a TPM at least have?
+$\geq 16$ 
 ### How many PCR registers is Intel TXT using in a TPM?
+$\geq 24$
 ### What is the purpose of the OPT-IN function of a TPM?
+TCG policy: *The TPM should be shipped in the state the customer requires.* Users are
+not forced to use trusted computing, they opt-in if they choose to do so by taking ownership of the device.
 ### Why do we need a GUI in the Bios when adding TPM support?
+Because of the OPT-IN functions. *(Wait, but why?)*
 ### What is meant by physical presence?
+Certain operations on the TPM should only be allowed by an operator that has physical access to the device with the TPM. That is, a remote SW process cannot run such an operation. These operations are said to be allowed under Physical Presence (PP).
+
+Examples of commands that should be implemented to
+function only under PP regime
+* TakeOwnership
+* ForceClear
 ### Where (in a system) is the physical presence enforced?
+??? Perhaps the CRTM? *"Note: at startup the CRTM will check for physical presence of the TPM"*
 ### What are the monotonic counters in a TPM and explain one use case of them?
+TPM has monotonic counters (at least 4). Increment rate: Every 5 secs for at least 7 years (so at least 26 bit counter needed).
+
+Use case: Can be used to implement anti-roll back protection (old SW version in system can be blocked from loading after newSW has been loaded once)
 ### What is meant by a PCR, what is the size of a PCR, and extending a PCR ?
+**Platform Configuration Register**. *"A PCR is a register that contains a SHA1 hash and is used to accumulate “measurements”"*
+
+* Accumulation of new data in the PCR is called extending a PCR
+* PCRs can be read from the outside
+* Are reset to zero at power up
+* Some PCR can be setup to be resettable when in use, be warned!
+* At least 16. In Intel TXT use of TPM there are at least 24 PCRs
+
+**Size = ???**
 ### Why is resetting of PCRs restricted?
+Because of possibility of a Reset Attack?
 ### Why is it not possible to set a PCR to a user provided value?
+???
 ### The TPM exists in different versions. Which ones?
+1.2 and 2.0
 ## TPM in a system
 ### What is a platform certificate and what is its role?
+*"I put the TPM so-and-so on my motherboard with this firmware. Signed ASUS"*
 ### What is a TPM certificate and what is its role?
+*"TPM (vendor) Certificate: I put this pubKey in this genuine TPM that I made. Signed Infineon"*
 ### What is an endorsement credential?
+Aka TPM certificate. 
+
+It is a Digital certificate stating that EK has been properly created and embedded into a TPM. Issued by the entity who generated the EK e.g., the TPM manufacturer. It Includes
+* TPM manufacturer name
+* TPM model number
+* TPM version
+* Public EK (Note this maybe privacy sensitive data)
 ### Who issues a TPM certificate?
+The TPM vendor.
 ### Who issues a Platform certificate?
+The OEM (Original Equipment Manufacturer)
 ### What part of EK is stored in the endorsement credential?
+Public EK.
+
+( http://trousers.sourceforge.net/man/tpm_createek.8.html )
 ### Explain the trust chain, Lect4/slide 42.
+[-]
 ## Roots of trust and their use
 ### See also http://www.ericsson.com/res/thecompany/docs/publications/ericsson_review/2014/ertrusted-computing.pdf
-###What is the CRTM, the SRTM and the DRTM?
-###Explain the secure boot use of a RoT Lect1/slide 47 and 48
+### What is the CRTM, the SRTM and the DRTM?
+*RTM = Root of Trust for Measurement*
+* CRTM: Core RTM
+    * the a priori trusted code that is refered by the platform credential.
+* SRTM: Static RTM
+    * In the Static RTM Model, this MUST be the very first piece of code executed on power on or upon reset of the server or complete physical hardware environment.
+        * Note: at startup the CRTM will check for physical presence of the TPM 
+        * REMEMBER: TPM is not the root-of-trust but trust starts with the CRTM
+* DRTM: Dynamic RTM
+    * In the Dynamic RTM model the hardware is designed to support that while running a trusted execution thread can be started:
+        * Intel call their implementation (Intel) Trusted eXecution Technology
+        * AMD: DRTM instruction, SKINIT
+### Explain the secure boot use of a RoT Lect1/slide 47 and 48
+Measure->Report->Execute
 ### What is UEFI secure boot?
+Lect5, slide 37
 ### Is the TPM needed in UEFI boot?
-### What is ACM in the context of Intel TXT.
+*"Observe that actually the TPM is not needed for secure boot if one skips the requirement to support attestation. (one basically has no secrets to protect then)."*
+### What is ACM in the context of Intel TXT?
+Other HW in the PC/server
+* ACM modules (firmware) - Special signed sw modules by HW manufacturer that execute at highest security level and execute in special separate secure memory
+    * BIOS ACM: code that measures BIOS +init
+    * SINT ACM: code that is part of the DRTM for the secure init/launch
 ### Intel TXT mitigation of reset attacks.
+Lect5, slide 52.
 ### What is meant by a locality and what are localities used for?
+Locality is a concept that allows various trusted processes on the platform to communicate with the TPM such that the TPM is aware of which trusted process is sending commands.
+
+This is implemented using dedicated ranges of LPC bus addresses and thus requires proper support in the chipset HW (e.g. Southbridge).
+
+There are 6 Localities given numbers 0 – 4 and None.
+
+"For TPM, *locality* is defined to be the privilege level of a command." - Platform Embedded Security Technology Revealed: Safeguarding the Future of ...
 ### Explain how localities and PCRs are linked.
+Lect4, slide 19.
 ## TPM keys and TPM commands
-### Look through TPM main specification for TPM ver 1.2, Part 3, commands
-### Study the commands: TPM_TakeOwership, TPM_Unbind, TPM_Seal, TPM_Quote, TPM_LoadKey2, TPM_Init. Not needed you understand all the fields but study the pseudo code following in the description of the commands. This code explains the behavior in more detail than the text.
+#### Look through TPM main specification for TPM ver 1.2, Part 3, commands.
+#### Study the commands: TPM\_TakeOwership, TPM\_Unbind, TPM\_Seal, TPM\_Quote, TPM\_LoadKey2, TPM\_Init. Not needed you understand all the fields but study the pseudo code following in the description of the commands. This code explains the behavior in more detail than the text.
 ### What is a legacy key?
+Legacy: signing or encryption (compatible with TPM v1)
 ### What is a binding key?
+*Lect4:* Binding: decrypt data (usually from remote platforms)
+
+*Lect5:* Binding is encrypting data using a the public key of a bind key. If the
+bind key is non-migratable the encrypted data is binded to the TPM
+where the secret portion of the bind key resides.
 ### Who is doing the binding operation, the TPM or some other entity?
+*"Binding is done outside the TPM (so there is no TPM_Bind command)"*
 ### What is (TPM) ownership?
+Creating Storage Root Key (SRK)
+
+When taking ownership an owner(ship) secret is set that is needed later for certain TPM commands.
+
+The TakeOwnership results in
+* a (re)computation of the SRK private and public key
+* The usage secret for SRK is set
+* The owner secret is set
+* A new tpmProof value is set which is a random value kept secret inside the tpm
+* Future reading of pubEK will require knowledge of owner secret
 ### Which keys do always stay in a TPM (version 1.2)?
+* **EK** - Endorsement Key. Created at manufacturing time, cannot be changed, used for attestation. Only used for encryption, not signing.
+* **AIK** - Attestation Identity Key(s)
+* **SRK** = Storage Root Key.
+    The root of the key tree structure in a TPM. To get any other key in the tree, one has to go through this parent of parents.
+    Used for implementing encrypted storage. Created after running.
+    *  TPM_TakeOwnership ( OwnerPassword, ..)
 ### Explain the role of EK and SRK?
+#### EK
+Is a very special key since it stays the same during the TPM lifetime. This gives privacy concern due to linkability to the user when the EK is used. To reduce the risk of EK being used in an improper way even the use of EK is limited Basically it allows only EK for encryption. So signing type of operations are not allowed.
+
+#### SRK
+The root of the key structure in a TPM.
 ### If we have a key hierarchy and then take ownership, can we still use the keys in that hierarchy? Explain!
+If we migrate the keys as a/several key blobs, and then immigrate them?
 ### Why is EK privacy sensitive?
+Because it is only generated once and associated with specific TPM (naturally, since it resides in one and never leaves that). See **EK** entry in second question above.
 ### Why is SRK not (or at least less) privacy sensitive? Think what happens when we takeownership.
+At takeownership event, user selects a new password for SRK, and old SRK (and subsequent key tree) is deleted.
 ### What happened during Takeownership?
-### What is the function of the passwords and secrets associated with the keys.
+See **What is (TPM) ownership?** question above.
+### What is the function of the passwords and secrets associated with the keys?
+Each key except EK has a usage secret which must be presented when certain operations with the key is to be performed. (one could regard the owner secret as the usage secret of EK). To each secret is connected a password from which it could be derived.
 ### Where do we store the non-permanent TPM keys?
-### What is a migratable key ?
-###Which TPM keys we have in a TPM version 1.2? Explain.
+Outside the TPM, in key blobs.
+### What is a migratable key?
+Not specified in slides, guess it means a key that you can move/migrate to other TPMs. An example of a non-migratable key should then be SRK. But hey, who knows.
+### Which TPM keys we have in a TPM version 1.2? Explain.
+Lect4, slide 59.
 ### Can we have an AIK stored under a migratable storage key?
+AIK = Attestation Identity Key(s). sign data from the TPM. A TPM can have many identities!
+
+???
+
+"An Attestation Identity Key (AIK) is an alias for the Endorsement Key (EK). The EK cannot
+perform signatures for security reasons and due to privacy concerns." TPM Part 1
 ### If we have a TPM key blob why then do I have to remember also all keys that were used in the process of creating this key even if these keys are not used for any application?
+SRK is inside the TPM, blobs are built from this => the Root of Trust principle (?)
 ### When loading a key into the TPM why do we have to know the parent secret/password?
+Because it will be integrated into key tree / a new key blob with this as a 'new' child will be constructed? And a tree is built from the SRK. *Not really explained in slides.*
 ### Explain the key hierarchy Lect5: slides 2
+[-]
 ### What is sealing? Can you seal data to a TPM from outside the TPM (using the public portion of the seal key)?
+Sealing”: binds data to a certain value of the PCR and a key that is not migratable. Then the TPM can only decrypt (unseal) if the PCR value(s) is the same as when encryption happened (seal)
+
+Second thing not explained in slides
 ### How many key hierarchies does a TPM v 2.0 have?
+Three
 ### What is the purpose of the primary seeds in a TPM v 2.0?
+Three primary seeds
+* Platform primary seed: PPS
+* Endorsement primary seed: EPS
+* Storage primary seed: SPS
+
+**Seeds are used to derive symmetric keys**
+
+## EOQP3
+**Zero-knowledge proof** - Prove you know x w/o revealing x
+
+Leakage attacks most common today
+
+"know the environment your software will run on"
+    E. g. PIN, false attempt will write to EEPROM and add to a counter counting false attempts, 3 = blocked. To write to this EEPROM, a 'charger' must be supplied with power to be able to write to EEPROM, make a false attempt and notice 'charger' charging => cut power. Make new attempt w/ counter still on 0.
+
+Hopper-Blum authentication, send challenge "a couple of hundred times"
