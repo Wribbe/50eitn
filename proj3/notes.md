@@ -29,8 +29,8 @@ were set. Thus only needed to change ``TCSD_TCP_DEVICE_HOSTNAME``, did this
 with ``export TCSD_TCP_DEVICE_HOSTNAME=10.0.2.14``.
 Check if changed:
 
-    ``tss@TSS ~ $ env | sort | grep HOSTNAME
-    TCSD_TCP_DEVICE_HOSTNAME=10.0.2.14``
+    tss@TSS ~ $ env | sort | grep HOSTNAME
+    TCSD_TCP_DEVICE_HOSTNAME=10.0.2.14
 
 Also had to change TPM hostname:
 
