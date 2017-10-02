@@ -88,6 +88,22 @@ TSS:
 
 TSS (atm):
 
+Running the above command on a terminal that is opened on the Desktop folder
+generates a ``srk.pem`` file with the following content:
+
+    tss@TSS ~/Desktop $ cat srk.pem
+    -----BEGIN PUBLIC KEY-----
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1pz0SF4rCVdTbw4ySPxW
+    F2ZfAlw3LuTwE+F11eXGrZ/+ib7CRX7I+OT4/5LXnGvrH6PR5R1ajMUeE3Om1VZu
+    tLxZ1Tikrizk8CECh0u1qb5LsNKoBBhW6COa6ge5gR8UqaXYhylP6NkBz9hBiLT3
+    IHhgvvcecdlfpWR+/tsK1RYKjUfnWj5v5sZkEQ4y71PNBr+ZD+iw9XhzU0PqpuXC
+    8y3zD4aoA/CVREzVe5GzKqd4ZzGoYfUhdbqYb9hHeRXYCKBpSc8kwjF4Qa1z/Fc2
+    nfCyPOeb1asV9GbZL81W4VR+WJwK75cKGxuKbo+PUGOzekG1euIxtMUe83eJmRRB
+    +wIDAQAB
+    -----END PUBLIC KEY-----
+
+
+<!--
 	tss@TSS ~ $ getpubkey
 	Missing key handle.
 
@@ -98,3 +114,4 @@ TSS (atm):
 	Error Invalid key handle from TPM_GetPubKey
 
 Will have to try smth else, gotta leave now
+-->
