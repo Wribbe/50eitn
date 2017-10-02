@@ -114,3 +114,26 @@ generates a ``srk.pem`` file with the following content:
 	Error Invalid key handle from TPM_GetPubKey
 
 Will have to try smth else, gotta leave now
+
+From the source of tmp_constants.h (the emulator definitions):
+
+    /* 4.4.1 Reserved Key Handles rev 87
+
+       The reserved key handles. These values specify specific keys or specific actions for the TPM.
+
+       TPM_KH_TRANSPORT indicates to TPM_EstablishTransport that there is no encryption key, and that
+       the "secret" wrapped parameters are actually passed unencrypted.
+    */
+
+    #define TPM_KH_SRK              0x40000000 /* The handle points to the SRK */
+    #define TPM_KH_OWNER            0x40000001 /* The handle points to the TPM Owner */
+    #define TPM_KH_REVOKE           0x40000002 /* The handle points to the RevokeTrust value */
+    #define TPM_KH_TRANSPORT        0x40000003 /* The handle points to the TPM_EstablishTransport static
+                                                  authorization */
+    #define TPM_KH_OPERATOR         0x40000004 /* The handle points to the Operator auth */
+    #define TPM_KH_ADMIN            0x40000005 /* The handle points to the delegation administration
+                                                  auth */
+    #define TPM_KH_EK               0x40000006 /* The handle points to the PUBEK, only usable with
+                                                  TPM_OwnerReadInternalPub */
+
+Can't get the command to work though.
