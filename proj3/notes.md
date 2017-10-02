@@ -335,4 +335,27 @@ load G:
 
 *After creating all others, I still can't create C. No idea why.*
 
-*Interesting. Running* ``listkeys`` *returns handles for only H and B,* ``Key handle 00 84f9ec60 \n Key handle 01 3092f35a``
+*Interesting. Running* ``listkeys`` *returns handles for only H and B,* ``Key handle 00 84f9ec60 \n Key handle 01 3092f35a`` *Can still read public part of keys w/* ``getpubkey``*, though*
+
+### 3.4.2 Questions
+1. Is it possible for a migratable key to be the parent of a non-migratable key?
+2. Which command is the first to be executed when performing a key migration?
+3. Give a short description of the command TPM_ConvertMigrationBlob.
+4. Which TPM command loads the migrated keys into the TPM?
+5. Is it the TPM or the TSS that handles the transfer of the migration blob?
+
+**Grading criterion: correct answers to be above 5 questions is 2 points each.**
+
+### 3.6.1 Questions
+1. Why is TSS_Bind a TSS command, and not a TPM command?
+    * Because binding is done outside of a TPM.
+2. Give some differences between Data binding and Data sealing.
+3. Can a key used for data sealing be migrated to another TPM?
+
+**Grading criterion: correct answers to the above three questions is 2 points each.**
+
+<!--
+https://blogs.oracle.com/danx/tpm-key-migration-in-solaris
+http://courses.cs.vt.edu/cs5204/fall10-kafura-BB/Papers/TPM/Intro-TPM.pdf
+https://trustedcomputinggroup.org/wp-content/uploads/Kazmierczak20Greg20-20TPM_Key_Management_KMS2008_v003.pdf
+-->
