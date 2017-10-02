@@ -231,3 +231,17 @@ Last two lines differ between output on TSS and TPM1. Ubiqutious in different in
     0D 68 69 80 96 B5
 
 Guess that means this is SRK.pub part..? Moving on.
+
+## 3.3 Assignment 3: Key hierarchy
+
+### 3.3.2 Questions
+1. The identity key is one type of signature key. Describe some differences between an identity and a signature key.
+    * An identity key is an alias for the Endorsement Key, used instead of the EK in order to mitigate privacy issues (Single EK can easily be linked to a single user) and security issues (each use of a key 'waters down' its security, i. e. the entropy is theoretically lowered each time it is used). An AIK can also only be used for two operations: ``TPM_Quote`` and ``TPM_CertifyKey``, and not in e. g. ``TPM_Sign``. ``TPM_Quote``, however, can not be performed by/with a signing key. Signing keys to sign arbitrary data, identity keys for remote attestation.
+<!-- https://security.stackexchange.com/questions/83269/tpm-signing-key-or-attestation-identity-key -->
+2. Which keys can be used for file encryption?
+   * Storage keys. 
+3. There is one type of key that exists, but its use is not recommended. Which key is that, and why does it exist?
+    * EK? If so, see reasoning in answer to question 1 above here.
+
+**Grading criterion: each correct answer to the above 3 questions is 2 points.**
+
