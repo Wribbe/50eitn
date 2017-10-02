@@ -245,3 +245,84 @@ Guess that means this is SRK.pub part..? Moving on.
 
 **Grading criterion: each correct answer to the above 3 questions is 2 points.**
 
+<!--
+"This features generates a sub-SRK (called a Migratable Root Key or MRK) that
+all applications that wish to preserve the ability to migrate keys can use as
+the parent key. This new Migratable Root Key can then be migrated if necessary and
+automatically enables all of the descendent keys to be migrated" - https://blogs.oracle.com/danx/tpm-key-migration-in-solaris
+-->
+
+<!-- Do they just mean that one must create key tree structure top-down? If so: --> 
+The tree key structure must be created top-down, i. e. a key must always have a parent key/treenode, thus one cannot create e. g. E before its parent B.
+<!-- else, do they imply that one cannot e. g. create a non-migratable child key before a migratable child key (same parent)? I haven't found anything that supports that notion. -->
+
+**Are all combinations possible? If not, why? Grading criterion: correct answer 2 points.**
+
+
+
+            SRK
+            /  \
+           H    A
+               / | \
+              B  F  G
+            / | \
+           C  D  E
+
+**Grading criterion: drawing of correct hierarchy 2 points.**
+
+H: SRK, an identity key. ``identity -la H -pwdk superhemligt_H -pwds superhemligt_s -v12 -ok H -pwdo superhemligt_o -v``
+
+load H:
+
+    loadkey -hp 40000000 -ik H.key -pwdp superhemligt_s
+    New Key Handle = 3092F35A    
+
+A: SRK, non migratable storage key. ``createkey -v -kt e -pwdk superhemligt_A -pwdp superhemligt_s -ok A -hp 40000000``
+
+load A:
+    
+    loadkey -hp 40000000 -ik A.key -pwdp superhemligt_s
+    New Key Handle = DA4EC580
+
+B: A, migratable storage key. ``createkey -v -kt e -pwdk superhemligt_B -pwdp superhemligt_A -pwdm superhemligt_Bm -ok B -hp DA4EC580``
+
+load B:
+    
+    loadkey -hp DA4EC580 -ik B.key -pwdp superhemligt_A
+    New Key Handle = 8DB87F83
+
+C: B, a non migratable sign key. ``createkey -v -kt s -pwdk superhemligt_C -pwdp superhemligt_B -ok C -hp 8DB87F83``
+<!-- note: I get 'Error Invalid key usage from TPM_CreateWrapKey' when executing above cmd. I can see no wrong w/ cmd. Moving on, keywrap may not be what we wnat to do here anyway? "-ix <pcr num> <digest>    used to wrap a key to values of PCRs" -->
+load C:
+    
+    loadkey -hp 8DB87F83 -ik C.key -pwdp superhemligt_B
+    New Key Handle =
+
+D: B, a migratable sign key. ``createkey -v -kt s -pwdk superhemligt_D -pwdp superhemligt_B -pwdm superhemligt_Dm -ok D -hp 8DB87F83``
+load D:
+
+    loadkey -hp 8DB87F83 -ik D.key -pwdp superhemligt_B
+    New Key Handle = 84F9EC60
+
+Note: Interesting. I couldn't create C right after B, but D worked. Conclusion: second guess of question above is correct?
+
+E: B, a migratable bind key. ``createkey -v -kt b -pwdk superhemligt_E -pwdp superhemligt_B -pwdm superhemligt_Em -ok E -hp 8DB87F83``
+
+load E:
+    
+    loadkey -hp 8DB87F83 -ik E.key -pwdp superhemligt_B
+    New Key Handle =
+
+F: A, a non migratable sign key. ``createkey -v -kt s -pwdk superhemligt_F -pwdp superhemligt_A -ok F -hp DA4EC580``
+
+load F:
+    
+    loadkey -hp DA4EC580 -ik F.key -pwdp superhemligt_A
+    New Key Handle = 
+
+G: A, a migratable sign key. ``createkey -v -kt s -pwdk superhemligt_G -pwdp superhemligt_A -pwdm superhemligt_Gm -ok G -hp DA4EC580``
+
+load G:
+        
+    loadkey -hp DA4EC580 -ik G.key -pwdp superhemligt_A
+    New Key Handle = 
