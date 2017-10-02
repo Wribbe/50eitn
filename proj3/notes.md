@@ -270,6 +270,8 @@ The tree key structure must be created top-down, i. e. a key must always have a 
 
 **Grading criterion: drawing of correct hierarchy 2 points.**
 
+**on TSS**
+
 H: SRK, an identity key. ``identity -la H -pwdk superhemligt_H -pwds superhemligt_s -v12 -ok H -pwdo superhemligt_o -v``
 
 load H:
@@ -292,7 +294,9 @@ load B:
     New Key Handle = 8DB87F83
 
 C: B, a non migratable sign key. ``createkey -v -kt s -pwdk superhemligt_C -pwdp superhemligt_B -ok C -hp 8DB87F83``
-<!-- note: I get 'Error Invalid key usage from TPM_CreateWrapKey' when executing above cmd. I can see no wrong w/ cmd. Moving on, keywrap may not be what we wnat to do here anyway? "-ix <pcr num> <digest>    used to wrap a key to values of PCRs" -->
+
+*note: I get* ``Error Invalid key usage from TPM_CreateWrapKey`` *when executing above cmd. I can see no wrong w/ cmd. Moving on, keywrap may not be what we wnat to do here anyway?* ``-ix <pcr num> <digest>    used to wrap a key to values of PCRs`` *
+
 load C:
     
     loadkey -hp 8DB87F83 -ik C.key -pwdp superhemligt_B
@@ -304,25 +308,31 @@ load D:
     loadkey -hp 8DB87F83 -ik D.key -pwdp superhemligt_B
     New Key Handle = 84F9EC60
 
-Note: Interesting. I couldn't create C right after B, but D worked. Conclusion: second guess of question above is correct?
+*Note: Interesting. I couldn't create C right after B, but D worked. Conclusion: second guess of question above is correct?*
 
 E: B, a migratable bind key. ``createkey -v -kt b -pwdk superhemligt_E -pwdp superhemligt_B -pwdm superhemligt_Em -ok E -hp 8DB87F83``
 
 load E:
     
     loadkey -hp 8DB87F83 -ik E.key -pwdp superhemligt_B
-    New Key Handle =
+    New Key Handle = D0E1F534
 
 F: A, a non migratable sign key. ``createkey -v -kt s -pwdk superhemligt_F -pwdp superhemligt_A -ok F -hp DA4EC580``
+
+*Okay, this worked. Why won't C work?*
 
 load F:
     
     loadkey -hp DA4EC580 -ik F.key -pwdp superhemligt_A
-    New Key Handle = 
+    New Key Handle = 1F256F40
 
 G: A, a migratable sign key. ``createkey -v -kt s -pwdk superhemligt_G -pwdp superhemligt_A -pwdm superhemligt_Gm -ok G -hp DA4EC580``
 
 load G:
         
     loadkey -hp DA4EC580 -ik G.key -pwdp superhemligt_A
-    New Key Handle = 
+    New Key Handle = CB672A8F
+
+*After creating all others, I still can't create C. No idea why.*
+
+*Interesting. Running* ``listkeys`` *returns handles for only H and B,* ``Key handle 00 84f9ec60 \n Key handle 01 3092f35a``
