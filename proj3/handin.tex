@@ -55,9 +55,8 @@
       Get the virtual machine up and running:
 
       \begin{enumerate}
-          %TODO: check the actual path.
-        \item{Copy image archives from network drive S:/../EITN50/project/TMP/ to
-          your local lab room computer}
+        \item{Copy image archives from network drive S:\textbackslash Courses\textbackslash eit\textbackslash EITN50\textbackslash Project - TPM to
+          local lab room computer}
         \item{Extract the images using 7-zip or similar.}
         \item{Add the TPM1, TMP2 and TSS images as machines to virtualbox:
           \command{Machine > Add}.}
@@ -108,13 +107,13 @@
 
       \command{export TCSD\_TCP\_DEVICE\_HOSTNAME=10.0.2.14}
 
-      And the same goes for TMP\_SERVER\_HOSTNAME:
+      And the same goes for TPM\_SERVER\_HOSTNAME:
 
-      \command{export TMP\_SERVER\_HOSTNAME=10.0.2.14}
+      \command{export TPM\_SERVER\_HOSTNAME=10.0.2.14}
 
-      Start the emulator on the TMP1 machine:
+      Start the emulator on the TPM1 machine:
 
-      \command{tmp\_server}
+      \command{tpm\_server}
 
       and connect to the running instance it on the TSS machine:
 
@@ -122,13 +121,13 @@
       \command{sudo -E /usr/local/sbin/tcsd -e -f}
 
       open a second terminal on the TSS machine, this window will be used to
-      issue all commands to the remote TMP emulator.
+      issue all commands to the remote TPM emulator.
 
     \subsection{Generating EK, ownership and SRK public key}
 
       Use the command-window that is open on the TSS instance and run
       \command{createek}. This generates the EK public key and prints
-      it to the terminal running the \command{tmp\_server} command
+      it to the terminal running the \command{tpm\_server} command
       on the TPM1 computer. \\
 
       Scrolling through the output yields the following:
@@ -173,27 +172,23 @@
 
       \begin{quote}
         \texttt{TPM\_IO\_Write: length 335\\
-         00 C5 00 00 01 4F 00 00 00 00 00 00 00 01 00 03\\
-         00 01 00 00 00 0C 00 00 08 00 00 00 00 02 00 00\\
-         00 00 00 00 01 00 BF E7 8E C3 A4 2E 0D D4 00 DE\\
-         C7 0F 97 EC D8 C2 55 92 E0 8A 59 1B 92 F8 27 60\\
-         69 58 6A 2A 69 08 67 6A 9D 05 CF 92 70 B7 FF B1\\
-         95 47 26 BC 1E D6 86 4F 5A 24 72 CA CE AE 6A 32\\
-         F7 11 53 88 25 42 45 CC D0 41 B5 98 B4 F3 67 D4\\
-         01 1B CE B1 3D B6 85 E8 1C 52 E9 71 2A 34 9E 09\\
-         ED D9 75 32 34 E2 00 E6 68 3D 61 7F C8 CA E9 27\\
-         0B 56 04 3B 5A 06 F0 CC 5D EA 07 BC 00 19 D7 A3\\
-         00 D8 DF 7F BC D7 59 E1 11 2F C8 53 C2 FD DA 8C\\
-         66 38 38 11 D4 8E 84 9E 02 65 C0 EA FB EB 39 08\\
-         AC 56 74 FF 3C 16 51 45 C1 49 34 64 6B F8 E1 63\\
-         D0 C0 0D 18 7E 64 E2 E5 18 8D AC 3E 02 89 10 33\\
-         A6 6A 20 9B D6 CB 87 D5 39 DB 53 4C BC F4 B6 C6\\
-         8D 6F 57 37 AD E6 B9 4E 40 4A 78 7B C5 7F BE CC\\
-         BD 30 2E 0E 4E 4F 74 50 34 B9 9F B1 CF 8D B8 E5\\
-         5A E6 4C 47 AB 3C 16 0B AB 55 9B C8 BB 23 1C 5E\\
-         3E 2C 27 DB 12 B7 C2 1E E5 FE 9A 06 E5 8D 75 89\\
-         51 5C CD 95 98 AE 86 9A BF E3 00 8E 52 1A A0 2B\\
-         2D F8 DA CC A2 E2 A9 77 CE A5 D6 F4 30 94 C3\\
+        \ \ \  BF E7 8E C3 A4 2E 0D D4 00 DE \\
+     C7 0F 97 EC D8 C2 55 92 E0 8A 59 1B 92 F8 27 60 \\
+     69 58 6A 2A 69 08 67 6A 9D 05 CF 92 70 B7 FF B1 \\ 
+     95 47 26 BC 1E D6 86 4F 5A 24 72 CA CE AE 6A 32 \\ 
+     F7 11 53 88 25 42 45 CC D0 41 B5 98 B4 F3 67 D4  \\
+     01 1B CE B1 3D B6 85 E8 1C 52 E9 71 2A 34 9E 09  \\
+     ED D9 75 32 34 E2 00 E6 68 3D 61 7F C8 CA E9 27  \\
+     0B 56 04 3B 5A 06 F0 CC 5D EA 07 BC 00 19 D7 A3 \\ 
+     00 D8 DF 7F BC D7 59 E1 11 2F C8 53 C2 FD DA 8C \\ 
+     66 38 38 11 D4 8E 84 9E 02 65 C0 EA FB EB 39 08  \\
+     AC 56 74 FF 3C 16 51 45 C1 49 34 64 6B F8 E1 63  \\
+     D0 C0 0D 18 7E 64 E2 E5 18 8D AC 3E 02 89 10 33  \\
+     A6 6A 20 9B D6 CB 87 D5 39 DB 53 4C BC F4 B6 C6 \\ 
+     8D 6F 57 37 AD E6 B9 4E 40 4A 78 7B C5 7F BE CC \\ 
+     BD 30 2E 0E 4E 4F 74 50 34 B9 9F B1 CF 8D B8 E5  \\
+     5A E6 4C 47 AB 3C 16 0B AB 55 9B C8 BB 23 1C 5E \\ 
+     3E 2C 27 DB 12 B7
        }
       \end{quote}
 
@@ -222,7 +217,7 @@
     \A{Storage keys.}
 
     \Q{3}{
-      There is a key that exists, but using it is not recommend. Which key
+      There is a key that exists, but using it is not recommended. Which key
       is that, and why does it exist?
     }\\
     \A{
@@ -243,5 +238,54 @@ H\ \ \ A \\
 C\ \ D\ \ E \\
       }
     \end{quote}
+
+\section{Assignment 4: Key Migration}
+\subsection{Questions}
+\begin{enumerate}
+    \item {Is it possible for a migratable key to be the parent of a non-migratable key?} 
+	\begin{itemize}
+	    \item {Yes, but then the non-migratable key becomes a migratable key.}
+	\end{itemize}
+ 
+    \item {Which command is the first to be executed when performing a key migration?} 
+	\begin{itemize}
+	    \item {TPM\_AuthorizeMigrationKey  $\rightarrow$  TPM\_CreateMigrationBlob  (i. e., authorize migation key cmd)}
+	\end{itemize}
+
+    \item {Give a short description of the command TPM\_ConvertMigrationBlob.}
+	\begin{itemize}
+	    \item {This command enables a migration-blob to be loaded into a TPM as a 'normal', wrapped blob.\\
+From TPM part 3 pdf: "Loading one of these wrapped blobs does not require authorization, since correct blobs were created by the TPM under Owner authorization, and unwrapped blobs cannot be used without Owner authorisation." \\
+So: unwrapped blobs cannot be used w/o owner auth, wrapped w/o, guess this command makes a blob usable for the "new" TPM, so that it can use the keys in the blob w/o prompting user.}
+	\end{itemize}
+
+    \item {Which TPM command loads the migrated keys into the TPM?}
+	\begin{itemize}
+	    \item {TPM\_LoadKey}
+	\end{itemize}
+
+    \item {Is it the TPM or the TSS that handles the transfer of the migration blob? }
+	\begin{itemize}
+	    \item {The TPM.}
+	\end{itemize}
+\end{enumerate}
+
+\subsection{Instructions: Key migration in the TPM emulator}
+\subsection{Questions}
+
+\section{Assignment 5: Extending values to PCRs}
+\subsection{Questions}
+\subsection{SHA-1 calculation and PCR extending using the TPM emulator}
+\section{Assignment 6: File encryption}
+\subsection{Questions}
+\subsection{Data binding using the TPM emulator}
+\subsection{Data sealing using the TPM emulator}
+\section{Assignment 7: TPM Authentication}
+\subsection{Questions}
+\subsection{Authentication exercises}
+\section{Assignment 8: Attestation}
+\subsection{Signature based attestation}
+\subsection{Decryption-based attestation}
+\section{Assignment 9: Your first TPM application}
 
 \end{document}
