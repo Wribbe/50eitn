@@ -528,4 +528,5 @@ Compile and run program (Tss#2):
     gcc -o tmpcode tmpcode.c -ltspi -std=c99 -Wall
     ./tmpcode
 
-Which will generate and print 32 random bytes.
+Which will generate and print 32 random bytes and print contents of first 3
+PCR-registers.
