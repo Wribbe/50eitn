@@ -566,7 +566,39 @@ Copied tpmbios file to TPM1 folder:
 
 **Grading criterion: correct answers to the above three questions is 2 points each.**
 
+### 3.6.2 Instructions: Data binding using the TPM emulator
 
+    createkey \
+        -kt b/m \
+        -pwdp superhemligt_B \
+        -pwdk superhemligt_bind \
+        -pwdm superhemligt_m \
+        -ok bindkey \
+        -hp C410EC05
+        <B key handle>
+    
+    touch textfile.txt && echo "text text text text text text" > textfile.txt
+
+    bindfile \ 
+        -ik <pubkey file> \
+        -if <data file> \
+        -of <output file>
+
+becomes
+
+    bindfile \ 
+        -ik bindkey.pem \
+        -if textfile.txt \
+        -of output
+
+##### Why doesnt the key have to be loaded inside the TPM when encrypting, but it has to be when decrypting?
+Because "[..] the secret portion of the bind key resides [in the TPM]", i. e. the private part. Encrypted w/ public key, decrypted w/ private.
+
+**Grading criterion: correct answers to the above question is 2 points.**
+
+Answer: Who knows?
+Now migrate the binding key to TPM2 and see if you can decrypt the le there too. Explain what
+you observe. **Grading criterion: correct answers to the above question is 2 points.**
 
 .
 
