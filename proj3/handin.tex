@@ -3,6 +3,7 @@
 \usepackage{parskip}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage{listings}
 %\usepackage{fullpage}
 
 \newcommand{\command}[1]{\texttt{#1}}
@@ -226,18 +227,65 @@
       trusted), which are then used directly in place of EK when possible.
     }
 
-    The key hierarchy:
-    \begin{quote}
-      \texttt{
-SRK\ \\
-\ \ \ /\ \ \textbackslash \\
-H\ \ \ A \\
-\ \ \ \ /\ |\ \textbackslash \\
-\ \ \ B\ \ F\ \ G \\
-\ /\ |\ \textbackslash \\
-C\ \ D\ \ E \\
-      }
-    \end{quote}
+    \subsubsection{The key hierarchy}
+
+    The table produces the following structure:
+
+\begin{lstlisting}
+        SRK
+        /  \
+       H    A
+          / | \
+         B  F  G
+       / | \
+      C  D  E
+\end{lstlisting}
+
+    While it is possible to create the structure, any non-migratable key that
+    is created as a child to a migratable key itself becomes migratable
+    automatically.  A more correct structure would be to swap G and C.
+    Then all the non-migratable keys are direct children of the non-migratable A.
+
+    \subsubsection{Key hierarchy creation}
+
+    H -- Identity key, parent: SRK
+
+    \command{identity -la H -pwdk superhemligt\_H -pwds superhemligt\_s -v12 -ok H -pwdo superhemligt\_o -v}
+
+    A -- Non migratable storage key, parent: SRK.
+
+    \command{createkey -kt e -pwdk superhemligt\_A -pwdp superhemligt\_s -ok A
+    -hp 40000000}
+
+    \command{loadkey -hp 40000000 -ik A.key -pwdp superhemligt\_s}
+
+    output: New Key Handle = 9B84E1AD
+
+    B -- Migratable stroage key, parent: A
+
+    \command{createkey -kt e/m -pwdk superhemligt\_B -pwdp superhemligt\_A
+    -pwdm \\ superhemligt\_m -ok B -hp 9B84E1AD}
+
+    \command{loadkey -hp 9B84E1AD -ik B.key -pwdp superhemligt\_A}
+
+    \command{New Key Handle = C410EC05}
+
+    C -- A non migratable sign key, parent: B
+
+    \command{createkey -v -kt s/m -pwdk superhemligt\_C -pwdp superhemligt\_B
+    -pwdm superhemligt\_m -ok C -hp C410EC05}
+
+    D -- A migratable sign key, parent: B
+    \command{createkey -v -kt s/m -pwdk superhemligt\_D -pwdp superhemligt\_B -pwdm superhemligt\_m -ok D -hp C410EC05}
+
+    E -- A migratable bind key, parent B.
+    \command{createkey -v -kt b/m -pwdk superhemligt\_E -pwdp superhemligt\_B -pwdm superhemligt\_m -ok E -hp C410EC05}
+
+    F -- A non migratable sign key, parent A.
+    \command{createkey -v -kt s -pwdk superhemligt\_F -pwdp superhemligt\_A -ok F -hp 9B84E1AD}
+
+    G -- A migratable sign key, parent A.
+    \command{createkey -v -kt s/m -pwdk superhemligt\_G -pwdp superhemligt\_A -pwdm superhemligt\_m -ok G -hp 9B84E1AD}
 
 \section{Assignment 4: Key Migration}
 \subsection{Questions}
