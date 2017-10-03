@@ -1,5 +1,247 @@
-\documentclass{article}
+\documentclass[10pt]{article}
+\usepackage{enumitem}
+\usepackage{parskip}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+%\usepackage{fullpage}
+
+\newcommand{\command}[1]{\texttt{#1}}
+\newcommand{\Q}[2]{\textit{\textbf{Q#1}: #2}}
+\newcommand{\A}[1]{\textbf{A}: #1}
 
 \begin{document}
-    Hello World.
+
+  % Title page.
+  %------------
+
+  \thispagestyle{empty}
+  \vspace*{3cm}
+  \begin{center}
+    \huge{EITN50 -- Advanced Computer Security} \\
+    \vspace{0.3cm}
+    \LARGE{TPM - Trusted Platform Module} \\
+    \vspace{1cm}
+    \large{by: Anonymous} \\
+  \end{center}
+
+  % First page
+  %-----------
+
+  \newpage
+
+  \section*{Introduction}
+
+    The purpose of the TPM project is to familiarize the students with the
+    TPM12 specification through the interaction with a simulated TPM. The more
+    specific learning goals are:
+
+    \begin{itemize}
+      \item{Introduce TPM usage concept.}
+      \item{Understand TPM1.2 key hierarchy.}
+      \item{Understand binding, sealing and attestation.}
+      \item{Understand key migration.}
+      \item{Write a simple TPM application.}
+    \end{itemize}
+
+    This report is based on TPM-handout v1.0 (2017-09-17).
+
+  % Set section counter to 2 to match assignment numbers.
+  \setcounter{section}{2}
+
+  \section{Assignments}
+
+    \subsection{Setting up the TPM environment}
+
+      Get the virtual machine up and running:
+
+      \begin{enumerate}
+          %TODO: check the actual path.
+        \item{Copy image archives from network drive S:/../EITN50/project/TMP/ to
+          your local lab room computer}
+        \item{Extract the images using 7-zip or similar.}
+        \item{Add the TPM1, TMP2 and TSS images as machines to virtualbox:
+          \command{Machine > Add}.}
+        \item{Start the TPM1 and TSS virtual machines.}
+        \item{Login on TPM1 with user: \emph{pi} and password: \emph{tpm}.}
+        \item{Login on TSS with user: \emph{tss} and password: \emph{lab}.}
+      \end{enumerate}
+
+      Ensure that the necessary environment variables are set to correct values
+      for TPM1:
+
+      \begin{enumerate}
+        \item{Open terminal on TPM1.}
+        \item{Check IP address with: \command{ifconfig eth0}, should be 10.0.2.14.}
+        \item{Check the environment variables of TPM1 with: \command{env | grep
+          \textasciicircum TPM}.}
+      \end{enumerate}
+
+      The last command should return the following:
+      \begin{quote}
+        pi@TPM1 ~ \$ env | grep \textasciicircum TPM\\
+        TPM\_PORT=6545\\
+        TPM\_SERVER\_NAME=localhost\\
+        TPM\_PATH=/home/pi/tpm/tpm4720/tpmstate\\
+        TPM\_SERVER\_PORT=6545
+      \end{quote}
+
+      Ensure that the necessary environment variables are set to correct values
+      for TSS:
+
+      \begin{enumerate}
+        \item{Open terminal on TSS.}
+        \item{Check the environment variables of TSS with: \command{env | grep
+          \textasciicircum TCSD}.}
+      \end{enumerate}
+
+      Which should return:
+
+      \begin{quote}
+        tss@TSS ~/Desktop/share \$ set | grep \textasciicircum TCSD\\
+        TCSD\_TCP\_DEVICE\_HOSTNAME=10.0.2.15\\
+        TCSD\_TCP\_DEVICE\_PORT=6545\\
+        TCSD\_USE\_TCP\_DEVICE=true
+      \end{quote}
+
+      The variable TCSD\_TCP\_DEVICE\_HOSTNAME, needs to be changed from *.15 to
+      *.14, which can be done by running:
+
+      \command{export TCSD\_TCP\_DEVICE\_HOSTNAME=10.0.2.14}
+
+      And the same goes for TMP\_SERVER\_HOSTNAME:
+
+      \command{export TMP\_SERVER\_HOSTNAME=10.0.2.14}
+
+      Start the emulator on the TMP1 machine:
+
+      \command{tmp\_server}
+
+      and connect to the running instance it on the TSS machine:
+
+      \command{tpmbios} \\
+      \command{sudo -E /usr/local/sbin/tcsd -e -f}
+
+      open a second terminal on the TSS machine, this window will be used to
+      issue all commands to the remote TMP emulator.
+
+    \subsection{Generating EK, ownership and SRK public key}
+
+      Use the command-window that is open on the TSS instance and run
+      \command{createek}. This generates the EK public key and prints
+      it to the terminal running the \command{tmp\_server} command
+      on the TPM1 computer. \\
+
+      Scrolling through the output yields the following:
+
+      \begin{quote}
+        ...\\
+        TPM\_RSAGenerateKeyPair: length of n,p,q,d = 256/128/128/256\\
+        TPM\_Key\_GenerateRSA: Public key n 9d c7 a2 12\\
+        TPM\_Key\_GenerateRSA: Exponent length 3\\
+        01 00 01\\
+        TPM\_Key\_GenerateRSA: Private prime p cc f1 86 7b\\
+        TPM\_Key\_GenerateRSA: Private prime q c5 16 32 ff\\
+        TPM\_Key\_GenerateRSA: Private key d 8d 80 b5 01\\
+        ...\\
+        TPM\_SymmetricKeyData\_SetKeys:\\
+        TPM\_SymmetricKeyData\_SetKeys: userKey 48 67 2f 01\\
+        ...
+      \end{quote}
+
+      which gives:
+
+      \begin{itemize}
+        \item{Public key -- 9d c7 a2 12}
+        \item{Private key -- 7d 80 b5 01}
+      \end{itemize}
+
+      The next step is to take ownership of the simulated TPM. This is done by
+      running the following command in the TSS command window:
+
+      \command{takeown -pwdo superhemligt\_o -pwds superhemligt\_s}
+
+      where \textit{superhemligt\_o} is the owner password and
+      \textit{superhemligt\_s} is the storage root key password.
+
+      After the ownership is established, the public SRK key can be dumped using
+      the following command:
+
+      \command{ownerreadinternalpub -hk 40000000 -of srk.pub -pwdo
+      superhemligt\_o}
+
+      Which dumps the public key to the file \textit{srk.pub} and prints:
+
+      \begin{quote}
+        \texttt{TPM\_IO\_Write: length 335\\
+         00 C5 00 00 01 4F 00 00 00 00 00 00 00 01 00 03\\
+         00 01 00 00 00 0C 00 00 08 00 00 00 00 02 00 00\\
+         00 00 00 00 01 00 BF E7 8E C3 A4 2E 0D D4 00 DE\\
+         C7 0F 97 EC D8 C2 55 92 E0 8A 59 1B 92 F8 27 60\\
+         69 58 6A 2A 69 08 67 6A 9D 05 CF 92 70 B7 FF B1\\
+         95 47 26 BC 1E D6 86 4F 5A 24 72 CA CE AE 6A 32\\
+         F7 11 53 88 25 42 45 CC D0 41 B5 98 B4 F3 67 D4\\
+         01 1B CE B1 3D B6 85 E8 1C 52 E9 71 2A 34 9E 09\\
+         ED D9 75 32 34 E2 00 E6 68 3D 61 7F C8 CA E9 27\\
+         0B 56 04 3B 5A 06 F0 CC 5D EA 07 BC 00 19 D7 A3\\
+         00 D8 DF 7F BC D7 59 E1 11 2F C8 53 C2 FD DA 8C\\
+         66 38 38 11 D4 8E 84 9E 02 65 C0 EA FB EB 39 08\\
+         AC 56 74 FF 3C 16 51 45 C1 49 34 64 6B F8 E1 63\\
+         D0 C0 0D 18 7E 64 E2 E5 18 8D AC 3E 02 89 10 33\\
+         A6 6A 20 9B D6 CB 87 D5 39 DB 53 4C BC F4 B6 C6\\
+         8D 6F 57 37 AD E6 B9 4E 40 4A 78 7B C5 7F BE CC\\
+         BD 30 2E 0E 4E 4F 74 50 34 B9 9F B1 CF 8D B8 E5\\
+         5A E6 4C 47 AB 3C 16 0B AB 55 9B C8 BB 23 1C 5E\\
+         3E 2C 27 DB 12 B7 C2 1E E5 FE 9A 06 E5 8D 75 89\\
+         51 5C CD 95 98 AE 86 9A BF E3 00 8E 52 1A A0 2B\\
+         2D F8 DA CC A2 E2 A9 77 CE A5 D6 F4 30 94 C3\\
+       }
+      \end{quote}
+
+      to the terminal running the TPM-emulator.
+      and adding the \command{-v} flag to the \\
+      \command{ownerreadinternalpub} command
+      prints the same bytes to the TSS command window.
+
+  \subsection{Key hierarchy}
+
+    \Q{1}{Describe the difference between an identity and signature key.}\\
+    \A{
+      An identity key is an alias for the Endorsement Key. The alias is used
+      to mitigate privacy and security issues. Without the alias is it easy to
+      link a single EK to a single user. The alias also avoids reducing the
+      entropy of the EK by not using it directly. An AIK (Attestation Identity
+      Key) and signing keys are limited in which operations they can be used
+      in. It's possible to use the AIK in the \command{TPM\_Quote} and
+      \command{TPM\_CertifyKey}, but not in \command{TPM\_Sign}, where a
+      signing key should be used. The general difference between identity and
+      signature keys is that signing keys are used to sign arbitrary data and
+      identity keys are used for remote attestation.
+  }
+
+    \Q{2}{Which keys can be used for file encryption?}\\
+    \A{Storage keys.}
+
+    \Q{3}{
+      There is a key that exists, but using it is not recommend. Which key
+      is that, and why does it exist?
+    }\\
+    \A{
+      The EK should not be used directly due to the reasoning in Q1 and
+      instead be used to create keys that can't be migrated (and thus can be
+      trusted), which are then used directly in place of EK when possible.
+    }
+
+    The key hierarchy:
+    \begin{quote}
+      \texttt{
+SRK\ \\
+\ \ \ /\ \ \textbackslash \\
+H\ \ \ A \\
+\ \ \ \ /\ |\ \textbackslash \\
+\ \ \ B\ \ F\ \ G \\
+\ /\ |\ \textbackslash \\
+C\ \ D\ \ E \\
+      }
+    \end{quote}
+
 \end{document}
