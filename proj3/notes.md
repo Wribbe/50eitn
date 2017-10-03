@@ -513,6 +513,11 @@ First terminal (Tss#1):
     sudo -E /usr/local/sbin/tcsd -e -f
 
 Second terminal (Tss#2):
+(If the first command does not work, try the additional commands below.)
+
+    tpm_takeownership -z -y
+
+Additional commands if taking ownership does not work.
 
     forceclear
     tmp_setenable -e -f
@@ -520,7 +525,7 @@ Second terminal (Tss#2):
 
 Compile and run program (Tss#2):
 
-    gcc -o sample sample.c -ltspi -std=c99 -Wall
-    ./sample
+    gcc -o tmpcode tmpcode.c -ltspi -std=c99 -Wall
+    ./tmpcode
 
 Which will generate and print 32 random bytes.
