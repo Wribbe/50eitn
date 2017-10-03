@@ -64,20 +64,20 @@ Opened new terminal window on TSS:
 Here terminal window on TPM1 running ``tpm_server`` was searched by scrolling for keys, and the keys were copied and pasted here:
 
 	...
-	TPM_RSAGenerateKeyPair: length of n,p,q,d = 256 / 128 / 128 / 256
-	TPM_Key_GenerateRSA: Public key n cf c5 c3 b9
-	TPM_Key_GenerateRSA: Exponent length 3
-	01 00 01
-	TPM_Key_GenerateRSA: Private prime p fb 20 5d 01
-	TPM_Key_GenerateRSA: Private prime q d3 ce 03 15
-	TPM_Key_GenerateRSA: Private key d c5 e9 b1 0d
+    TPM_RSAGenerateKeyPair: length of n,p,q,d = 256 / 128 / 128 / 256
+    TPM_Key_GenerateRSA: Public key n 9d c7 a2 12
+    TPM_Key_GenerateRSA: Exponent length 3
+    01 00 01 
+    TPM_Key_GenerateRSA: Private prime p cc f1 86 7b
+    TPM_Key_GenerateRSA: Private prime q c5 16 32 ff
+    TPM_Key_GenerateRSA: Private key d 8d 80 b5 01
 	...
-	TPM_SymmetricKeyData_SetKeys:
-	TPM_SymmetricKeyData_SetKeys: userKey af 41 64 4c
+    TPM_SymmetricKeyData_SetKeys:
+    TPM_SymmetricKeyData_SetKeys: userKey 48 67 2f 01
 	...
 Thus,
-* Public key = **cf c5 c3 b**
-* Private key = **c5 e9 b1 0d**
+* Public key = **9d c7 a2 12**
+* Private key = **8d 80 b5 01**
 
 ### Memorize 'take ownership' passwords:
 TSS:
@@ -143,7 +143,7 @@ TSS
     ownerreadinternalpub -hk 40000000 -of srk.pub -pwdo superhemligt_o
 TPM1
 
-    TPM_IO_Write: length 335
+<!--    TPM_IO_Write: length 335
      00 C5 00 00 01 4F 00 00 00 00 00 00 00 01 00 03 
      00 01 00 00 00 0C 00 00 08 00 00 00 00 02 00 00 
      00 00 00 00 01 00 DA C2 29 DA 76 18 F0 F7 15 30 
@@ -164,14 +164,37 @@ TPM1
      94 5D 95 CE CB 96 39 06 9A 89 C6 85 7D 3F D6 A9 
      0D 68 69 80 96 B5 21 AC E8 38 39 EF EA 48 5D 20 
      DE 0C 05 72 AA 0B 07 44 2E BA 00 DF BC 34 71 6B 
-     F5 8E DE 7F C0 15 82 05 AA 6B D8 61 AB AC 40
-<!-- I guess the above is the SRK.pub file output. -->
+     F5 8E DE 7F C0 15 82 05 AA 6B D8 61 AB AC 40 
+    output from 1st iteration, see now on 2nd it that first 2 ½ lines are the same, prob means that that is some kind of preamble/overhead. Thus, part that changes between iterations but stay the same between cmd runs in same iterations should probs be the key part. -->
+
+    TPM_IO_Write: length 335
+     00 C5 00 00 01 4F 00 00 00 00 00 00 00 01 00 03 
+     00 01 00 00 00 0C 00 00 08 00 00 00 00 02 00 00 
+     00 00 00 00 01 00 BF E7 8E C3 A4 2E 0D D4 00 DE 
+     C7 0F 97 EC D8 C2 55 92 E0 8A 59 1B 92 F8 27 60 
+     69 58 6A 2A 69 08 67 6A 9D 05 CF 92 70 B7 FF B1 
+     95 47 26 BC 1E D6 86 4F 5A 24 72 CA CE AE 6A 32 
+     F7 11 53 88 25 42 45 CC D0 41 B5 98 B4 F3 67 D4 
+     01 1B CE B1 3D B6 85 E8 1C 52 E9 71 2A 34 9E 09 
+     ED D9 75 32 34 E2 00 E6 68 3D 61 7F C8 CA E9 27 
+     0B 56 04 3B 5A 06 F0 CC 5D EA 07 BC 00 19 D7 A3 
+     00 D8 DF 7F BC D7 59 E1 11 2F C8 53 C2 FD DA 8C 
+     66 38 38 11 D4 8E 84 9E 02 65 C0 EA FB EB 39 08 
+     AC 56 74 FF 3C 16 51 45 C1 49 34 64 6B F8 E1 63 
+     D0 C0 0D 18 7E 64 E2 E5 18 8D AC 3E 02 89 10 33 
+     A6 6A 20 9B D6 CB 87 D5 39 DB 53 4C BC F4 B6 C6 
+     8D 6F 57 37 AD E6 B9 4E 40 4A 78 7B C5 7F BE CC 
+     BD 30 2E 0E 4E 4F 74 50 34 B9 9F B1 CF 8D B8 E5 
+     5A E6 4C 47 AB 3C 16 0B AB 55 9B C8 BB 23 1C 5E 
+     3E 2C 27 DB 12 B7 C2 1E E5 FE 9A 06 E5 8D 75 89 
+     51 5C CD 95 98 AE 86 9A BF E3 00 8E 52 1A A0 2B 
+     2D F8 DA CC A2 E2 A9 77 CE A5 D6 F4 30 94 C3    
 
 If adding flag -v on TSS:
 
     tss@TSS ~ $ ownerreadinternalpub -hk 40000000 -of srk.pub -pwdo superhemligt_o -v
 
-    TPM_Send: OIAP
+<!-- TPM_Send: OIAP
     TPM_TransmitSocket: To TPM [OIAP] length=10
     00 C1 00 00 00 0A 00 00 00 0A 
     TPM_ReceiveSocket: From TPM length=34
@@ -206,11 +229,34 @@ If adding flag -v on TSS:
     94 5D 95 CE CB 96 39 06 9A 89 C6 85 7D 3F D6 A9 
     0D 68 69 80 96 B5 16 74 05 0E A8 6F 14 9F C0 1C 
     EE 60 E9 C4 BA 4C CB 72 CF 4E 00 F7 5F 0F 3C 49 
-    E6 71 9A AF 4B 65 30 3A A3 15 61 E9 8F DD B8 
+    E6 71 9A AF 4B 65 30 3A A3 15 61 E9 8F DD B8 -->
 
-Last two lines differ between output on TSS and TPM1. Ubiqutious in different instances of command execution is the string
+    TPM_IO_Write: length 335
+     00 C5 00 00 01 4F 00 00 00 00 00 00 00 01 00 03 
+     00 01 00 00 00 0C 00 00 08 00 00 00 00 02 00 00 
+     00 00 00 00 01 00 BF E7 8E C3 A4 2E 0D D4 00 DE 
+     C7 0F 97 EC D8 C2 55 92 E0 8A 59 1B 92 F8 27 60 
+     69 58 6A 2A 69 08 67 6A 9D 05 CF 92 70 B7 FF B1 
+     95 47 26 BC 1E D6 86 4F 5A 24 72 CA CE AE 6A 32 
+     F7 11 53 88 25 42 45 CC D0 41 B5 98 B4 F3 67 D4 
+     01 1B CE B1 3D B6 85 E8 1C 52 E9 71 2A 34 9E 09 
+     ED D9 75 32 34 E2 00 E6 68 3D 61 7F C8 CA E9 27 
+     0B 56 04 3B 5A 06 F0 CC 5D EA 07 BC 00 19 D7 A3 
+     00 D8 DF 7F BC D7 59 E1 11 2F C8 53 C2 FD DA 8C 
+     66 38 38 11 D4 8E 84 9E 02 65 C0 EA FB EB 39 08 
+     AC 56 74 FF 3C 16 51 45 C1 49 34 64 6B F8 E1 63 
+     D0 C0 0D 18 7E 64 E2 E5 18 8D AC 3E 02 89 10 33 
+     A6 6A 20 9B D6 CB 87 D5 39 DB 53 4C BC F4 B6 C6 
+     8D 6F 57 37 AD E6 B9 4E 40 4A 78 7B C5 7F BE CC 
+     BD 30 2E 0E 4E 4F 74 50 34 B9 9F B1 CF 8D B8 E5 
+     5A E6 4C 47 AB 3C 16 0B AB 55 9B C8 BB 23 1C 5E 
+     3E 2C 27 DB 12 B7 F7 FB ED 39 C8 E0 AC D2 8A 72 
+     A3 6D 34 E6 11 6F 47 1C 2F 12 00 CD C2 7C E1 FA 
+     E0 A6 C1 80 80 50 82 C4 C2 1B BC 5A 98 15 56
 
-    00 C5 00 00 01 4F 00 00 00 00 00 00 00 01 00 03 
+Last two lines differ between output on TSS and TPM1. Ubiqutious in different instances of command execution (and between iterations of TPM taking ownership iterations) is the string
+
+<!--    00 C5 00 00 01 4F 00 00 00 00 00 00 00 01 00 03 
     00 01 00 00 00 0C 00 00 08 00 00 00 00 02 00 00 
     00 00 00 00 01 00 DA C2 29 DA 76 18 F0 F7 15 30 
     1F 3D 66 E6 EC C5 01 71 80 95 95 AA 0E 31 5B 4D 
@@ -228,7 +274,25 @@ Last two lines differ between output on TSS and TPM1. Ubiqutious in different in
     FE 03 D9 46 9D CD FA 81 BD D9 23 F2 6A AB 87 9F 
     4D B0 2C BC 8F 49 F0 5A FE 6B 86 09 1F 7D 1D 57 
     94 5D 95 CE CB 96 39 06 9A 89 C6 85 7D 3F D6 A9 
-    0D 68 69 80 96 B5
+    0D 68 69 80 96 B5 -->
+
+                       BF E7 8E C3 A4 2E 0D D4 00 DE 
+     C7 0F 97 EC D8 C2 55 92 E0 8A 59 1B 92 F8 27 60 
+     69 58 6A 2A 69 08 67 6A 9D 05 CF 92 70 B7 FF B1 
+     95 47 26 BC 1E D6 86 4F 5A 24 72 CA CE AE 6A 32 
+     F7 11 53 88 25 42 45 CC D0 41 B5 98 B4 F3 67 D4 
+     01 1B CE B1 3D B6 85 E8 1C 52 E9 71 2A 34 9E 09 
+     ED D9 75 32 34 E2 00 E6 68 3D 61 7F C8 CA E9 27 
+     0B 56 04 3B 5A 06 F0 CC 5D EA 07 BC 00 19 D7 A3 
+     00 D8 DF 7F BC D7 59 E1 11 2F C8 53 C2 FD DA 8C 
+     66 38 38 11 D4 8E 84 9E 02 65 C0 EA FB EB 39 08 
+     AC 56 74 FF 3C 16 51 45 C1 49 34 64 6B F8 E1 63 
+     D0 C0 0D 18 7E 64 E2 E5 18 8D AC 3E 02 89 10 33 
+     A6 6A 20 9B D6 CB 87 D5 39 DB 53 4C BC F4 B6 C6 
+     8D 6F 57 37 AD E6 B9 4E 40 4A 78 7B C5 7F BE CC 
+     BD 30 2E 0E 4E 4F 74 50 34 B9 9F B1 CF 8D B8 E5 
+     5A E6 4C 47 AB 3C 16 0B AB 55 9B C8 BB 23 1C 5E 
+     3E 2C 27 DB 12 B7
 
 Guess that means this is SRK.pub part..? Moving on.
 
@@ -272,67 +336,75 @@ The tree key structure must be created top-down, i. e. a key must always have a 
 
 **on TSS**
 
-H: SRK, an identity key. ``identity -la H -pwdk superhemligt_H -pwds superhemligt_s -v12 -ok H -pwdo superhemligt_o -v``
+H: SRK, an identity key. 
 
-load H:
+    identity -la H -pwdk superhemligt_H -pwds superhemligt_s -v12 -ok H -pwdo superhemligt_o -v
+
+<!-- load H:
 
     loadkey -hp 40000000 -ik H.key -pwdp superhemligt_s
     New Key Handle = 3092F35A    
+-->
+A: SRK, non migratable storage key. 
 
-A: SRK, non migratable storage key. ``createkey -v -kt e -pwdk superhemligt_A -pwdp superhemligt_s -ok A -hp 40000000``
-
-load A:
-    
+    createkey -kt e -pwdk superhemligt_A -pwdp superhemligt_s -ok A -hp 40000000 
     loadkey -hp 40000000 -ik A.key -pwdp superhemligt_s
-    New Key Handle = DA4EC580
+    New Key Handle = FBA56FF0
 
-B: A, migratable storage key. ``createkey -v -kt e -pwdk superhemligt_B -pwdp superhemligt_A -pwdm superhemligt_Bm -ok B -hp DA4EC580``
-
-load B:
+B: A, migratable storage key. 
     
-    loadkey -hp DA4EC580 -ik B.key -pwdp superhemligt_A
-    New Key Handle = 8DB87F83
+    createkey -kt m/e -pwdk superhemligt_B -pwdp superhemligt_A -pwdm superhemligt_Bm -ok B -hp FBA56FF0
+    loadkey -hp FBA56FF0 -ik B.key -pwdp superhemligt_A
+    New Key Handle = 452FB8A6
 
-C: B, a non migratable sign key. ``createkey -v -kt s -pwdk superhemligt_C -pwdp superhemligt_B -ok C -hp 8DB87F83``
+C: B, a non migratable sign key. 
+
+    createkey -v -kt s -pwdk superhemligt_C -pwdp superhemligt_B -ok C -hp 452FB8A6
 
 *note: I get* ``Error Invalid key usage from TPM_CreateWrapKey`` *when executing above cmd. I can see no wrong w/ cmd. Moving on, keywrap may not be what we wnat to do here anyway?* ``-ix <pcr num> <digest>    used to wrap a key to values of PCRs`` *
 
-load C:
+<!-- load C:
     
     loadkey -hp 8DB87F83 -ik C.key -pwdp superhemligt_B
     New Key Handle =
+--> 
+D: B, a migratable sign key. 
 
-D: B, a migratable sign key. ``createkey -v -kt s -pwdk superhemligt_D -pwdp superhemligt_B -pwdm superhemligt_Dm -ok D -hp 8DB87F83``
-load D:
+    createkey -v -kt s -pwdk superhemligt_D -pwdp superhemligt_B -pwdm superhemligt_Dm -ok D -hp E1FF0EF9
+
+<!-- load D:
 
     loadkey -hp 8DB87F83 -ik D.key -pwdp superhemligt_B
     New Key Handle = 84F9EC60
+-->
 
-*Note: Interesting. I couldn't create C right after B, but D worked. Conclusion: second guess of question above is correct?*
+E: B, a migratable bind key. 
 
-E: B, a migratable bind key. ``createkey -v -kt b -pwdk superhemligt_E -pwdp superhemligt_B -pwdm superhemligt_Em -ok E -hp 8DB87F83``
+    createkey -v -kt b -pwdk superhemligt_E -pwdp superhemligt_B -pwdm superhemligt_Em -ok E -hp E1FF0EF9
 
-load E:
+<!-- load E:
     
     loadkey -hp 8DB87F83 -ik E.key -pwdp superhemligt_B
     New Key Handle = D0E1F534
+-->
+F: A, a non migratable sign key. 
 
-F: A, a non migratable sign key. ``createkey -v -kt s -pwdk superhemligt_F -pwdp superhemligt_A -ok F -hp DA4EC580``
+    createkey -v -kt s -pwdk superhemligt_F -pwdp superhemligt_A -ok F -hp 66E9C579
 
-*Okay, this worked. Why won't C work?*
-
-load F:
+<!-- load F:
     
     loadkey -hp DA4EC580 -ik F.key -pwdp superhemligt_A
     New Key Handle = 1F256F40
+-->
+G: A, a migratable sign key. 
 
-G: A, a migratable sign key. ``createkey -v -kt s -pwdk superhemligt_G -pwdp superhemligt_A -pwdm superhemligt_Gm -ok G -hp DA4EC580``
+    createkey -v -kt s -pwdk superhemligt_G -pwdp superhemligt_A -pwdm superhemligt_Gm -ok G -hp 66E9C579
 
-load G:
+<!-- load G:
         
     loadkey -hp DA4EC580 -ik G.key -pwdp superhemligt_A
     New Key Handle = CB672A8F
-
+-->
 *After creating all others, I still can't create C. No idea why.*
 
 *Interesting. Running* ``listkeys`` *returns handles for only H and B,* ``Key handle 00 84f9ec60 \n Key handle 01 3092f35a`` *Can still read public part of keys w/* ``getpubkey``*, though*
