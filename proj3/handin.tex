@@ -4,6 +4,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{listings}
+\usepackage{hyperref}
 %\usepackage{fullpage}
 
 \newcommand{\command}[1]{\texttt{#1}}
@@ -338,5 +339,60 @@ So: unwrapped blobs cannot be used w/o owner auth, wrapped w/o, guess this comma
 \subsection{Signature based attestation}
 \subsection{Decryption-based attestation}
 \section{Assignment 9: Your first TPM application}
+
+The sample.c code was modified to produce the final tpm-program which can be
+found here: \url{https://pastebin.com/0m2e2GRQ}.
+
+Where the following section is of the most interest:
+
+\begin{lstlisting}
+[...]
+// Set up parameters for random byte generation.
+UINT32 size_random = 32;
+BYTE * random_bytes = NULL;
+
+// Generate and print the random bytes.
+Tspi_TPM_GetRandom(hTPM, size_random, &random_bytes);
+printf("Generating %zu random bytes.\n", size_random);
+for (UINT32 i=0; i<size_random; i++) {
+    printf("  Random byte #%d: %2x\n", i+1, random_bytes[i]);
+}
+printf("Done with byte-generation.\n");
+
+// Free random data.
+Tspi_Context_FreeMemory(hTPM, random_bytes);
+DBG("Free memory allocated to random bytes.\n", result);
+
+// Read values from the first 3 PCR registers.
+printf("Printing values of first 3 PCR registers.\n");
+BYTE * pcr_data_pointer = NULL;
+for (UINT32 i=0; i<3; i++) {
+    UINT32 size_pcr_data = 0;
+    Tspi_TPM_PcrRead(hTPM, i, &size_pcr_data, &pcr_data_pointer);
+    printf("Value in PCR-register#%zu: ", i);
+    for (UINT32 j=0; j<size_pcr_data; j++) {
+        printf("%2x", pcr_data_pointer[j]);
+    }
+    printf(".\n");
+}
+printf("Done printing PCR registers.\n");
+[...]
+\end{lstlisting}
+
+Where 32 random bytes are generated and printed, and the data from the first 3 PCR-registers
+are displayed.
+
+\textbf{To get the code running from newly started TPM-emulator:}
+
+Copy the code from the paste bin into a file called tpmcode.c.
+
+Commands in the connected TSS-command-window.
+\begin{itemize}
+  \item{forceclear}
+  \item{tmp\_setenable -e -f}
+  \item{tpm\_takeownership -z -y}
+  \item{gcc -o tpmcode tpmcode.c -ltspi -std=c99 -Wall}
+  \item{./tpmcode}
+\end{itemize}
 
 \end{document}
