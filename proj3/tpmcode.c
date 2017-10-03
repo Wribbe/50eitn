@@ -71,10 +71,23 @@ int main( int argc, char **argv ){
     }
     printf("Done with byte-generation.\n");
 
-
     // Free random data.
     Tspi_Context_FreeMemory(hTPM, random_bytes);
     DBG("Free memory allocated to random bytes.\n", result);
+
+    // Read values from the first 3 PCR registers.
+    printf("Printing values of first 3 PCR registers.\n");
+    BYTE * pcr_data_pointer = NULL;
+    for (UINT32 i=0; i<3; i++) {
+        UINT32 size_pcr_data = 0;
+        Tspi_TPM_PcrRead(hTPM, i, &size_pcr_data, &pcr_data_pointer);
+        printf("Value in PCR-register#%zu: ", i);
+        for (UINT32 j=0; j<size_pcr_data; j++) {
+            printf("%2x", pcr_data_pointer[j]);
+        }
+        printf(".\n");
+    }
+    printf("Done printing PCR registers.\n");
 
     //At the end of program
     //Cleanup some object
