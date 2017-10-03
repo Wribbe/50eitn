@@ -318,8 +318,7 @@ automatically enables all of the descendent keys to be migrated" - https://blogs
 -->
 
 <!-- Do they just mean that one must create key tree structure top-down? If so: -->
-The tree key structure must be created top-down, i. e. a key must always have a parent key/treenode, thus one cannot create e. g. E before its parent B.
-<!-- else, do they imply that one cannot e. g. create a non-migratable child key before a migratable child key (same parent)? I haven't found anything that supports that notion. -->
+The tree key structure must be created top-down, i. e. a key must always have a parent key/treenode, thus one cannot create e. g. E before its parent B. Also, if a parent key is migratable its children will automatically need to be migratable as well, even if they are specified as non-migratable, e. g. non-migratable C as child to migratable B will be migratable C.
 
 **Are all combinations possible? If not, why? Grading criterion: correct answer 2 points.**
 
@@ -341,72 +340,39 @@ H: SRK, an identity key.
 
     identity -la H -pwdk superhemligt_H -pwds superhemligt_s -v12 -ok H -pwdo superhemligt_o -v
 
-<!-- load H:
-
-    loadkey -hp 40000000 -ik H.key -pwdp superhemligt_s
-    New Key Handle = 3092F35A    
--->
 A: SRK, non migratable storage key. 
 
     createkey -kt e -pwdk superhemligt_A -pwdp superhemligt_s -ok A -hp 40000000 
     loadkey -hp 40000000 -ik A.key -pwdp superhemligt_s
-    New Key Handle = FBA56FF0
+    New Key Handle = 9B84E1AD
 
 B: A, migratable storage key. 
     
-    createkey -kt m/e -pwdk superhemligt_B -pwdp superhemligt_A -pwdm superhemligt_Bm -ok B -hp FBA56FF0
-    loadkey -hp FBA56FF0 -ik B.key -pwdp superhemligt_A
-    New Key Handle = 452FB8A6
+    createkey -kt e/m -pwdk superhemligt_B -pwdp superhemligt_A -pwdm superhemligt_m -ok B -hp 9B84E1AD
+    loadkey -hp 9B84E1AD -ik B.key -pwdp superhemligt_A
+    New Key Handle = C410EC05
 
-C: B, a non migratable sign key. 
+C: B, a non migratable sign key. Must, however, be a migratable key since parent key B is migratable.
 
-    createkey -v -kt s -pwdk superhemligt_C -pwdp superhemligt_B -ok C -hp 452FB8A6
+    createkey -v -kt s/m -pwdk superhemligt_C -pwdp superhemligt_B -pwdm superhemligt_m -ok C -hp C410EC05
 
-*note: I get* ``Error Invalid key usage from TPM_CreateWrapKey`` *when executing above cmd. I can see no wrong w/ cmd. Moving on, keywrap may not be what we wnat to do here anyway?* ``-ix <pcr num> <digest>    used to wrap a key to values of PCRs`` *
-
-<!-- load C:
-    loadkey -hp 8DB87F83 -ik C.key -pwdp superhemligt_B
-    New Key Handle =
---> 
 D: B, a migratable sign key. 
 
-    createkey -v -kt s -pwdk superhemligt_D -pwdp superhemligt_B -pwdm superhemligt_Dm -ok D -hp E1FF0EF9
-
-<!-- load D:
-
-    loadkey -hp 8DB87F83 -ik D.key -pwdp superhemligt_B
-    New Key Handle = 84F9EC60
--->
+    createkey -v -kt s/m -pwdk superhemligt_D -pwdp superhemligt_B -pwdm superhemligt_m -ok D -hp C410EC05
 
 E: B, a migratable bind key. 
 
-    createkey -v -kt b -pwdk superhemligt_E -pwdp superhemligt_B -pwdm superhemligt_Em -ok E -hp E1FF0EF9
+    createkey -v -kt b/m -pwdk superhemligt_E -pwdp superhemligt_B -pwdm superhemligt_m -ok E -hp C410EC05
 
-<!-- load E:
-    loadkey -hp 8DB87F83 -ik E.key -pwdp superhemligt_B
-    New Key Handle = D0E1F534
--->
 F: A, a non migratable sign key. 
 
-    createkey -v -kt s -pwdk superhemligt_F -pwdp superhemligt_A -ok F -hp 66E9C579
+    createkey -v -kt s -pwdk superhemligt_F -pwdp superhemligt_A -ok F -hp 9B84E1AD
 
-<!-- load F:
-
-    loadkey -hp DA4EC580 -ik F.key -pwdp superhemligt_A
-    New Key Handle = 1F256F40
--->
 G: A, a migratable sign key. 
 
-    createkey -v -kt s -pwdk superhemligt_G -pwdp superhemligt_A -pwdm superhemligt_Gm -ok G -hp 66E9C579
+    createkey -v -kt s/m -pwdk superhemligt_G -pwdp superhemligt_A -pwdm superhemligt_m -ok G -hp 9B84E1AD
 
-
-<!-- load G:
-    loadkey -hp DA4EC580 -ik G.key -pwdp superhemligt_A
-    New Key Handle = CB672A8F
--->
-*After creating all others, I still can't create C. No idea why.*
-
-*Interesting. Running* ``listkeys`` *returns handles for only H and B,* ``Key handle 00 84f9ec60 \n Key handle 01 3092f35a`` *Can still read public part of keys w/* ``getpubkey``*, though*
+<!-- *Interesting. Running* ``listkeys`` *returns handles for only H and B,* ``Key handle 00 84f9ec60 \n Key handle 01 3092f35a`` *Can still read public part of keys w/* ``getpubkey``*, though* -->
 
 ### 3.4.2 Questions
 1. Is it possible for a migratable key to be the parent of a non-migratable key?
@@ -431,7 +397,7 @@ http://courses.cs.vt.edu/cs5204/fall10-kafura-BB/Papers/TPM/Intro-TPM.pdf
 https://trustedcomputinggroup.org/wp-content/uploads/Kazmierczak20Greg20-20TPM_Key_Management_KMS2008_v003.pdf
 -->
 
-###Running the TPM program:
+### Running the TPM program:
 
 With emulator running on other instance, print following in two separate
 terminals:
