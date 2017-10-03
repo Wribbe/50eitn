@@ -104,19 +104,6 @@ generates a ``srk.pem`` file with the following content:
     -----END PUBLIC KEY-----
 -->
 
-<!--
-    tss@TSS ~ $ getpubkey
-	Missing key handle.
-
-	getpubkey -ha <key handle> -pwdk keypassword
-
-
-	tss@TSS ~ $ getpubkey -ha 40000000 -pwdk superhemligt_s
-	Error Invalid key handle from TPM_GetPubKey
-
-Will have to try smth else, gotta leave now
--->
-
 From the source of tmp_constants.h (the emulator definitions):
 
     /* 4.4.1 Reserved Key Handles rev 87
@@ -143,7 +130,6 @@ TSS
     ownerreadinternalpub -hk 40000000 -of srk.pub -pwdo superhemligt_o
 TPM1
 
-<<<<<<< HEAD
 <!--    TPM_IO_Write: length 335
      00 C5 00 00 01 4F 00 00 00 00 00 00 00 01 00 03 
      00 01 00 00 00 0C 00 00 08 00 00 00 00 02 00 00 
@@ -336,6 +322,8 @@ The tree key structure must be created top-down, i. e. a key must always have a 
 
 **on TSS**
 
+Created a directory for TPM1, named ``TPM1``
+
 H: SRK, an identity key. 
 
     identity -la H -pwdk superhemligt_H -pwds superhemligt_s -v12 -ok H -pwdo superhemligt_o -v
@@ -393,6 +381,148 @@ G: A, a migratable sign key.
     * The TPM, if judged from the commands in the appendix. 
 
 **Grading criterion: correct answers to be above 5 questions is 2 points each.**
+
+### 3.4.3 Instructions: Key migration in the TPM emulator
+**First create a migration key blob on TPM1 for B that can be saved and then reloaded on TPM2.**
+
+TPM2: moved existing TPM state (00.permall) to other directory. checked IP address w/ ``ifconfig``, was 10.0.2.15. Ran ``tpm_server``
+
+TSS: Made a new directory for TPM2, ``TPM2``
+
+    (in dir TPM1:) cd ../TPM2
+    export TPM_SERVER_NAME=10.0.2.15
+    export TCSD_TCP_DEVICE_HOSTNAME=10.0.2.15
+    tpmbios
+    (in other terminal window, TSS#2)sudo -E /usr/local/sbin/tcsd -e -f
+
+    createek
+    takeown -pwdo tpm2_o -pwds tpm2_s
+
+tpm2_sk: SRK, migratable storage key
+
+    createkey \
+        -kt e \
+        -pwdp tpm2_s \
+        -pwdk tpm2_sk \
+        -pwdm tpm_m \
+        -ok tpm2_sk \
+        -hp 40000000
+    
+    loadkey \
+        -hp 40000000 \
+        -ik tpm2_sk.key \
+        -pwdp tpm2_s
+    New Key Handle = 12AACB57
+
+    cp tpm2_sk.key ../TPM1/tpm2_sk.key
+    cd ../TPM1
+
+Shut down daemon in TSS#2.
+    
+TPM1: ``tpm_server``
+
+TSS
+
+    export TPM_SERVER_NAME=10.0.2.14
+    export TCSD_TCP_DEVICE_HOSTNAME=10.0.2.14
+    tpmbios
+    (TSS#2) sudo -E /usr/local/sbin/tcsd -e -f
+    
+    (TSS#1) export TPM_SERVER_NAME=10.0.2.14
+    export TCSD_TCP_DEVICE_HOSTNAME=10.0.2.14
+
+    migrate -hp <parent handle in hex> -pwdp <parent password>
+        -pwdo <TPM owner password>
+        -hm <handle of migration key> or -im TPM2_STORAGEKEY_FILENAME.key
+        -pwdk <TPM2_STORAGEKEY_PASSWORD>
+        -pwdm <MIGRATION_PASSWORD of STORAGEKEY>
+        -ik STORAGEKEY_FILENAME.key
+        -ok migrationblob.bin
+        
+    migrate -hp 9B84E1AD -pwdp superhemligt_A -pwdo superhemligt_o -im tpm2_sk.key -pwdk tpm2_sk -pwdm superhemligt_m -ik B.key -ok migrationblob.bin 
+    migrate -hp 9B84E1AD -pwdp superhemligt_A -pwdo superhemligt_o -hm 12AACB57 -pwdk tpm2_sk -pwdm superhemligt_m -ik B.key -ok migrationblob.bin 
+
+
+    createkey \
+        -kt m \
+        -pwdp superhemligt_s \
+        -pwdk superhemligt_m \
+        -pwdm superhemligt_m \
+        -ok migrateKey \
+        -hp 40000000
+    loadkey \
+        -hp 40000000 \
+        -ik migrateKey.key \
+        -pwdp superhemligt_s
+    New Key Handle = 12C71D9F
+
+**Migrate the keys using the utility migrate.**
+
+    migrate \
+        -hp 40000000 \
+        -pwdp superhemligt_s \
+        -pwdo superhemligt_o \
+        -hm 12C71D9F \
+        -pwdk superhemligt_m \
+        -pwdm superhemligt_m \
+        -ik migrateKey.key  \
+        -ok migrationblob.bin
+    Wrote migration blob and associated data to file.
+    ls | grep blob
+    migrationblob.bin
+
+    migrate \
+        -hp 9B84E1AD \
+        -pwdp superhemligt_A \
+        -pwdo superhemligt_o \
+        -hm 12C71D9F \
+        -pwdk superhemligt_m \
+        -pwdm superhemligt_m \
+        -ik B.key  \
+        -ok migrationblob.bin
+    CreateMigrationBlob returned 'File error' (-2147479545). 
+<!-- grr -->
+    migrate \
+        -hp 9B84E1AD \
+        -pwdp superhemligt_A \
+        -pwdo superhemligt_o \
+        -im migrateKey.key \
+        -pwdk superhemligt_m \
+        -pwdm superhemligt_m \
+        -ik B.key  \
+        -ok migrationblob.bin
+    CreateMigrationBlob returned 'File error' (-2147479545). 
+<!-- :'( -->
+
+    migrate \
+        -hp 12C71D9F \
+        -pwdp superhemligt_m \
+        -pwdo superhemligt_o \
+        -hm 12C71D9F \
+        -pwdk superhemligt_m \
+        -pwdm superhemligt_m \
+        -ik B.key  \
+        -ok migrationblob.bin
+    CreateMigrationBlob returned 'Invalid key usage' (36).
+
+-kt e
+A-F
+migkey tpm2
+-> tpm1
+mig m tpm2key
+
+**Change both environment variables to the TPM2 machine and reload the key on TPM2 using the utility loadmigrationblob.**
+
+loadmigrationblob -hp TPM2_STORAGEKEY_HANDLE -pwdp TPM2_STORAGEKEY_PASSWORD -if migrationblob.bin
+
+**After we migrated key B to TPM2 try to load key C, D, and E into TPM2. Explain what happens (why does it work or not work?).**
+
+### 3.4.4 Questions
+1. Do the above migration and document in your report.
+2. There are other ways to migrate keys. When do you use a key of type TPM_KEY_USAGE =
+TPM_Migrate (Hint: look in [8])
+3. What is the rewrap option of the migrate command used for?
+    * To directly transfer a key to another TPM.
 
 ### 3.6.1 Questions
 1. Why is TSS_Bind a TSS command, and not a TPM command?
