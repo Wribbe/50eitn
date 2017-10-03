@@ -21,7 +21,7 @@
     \vspace{0.3cm}
     \LARGE{TPM - Trusted Platform Module} \\
     \vspace{1cm}
-    \large{by: Anonymous} \\
+    \large{by: atn08sen \&\& muh11rol} \\
   \end{center}
 
   % First page
@@ -249,14 +249,14 @@ C\ \ D\ \ E \\
  
     \item {Which command is the first to be executed when performing a key migration?} 
 	\begin{itemize}
-	    \item {TPM\_AuthorizeMigrationKey  $\rightarrow$  TPM\_CreateMigrationBlob  (i. e., authorize migation key cmd)}
+	    \item {TPM\_AuthorizeMigrationKey  $\rightarrow$  TPM\_CreateMigrationBlob  (i. e., authorize migration key command)}
 	\end{itemize}
 
     \item {Give a short description of the command TPM\_ConvertMigrationBlob.}
 	\begin{itemize}
 	    \item {This command enables a migration-blob to be loaded into a TPM as a 'normal', wrapped blob.\\
 From TPM part 3 pdf: "Loading one of these wrapped blobs does not require authorization, since correct blobs were created by the TPM under Owner authorization, and unwrapped blobs cannot be used without Owner authorisation." \\
-So: unwrapped blobs cannot be used w/o owner auth, wrapped w/o, guess this command makes a blob usable for the "new" TPM, so that it can use the keys in the blob w/o prompting user.}
+So: unwrapped blobs cannot be used without owner authorization, wrapped without. This command makes a blob usable for the "new" TPM, so that it can use the keys in the blob without prompting the user.}
 	\end{itemize}
 
     \item {Which TPM command loads the migrated keys into the TPM?}
@@ -271,7 +271,77 @@ So: unwrapped blobs cannot be used w/o owner auth, wrapped w/o, guess this comma
 \end{enumerate}
 
 \subsection{Instructions: Key migration in the TPM emulator}
+\textit{First: create a migration key blob on TPM1 for B that can be saved and then reloaded on TPM2.}
+
+TPM2: moved existing TPM state (00.permall) to other directory. Checked IP address with \command{ifconfig eth0}, was 10.0.2.15. Ran \command{tpm\_server}
+
+TSS: Made a new directory for TPM2 named TPM2. Ran following commands: \\
+\begin{quote}
+(in dir TPM1:) cd ../TPM2 \\
+export TPM\_SERVER\_NAME=10.0.2.15 \\
+export TCSD\_TCP\_DEVICE\_HOSTNAME=10.0.2.15 \\
+tpmbios \\
+(in other terminal window, TSS\#2) sudo -E /usr/local/sbin/tcsd -e -f \\
+
+createek \\
+takeown -pwdo tpm2\_o -pwds tpm2\_s \\
+
+tpm2\_sk: SRK, migratable storage key \\
+createkey \textbackslash \\
+    -kt e \textbackslash \\
+    -pwdp tpm2\_s \textbackslash \\
+    -pwdk tpm2\_sk \textbackslash \\
+    -pwdm tpm\_m \textbackslash \\
+    -ok tpm2\_sk \textbackslash \\
+    -hp 40000000 \\
+
+loadkey \textbackslash \\
+    -hp 40000000 \textbackslash \\
+    -ik tpm2\_sk.key \textbackslash \\
+    -pwdp tpm2\_s \\
+New Key Handle = 12AACB57 \\
+
+cp tpm2\_sk.key ../TPM1/tpm2\_sk.key \\
+cd ../TPM1
+\end{quote}
+
+Shut down daemon in TSS\#2.
+
+TPM1:  \command{tpm\_server } \\
+
+TSS \\
+\begin{quote}
+export TPM\_SERVER\_NAME=10.0.2.14 \\
+export TCSD\_TCP\_DEVICE\_HOSTNAME=10.0.2.14 \\
+tpmbios \\
+(TSS\#2) sudo -E /usr/local/sbin/tcsd -e -f \\
+
+(TSS\#1) export TPM\_SERVER\_NAME=10.0.2.14 \\
+export TCSD\_TCP\_DEVICE\_HOSTNAME=10.0.2.14 \\
+    
+migrate -hp 9B84E1AD -pwdp superhemligt\_A -pwdo superhemligt\_o -im tpm2\_sk.key -pwdk tpm2\_sk -pwdm superhemligt\_m -ik B.key -ok migrationblob.bin
+\end{quote}
+
 \subsection{Questions}
+\begin{enumerate}
+    \item {There are other ways to migrate keys. When do you use a key of type TPM\_KEY\_USAGE = TPM\_Migrate? }
+	\begin{itemize}
+	    \item {"TPM\_KEY\_MIGRATE; 0x0016; This SHALL indicate a key in use for TPM\_MigrateKey" - from TPM commands document.}
+	\end{itemize}
+    \item {What is the rewrap option of the migrate command used for? }
+	\begin{itemize}
+	    \item {To directly transfer a key to another TPM.}
+	\end{itemize}
+\end{enumerate}
+
+
+%\begin{enumerate}
+    %\item {}
+	%\begin{itemize}
+	    %\item {}
+	%\end{itemize}
+%\end{enumerate}
+
 
 \section{Assignment 5: Extending values to PCRs}
 \subsection{Questions}
