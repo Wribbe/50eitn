@@ -3,6 +3,8 @@
 \usepackage{parskip}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{hyperref}
 %\usepackage{fullpage}
 
 \newcommand{\command}[1]{\texttt{#1}}
@@ -226,18 +228,68 @@
       trusted), which are then used directly in place of EK when possible.
     }
 
-    The key hierarchy:
-    \begin{quote}
-      \texttt{
-SRK\ \\
-\ \ \ /\ \ \textbackslash \\
-H\ \ \ A \\
-\ \ \ \ /\ |\ \textbackslash \\
-\ \ \ B\ \ F\ \ G \\
-\ /\ |\ \textbackslash \\
-C\ \ D\ \ E \\
-      }
-    \end{quote}
+    \subsubsection{The key hierarchy}
+
+    The table produces the following structure:
+
+\begin{lstlisting}
+        SRK
+        /  \
+       H    A
+          / | \
+         B  F  G
+       / | \
+      C  D  E
+\end{lstlisting}
+
+    While it is possible to create the structure, any non-migratable key that
+    is created as a child to a migratable key itself becomes migratable
+    automatically.  A more correct structure would be to swap G and C.
+    Then all the non-migratable keys are direct children of the non-migratable A.
+
+    \subsubsection{Key hierarchy creation}
+
+    H -- Identity key, parent: SRK
+
+    \command{identity -la H -pwdk superhemligt\_H -pwds superhemligt\_s -v12 -ok H -pwdo superhemligt\_o -v}
+
+    A -- Non migratable storage key, parent: SRK.
+
+    \command{createkey -kt e -pwdk superhemligt\_A -pwdp superhemligt\_s -ok A
+    -hp 40000000}
+
+    \command{loadkey -hp 40000000 -ik A.key -pwdp superhemligt\_s}
+
+    output: New Key Handle = 9B84E1AD
+
+    B -- Migratable stroage key, parent: A
+
+    \command{createkey -kt e/m -pwdk superhemligt\_B -pwdp superhemligt\_A
+    -pwdm \\ superhemligt\_m -ok B -hp 9B84E1AD}
+
+    \command{loadkey -hp 9B84E1AD -ik B.key -pwdp superhemligt\_A}
+
+    \command{New Key Handle = C410EC05}
+
+    C -- A non migratable sign key, parent: B
+
+    \command{createkey -v -kt s/m -pwdk superhemligt\_C -pwdp superhemligt\_B
+    -pwdm superhemligt\_m -ok C -hp C410EC05}
+
+    D -- A migratable sign key, parent: B
+
+    \command{createkey -v -kt s/m -pwdk superhemligt\_D -pwdp superhemligt\_B -pwdm superhemligt\_m -ok D -hp C410EC05}
+
+    E -- A migratable bind key, parent B.
+
+    \command{createkey -v -kt b/m -pwdk superhemligt\_E -pwdp superhemligt\_B -pwdm superhemligt\_m -ok E -hp C410EC05}
+
+    F -- A non migratable sign key, parent A.
+
+    \command{createkey -v -kt s -pwdk superhemligt\_F -pwdp superhemligt\_A -ok F -hp 9B84E1AD}
+
+    G -- A migratable sign key, parent A.
+    \command{createkey -v -kt s/m -pwdk superhemligt\_G -pwdp superhemligt\_A -pwdm superhemligt\_m -ok G -hp 9B84E1AD}
 
 \section{Assignment 4: Key Migration}
 \subsection{Questions}
@@ -357,5 +409,60 @@ migrate -hp 9B84E1AD -pwdp superhemligt\_A -pwdo superhemligt\_o -im tpm2\_sk.ke
 \subsection{Signature based attestation}
 \subsection{Decryption-based attestation}
 \section{Assignment 9: Your first TPM application}
+
+The sample.c code was modified to produce the final tpm-program which can be
+found here: \url{https://pastebin.com/0m2e2GRQ}.
+
+Where the following section is of the most interest:
+
+\begin{lstlisting}
+[...]
+// Set up parameters for random byte generation.
+UINT32 size_random = 32;
+BYTE * random_bytes = NULL;
+
+// Generate and print the random bytes.
+Tspi_TPM_GetRandom(hTPM, size_random, &random_bytes);
+printf("Generating %zu random bytes.\n", size_random);
+for (UINT32 i=0; i<size_random; i++) {
+    printf("  Random byte #%d: %2x\n", i+1, random_bytes[i]);
+}
+printf("Done with byte-generation.\n");
+
+// Free random data.
+Tspi_Context_FreeMemory(hTPM, random_bytes);
+DBG("Free memory allocated to random bytes.\n", result);
+
+// Read values from the first 3 PCR registers.
+printf("Printing values of first 3 PCR registers.\n");
+BYTE * pcr_data_pointer = NULL;
+for (UINT32 i=0; i<3; i++) {
+    UINT32 size_pcr_data = 0;
+    Tspi_TPM_PcrRead(hTPM, i, &size_pcr_data, &pcr_data_pointer);
+    printf("Value in PCR-register#%zu: ", i);
+    for (UINT32 j=0; j<size_pcr_data; j++) {
+        printf("%2x", pcr_data_pointer[j]);
+    }
+    printf(".\n");
+}
+printf("Done printing PCR registers.\n");
+[...]
+\end{lstlisting}
+
+Where 32 random bytes are generated and printed, and the data from the first 3 PCR-registers
+are displayed.
+
+\textbf{To get the code running from newly started TPM-emulator:}
+
+Copy the code from the paste bin into a file called tpmcode.c.
+
+Commands in the connected TSS-command-window.
+\begin{itemize}
+  \item{forceclear}
+  \item{tmp\_setenable -e -f}
+  \item{tpm\_takeownership -z -y}
+  \item{gcc -o tpmcode tpmcode.c -ltspi -std=c99 -Wall}
+  \item{./tpmcode}
+\end{itemize}
 
 \end{document}
