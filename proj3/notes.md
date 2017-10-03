@@ -359,3 +359,25 @@ https://blogs.oracle.com/danx/tpm-key-migration-in-solaris
 http://courses.cs.vt.edu/cs5204/fall10-kafura-BB/Papers/TPM/Intro-TPM.pdf
 https://trustedcomputinggroup.org/wp-content/uploads/Kazmierczak20Greg20-20TPM_Key_Management_KMS2008_v003.pdf
 -->
+
+###Running the TPM program:
+
+With emulator running on other instance, print following in two separate
+terminals:
+
+First terminal (Tss#1):
+
+    sudo -E /usr/local/sbin/tcsd -e -f
+
+Second terminal (Tss#2):
+
+    forceclear
+    tmp_setenable -e -f
+    tpm_takeownership -z -y
+
+Compile and run program (Tss#2):
+
+    gcc -o sample sample.c -ltspi -std=c99 -Wall
+    ./sample
+
+Which will generate and print 32 random bytes.

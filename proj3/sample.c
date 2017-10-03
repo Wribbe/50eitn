@@ -19,9 +19,9 @@ tResult,(char *)Trspi_Error_String(tResult));}
 
 int main( int argc, char **argv ){
 
-    BYTE *rgbPcrValue, *rgbNumPcrs;
-    UINT32 ulPcrValueLength;
-    UINT32 exitCode, subCapSize, numPcrs, subCap, i, j;
+//    BYTE *rgbPcrValue, *rgbNumPcrs;
+//    UINT32 ulPcrValueLength;
+//    UINT32 exitCode, subCapSize, numPcrs, subCap, i, j;
 
     TSS_HCONTEXT hContext=0;
     TSS_HTPM hTPM = 0;
@@ -59,7 +59,22 @@ int main( int argc, char **argv ){
             TSS_SECRET_MODE_SHA1,20, wks);
     DBG("Tspi_Policy_SetSecret\n", result);
 
-    // put your TPM code here
+    // Set up parameters for random byte generation.
+    UINT32 size_random = 32;
+    BYTE * random_bytes = NULL;
+
+    // Generate and print the random bytes.
+    Tspi_TPM_GetRandom(hTPM, size_random, &random_bytes);
+    printf("Generating %zu random bytes.\n", size_random);
+    for (UINT32 i=0; i<size_random; i++) {
+        printf("  Random byte #%d: %2x\n", i+1, random_bytes[i]);
+    }
+    printf("Done with byte-generation.\n");
+
+
+    // Free random data.
+    Tspi_Context_FreeMemory(hTPM, random_bytes);
+    DBG("Free memory allocated to random bytes.\n", result);
 
     //At the end of program
     //Cleanup some object
