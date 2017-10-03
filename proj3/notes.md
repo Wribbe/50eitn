@@ -519,8 +519,8 @@ loadmigrationblob -hp TPM2_STORAGEKEY_HANDLE -pwdp TPM2_STORAGEKEY_PASSWORD -if 
 
 ### 3.4.4 Questions
 1. Do the above migration and document in your report.
-2. There are other ways to migrate keys. When do you use a key of type TPM_KEY_USAGE =
-TPM_Migrate (Hint: look in [8])
+2. There are other ways to migrate keys. When do you use a key of type TPM_KEY_USAGE = TPM_Migrate (Hint: look in [8])
+    * "TPM_KEY_MIGRATE   0x0016   This SHALL indicate a key in use for TPM_MigrateKey" - from [8]
 3. What is the rewrap option of the migrate command used for?
     * To directly transfer a key to another TPM.
 
@@ -531,6 +531,26 @@ TPM_Migrate (Hint: look in [8])
 3. Can a key used for data sealing be migrated to another TPM?
 
 **Grading criterion: correct answers to the above three questions is 2 points each.**
+
+### 3.5.2 Questions
+1. Describe one TPM command that can be used to extend a SHA-1 digest to a PCR.
+    * TPM_SHA1CompleteExtend. From TPM commands: *"This command SHALL incorporate a partial or complete block of data into the digest of an existing SHA-1 thread, EXTEND the resultant digest into a PCR, and terminate the SHA-1 session."*
+2. Describe which TPM command that can be used to read a PCR value.
+    * TPM_PCRRead. TPM commands: *"The TPM_PCRRead operation provides non-cryptographic reporting of the contents of a named PCR."*
+
+**Grading criterion: correct answers to the above two questions is 2 points each.**
+
+### 3.5.3 Instructions: SHA-1 calculation and PCR extending using the TPM emulator
+
+Copied tpmbios file to TPM1 folder:
+
+    sha -if tpmbios -ix 11
+    SHA1 hash for file 'tpmbios': 
+    Hash: 55ac0462404445623f38fdae9adf87d487125874
+    New value of PCR: dba8c73876627a1e4439627b64c96c8f9c8d404a
+
+    pcrread -ix 11
+    Current value of PCR 11: dba8c73876627a1e4439627b64c96c8f9c8d404a
 
 <!--
 https://blogs.oracle.com/danx/tpm-key-migration-in-solaris
