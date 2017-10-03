@@ -524,13 +524,7 @@ loadmigrationblob -hp TPM2_STORAGEKEY_HANDLE -pwdp TPM2_STORAGEKEY_PASSWORD -if 
 3. What is the rewrap option of the migrate command used for?
     * To directly transfer a key to another TPM.
 
-### 3.6.1 Questions
-1. Why is TSS_Bind a TSS command, and not a TPM command?
-    * Because binding is done outside of a TPM.
-2. Give some differences between Data binding and Data sealing.
-3. Can a key used for data sealing be migrated to another TPM?
-
-**Grading criterion: correct answers to the above three questions is 2 points each.**
+## 3.5 Assignment 5: Extending values to PCRs
 
 ### 3.5.2 Questions
 1. Describe one TPM command that can be used to extend a SHA-1 digest to a PCR.
@@ -551,6 +545,37 @@ Copied tpmbios file to TPM1 folder:
 
     pcrread -ix 11
     Current value of PCR 11: dba8c73876627a1e4439627b64c96c8f9c8d404a
+
+## 3.6 Assignment 6: File encryption
+
+### 3.6.1 Questions
+1. Why is TSS_Bind a TSS command, and not a TPM command?
+    * Because binding is done outside of a TPM.
+2. Give some differences between Data binding and Data sealing.
+3. Can a key used for data sealing be migrated to another TPM?
+
+**Grading criterion: correct answers to the above three questions is 2 points each.**
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
 
 <!--
 https://blogs.oracle.com/danx/tpm-key-migration-in-solaris
