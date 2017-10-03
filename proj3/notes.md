@@ -374,12 +374,23 @@ G: A, a migratable sign key.
 
 <!-- *Interesting. Running* ``listkeys`` *returns handles for only H and B,* ``Key handle 00 84f9ec60 \n Key handle 01 3092f35a`` *Can still read public part of keys w/* ``getpubkey``*, though* -->
 
+## 3.4 Assignment 4: Key Migration
 ### 3.4.2 Questions
 1. Is it possible for a migratable key to be the parent of a non-migratable key?
+    * Yes, but then the non-migratable key becomes a migratable key.
+    <!-- Okay, this explains why I couldn't create C before (from TPM commands pdf)
+    " If parentHandle -> keyFlags -> migratable is TRUE and keyInfo -> keyFlags -> migratable is FALSE then return TPM_INVALID_KEYUSAGE"
+    -->
 2. Which command is the first to be executed when performing a key migration?
+    * ``TPM_AuthorizeMigrationKey`` -> ``TPM_CreateMigrationBlob`` (i. e., authorize migation key cmd)
 3. Give a short description of the command TPM_ConvertMigrationBlob.
+    * This command enables a migration-blob to be loaded into a TPM as a 'normal', wrapped blob. 
+    * From TPM part 3 pdf: "Loading one of these wrapped blobs does not require authorization, since correct blobs were created by the TPM under Owner authorization, and unwrapped blobs cannot be used without Owner authorisation."
+    * So: unwrapped blobs cannot be used w/o owner auth, wrapped w/o, guess this command makes a blob usable for the "new" TPM, so that it can use the keys in the blob w/o prompting user.
 4. Which TPM command loads the migrated keys into the TPM?
+    * TPM_LoadKey
 5. Is it the TPM or the TSS that handles the transfer of the migration blob?
+    * The TPM, if judged from the commands in the appendix. 
 
 **Grading criterion: correct answers to be above 5 questions is 2 points each.**
 
