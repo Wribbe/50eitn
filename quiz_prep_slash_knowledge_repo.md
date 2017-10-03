@@ -449,6 +449,8 @@ Legacy: signing or encryption (compatible with TPM v1)
 *Lect5:* Binding is encrypting data using a the public key of a bind key. If the
 bind key is non-migratable the encrypted data is binded to the TPM
 where the secret portion of the bind key resides.
+
+* “Sealing”: binds data to a certain value of the PCR and a key that is not migratable. Then the TPM can only decrypt (unseal) if the PCR value(s) is the same as when encryption happened (seal)
 ### Who is doing the binding operation, the TPM or some other entity?
 *"Binding is done outside the TPM (so there is no TPM_Bind command)"*
 ### What is (TPM) ownership?

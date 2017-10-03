@@ -552,9 +552,21 @@ Copied tpmbios file to TPM1 folder:
 1. Why is TSS_Bind a TSS command, and not a TPM command?
     * Because binding is done outside of a TPM.
 2. Give some differences between Data binding and Data sealing.
+    * Sealing is a kind of 'tamper protection': this operation binds data to a certain value of the PCR and a non-migratable key. 
+    Then the TPM can only decrypt (unseal) if the PCR value(s) is the same as when encryption happened (seal).
+    Binding is encrypting data using the public key of a bind key. 
+    If the bind key is non-migratable the encrypted data is binded to the TPM where the secret portion of the bind key resides.
+    From TPM commands: *"The SEAL operation uses the tpmProof value to BIND the blob to an individual TPM.  
+    If the UNSEAL operation succeeds, proof of the platform configuration that was in effect
+    when the SEAL operation was performed is returned to the caller, as well as the secret data."*
 3. Can a key used for data sealing be migrated to another TPM?
+    * From TPM command, about TPM_Seal: *"TPM_KEY_HANDLE; **keyHandle**; Handle of a loaded key that can perform seal operations. [..] If the **keyHandle** points to a migratable key then the TPM MUST return the error code TPM_INVALID_KEY_USAGE."*
+     So, **no**. (If it's not a child of a migratable parent, though?)
+
 
 **Grading criterion: correct answers to the above three questions is 2 points each.**
+
+
 
 .
 
