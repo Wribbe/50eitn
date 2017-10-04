@@ -1,0 +1,468 @@
+\documentclass[10pt]{article}
+\usepackage{enumitem}
+\usepackage{parskip}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{hyperref}
+%\usepackage{fullpage}
+
+\newcommand{\command}[1]{\texttt{#1}}
+\newcommand{\Q}[2]{\textit{\textbf{Q#1}: #2}}
+\newcommand{\A}[1]{\textbf{A}: #1}
+
+\begin{document}
+
+  % Title page.
+  %------------
+
+  \thispagestyle{empty}
+  \vspace*{3cm}
+  \begin{center}
+    \huge{EITN50 -- Advanced Computer Security} \\
+    \vspace{0.3cm}
+    \LARGE{TPM - Trusted Platform Module} \\
+    \vspace{1cm}
+    \large{by: atn08sen \&\& muh11rol} \\
+  \end{center}
+
+  % First page
+  %-----------
+
+  \newpage
+
+  \section*{Introduction}
+
+    The purpose of the TPM project is to familiarize the students with the
+    TPM12 specification through the interaction with a simulated TPM. The more
+    specific learning goals are:
+
+    \begin{itemize}
+      \item{Introduce TPM usage concept.}
+      \item{Understand TPM1.2 key hierarchy.}
+      \item{Understand binding, sealing and attestation.}
+      \item{Understand key migration.}
+      \item{Write a simple TPM application.}
+    \end{itemize}
+
+    This report is based on TPM-handout v1.0 (2017-09-17).
+
+  % Set section counter to 2 to match assignment numbers.
+  \setcounter{section}{2}
+
+  \section{Assignments}
+
+    \subsection{Setting up the TPM environment}
+
+      Get the virtual machine up and running:
+
+      \begin{enumerate}
+        \item{Copy image archives from network drive S:\textbackslash Courses\textbackslash eit\textbackslash EITN50\textbackslash Project - TPM to
+          local lab room computer}
+        \item{Extract the images using 7-zip or similar.}
+        \item{Add the TPM1, TMP2 and TSS images as machines to virtualbox:
+          \command{Machine > Add}.}
+        \item{Start the TPM1 and TSS virtual machines.}
+        \item{Login on TPM1 with user: \emph{pi} and password: \emph{tpm}.}
+        \item{Login on TSS with user: \emph{tss} and password: \emph{lab}.}
+      \end{enumerate}
+
+      Ensure that the necessary environment variables are set to correct values
+      for TPM1:
+
+      \begin{enumerate}
+        \item{Open terminal on TPM1.}
+        \item{Check IP address with: \command{ifconfig eth0}, should be 10.0.2.14.}
+        \item{Check the environment variables of TPM1 with: \command{env | grep
+          \textasciicircum TPM}.}
+      \end{enumerate}
+
+      The last command should return the following:
+      \begin{quote}
+        pi@TPM1 ~ \$ env | grep \textasciicircum TPM\\
+        TPM\_PORT=6545\\
+        TPM\_SERVER\_NAME=localhost\\
+        TPM\_PATH=/home/pi/tpm/tpm4720/tpmstate\\
+        TPM\_SERVER\_PORT=6545
+      \end{quote}
+
+      Ensure that the necessary environment variables are set to correct values
+      for TSS:
+
+      \begin{enumerate}
+        \item{Open terminal on TSS.}
+        \item{Check the environment variables of TSS with: \command{env | grep
+          \textasciicircum TCSD}.}
+      \end{enumerate}
+
+      Which should return:
+
+      \begin{quote}
+        tss@TSS ~/Desktop/share \$ set | grep \textasciicircum TCSD\\
+        TCSD\_TCP\_DEVICE\_HOSTNAME=10.0.2.15\\
+        TCSD\_TCP\_DEVICE\_PORT=6545\\
+        TCSD\_USE\_TCP\_DEVICE=true
+      \end{quote}
+
+      The variable TCSD\_TCP\_DEVICE\_HOSTNAME, needs to be changed from *.15 to
+      *.14, which can be done by running:
+
+      \command{export TCSD\_TCP\_DEVICE\_HOSTNAME=10.0.2.14}
+
+      And the same goes for TPM\_SERVER\_HOSTNAME:
+
+      \command{export TPM\_SERVER\_HOSTNAME=10.0.2.14}
+
+      Start the emulator on the TPM1 machine:
+
+      \command{tpm\_server}
+
+      and connect to the running instance it on the TSS machine:
+
+      \command{tpmbios} \\
+      \command{sudo -E /usr/local/sbin/tcsd -e -f}
+
+      open a second terminal on the TSS machine, this window will be used to
+      issue all commands to the remote TPM emulator.
+
+    \subsection{Generating EK, ownership and SRK public key}
+
+      Use the command-window that is open on the TSS instance and run
+      \command{createek}. This generates the EK public key and prints
+      it to the terminal running the \command{tpm\_server} command
+      on the TPM1 computer. \\
+
+      Scrolling through the output yields the following:
+
+      \begin{quote}
+        ...\\
+        TPM\_RSAGenerateKeyPair: length of n,p,q,d = 256/128/128/256\\
+        TPM\_Key\_GenerateRSA: Public key n 9d c7 a2 12\\
+        TPM\_Key\_GenerateRSA: Exponent length 3\\
+        01 00 01\\
+        TPM\_Key\_GenerateRSA: Private prime p cc f1 86 7b\\
+        TPM\_Key\_GenerateRSA: Private prime q c5 16 32 ff\\
+        TPM\_Key\_GenerateRSA: Private key d 8d 80 b5 01\\
+        ...\\
+        TPM\_SymmetricKeyData\_SetKeys:\\
+        TPM\_SymmetricKeyData\_SetKeys: userKey 48 67 2f 01\\
+        ...
+      \end{quote}
+
+      which gives:
+
+      \begin{itemize}
+        \item{Public key -- 9d c7 a2 12}
+        \item{Private key -- 7d 80 b5 01}
+      \end{itemize}
+
+      The next step is to take ownership of the simulated TPM. This is done by
+      running the following command in the TSS command window:
+
+      \command{takeown -pwdo superhemligt\_o -pwds superhemligt\_s}
+
+      where \textit{superhemligt\_o} is the owner password and
+      \textit{superhemligt\_s} is the storage root key password.
+
+      After the ownership is established, the public SRK key can be dumped using
+      the following command:
+
+      \command{ownerreadinternalpub -hk 40000000 -of srk.pub -pwdo
+      superhemligt\_o}
+
+      Which dumps the public key to the file \textit{srk.pub} and prints:
+
+      \begin{quote}
+        \texttt{TPM\_IO\_Write: length 335\\
+        \ \ \  BF E7 8E C3 A4 2E 0D D4 00 DE \\
+     C7 0F 97 EC D8 C2 55 92 E0 8A 59 1B 92 F8 27 60 \\
+     69 58 6A 2A 69 08 67 6A 9D 05 CF 92 70 B7 FF B1 \\ 
+     95 47 26 BC 1E D6 86 4F 5A 24 72 CA CE AE 6A 32 \\ 
+     F7 11 53 88 25 42 45 CC D0 41 B5 98 B4 F3 67 D4  \\
+     01 1B CE B1 3D B6 85 E8 1C 52 E9 71 2A 34 9E 09  \\
+     ED D9 75 32 34 E2 00 E6 68 3D 61 7F C8 CA E9 27  \\
+     0B 56 04 3B 5A 06 F0 CC 5D EA 07 BC 00 19 D7 A3 \\ 
+     00 D8 DF 7F BC D7 59 E1 11 2F C8 53 C2 FD DA 8C \\ 
+     66 38 38 11 D4 8E 84 9E 02 65 C0 EA FB EB 39 08  \\
+     AC 56 74 FF 3C 16 51 45 C1 49 34 64 6B F8 E1 63  \\
+     D0 C0 0D 18 7E 64 E2 E5 18 8D AC 3E 02 89 10 33  \\
+     A6 6A 20 9B D6 CB 87 D5 39 DB 53 4C BC F4 B6 C6 \\ 
+     8D 6F 57 37 AD E6 B9 4E 40 4A 78 7B C5 7F BE CC \\ 
+     BD 30 2E 0E 4E 4F 74 50 34 B9 9F B1 CF 8D B8 E5  \\
+     5A E6 4C 47 AB 3C 16 0B AB 55 9B C8 BB 23 1C 5E \\ 
+     3E 2C 27 DB 12 B7
+       }
+      \end{quote}
+
+      to the terminal running the TPM-emulator.
+      and adding the \command{-v} flag to the \\
+      \command{ownerreadinternalpub} command
+      prints the same bytes to the TSS command window.
+
+  \subsection{Key hierarchy}
+
+    \Q{1}{Describe the difference between an identity and signature key.}\\
+    \A{
+      An identity key is an alias for the Endorsement Key. The alias is used
+      to mitigate privacy and security issues. Without the alias is it easy to
+      link a single EK to a single user. The alias also avoids reducing the
+      entropy of the EK by not using it directly. An AIK (Attestation Identity
+      Key) and signing keys are limited in which operations they can be used
+      in. It's possible to use the AIK in the \command{TPM\_Quote} and
+      \command{TPM\_CertifyKey}, but not in \command{TPM\_Sign}, where a
+      signing key should be used. The general difference between identity and
+      signature keys is that signing keys are used to sign arbitrary data and
+      identity keys are used for remote attestation.
+  }
+
+    \Q{2}{Which keys can be used for file encryption?}\\
+    \A{Storage keys.}
+
+    \Q{3}{
+      There is a key that exists, but using it is not recommended. Which key
+      is that, and why does it exist?
+    }\\
+    \A{
+      The EK should not be used directly due to the reasoning in Q1 and
+      instead be used to create keys that can't be migrated (and thus can be
+      trusted), which are then used directly in place of EK when possible.
+    }
+
+    \subsubsection{The key hierarchy}
+
+    The table produces the following structure:
+
+\begin{lstlisting}
+        SRK
+        /  \
+       H    A
+          / | \
+         B  F  G
+       / | \
+      C  D  E
+\end{lstlisting}
+
+    While it is possible to create the structure, any non-migratable key that
+    is created as a child to a migratable key itself becomes migratable
+    automatically.  A more correct structure would be to swap G and C.
+    Then all the non-migratable keys are direct children of the non-migratable A.
+
+    \subsubsection{Key hierarchy creation}
+
+    H -- Identity key, parent: SRK
+
+    \command{identity -la H -pwdk superhemligt\_H -pwds superhemligt\_s -v12 -ok H -pwdo superhemligt\_o -v}
+
+    A -- Non migratable storage key, parent: SRK.
+
+    \command{createkey -kt e -pwdk superhemligt\_A -pwdp superhemligt\_s -ok A
+    -hp 40000000}
+
+    \command{loadkey -hp 40000000 -ik A.key -pwdp superhemligt\_s}
+
+    output: New Key Handle = 9B84E1AD
+
+    B -- Migratable stroage key, parent: A
+
+    \command{createkey -kt e/m -pwdk superhemligt\_B -pwdp superhemligt\_A
+    -pwdm \\ superhemligt\_m -ok B -hp 9B84E1AD}
+
+    \command{loadkey -hp 9B84E1AD -ik B.key -pwdp superhemligt\_A}
+
+    \command{New Key Handle = C410EC05}
+
+    C -- A non migratable sign key, parent: B
+
+    \command{createkey -v -kt s/m -pwdk superhemligt\_C -pwdp superhemligt\_B
+    -pwdm superhemligt\_m -ok C -hp C410EC05}
+
+    D -- A migratable sign key, parent: B
+
+    \command{createkey -v -kt s/m -pwdk superhemligt\_D -pwdp superhemligt\_B -pwdm superhemligt\_m -ok D -hp C410EC05}
+
+    E -- A migratable bind key, parent B.
+
+    \command{createkey -v -kt b/m -pwdk superhemligt\_E -pwdp superhemligt\_B -pwdm superhemligt\_m -ok E -hp C410EC05}
+
+    F -- A non migratable sign key, parent A.
+
+    \command{createkey -v -kt s -pwdk superhemligt\_F -pwdp superhemligt\_A -ok F -hp 9B84E1AD}
+
+    G -- A migratable sign key, parent A.
+    \command{createkey -v -kt s/m -pwdk superhemligt\_G -pwdp superhemligt\_A -pwdm superhemligt\_m -ok G -hp 9B84E1AD}
+
+\section{Assignment 4: Key Migration}
+\subsection{Questions}
+\begin{enumerate}
+    \item {Is it possible for a migratable key to be the parent of a non-migratable key?} 
+	\begin{itemize}
+	    \item {Yes, but then the non-migratable key becomes a migratable key.}
+	\end{itemize}
+ 
+    \item {Which command is the first to be executed when performing a key migration?} 
+	\begin{itemize}
+	    \item {TPM\_AuthorizeMigrationKey  $\rightarrow$  TPM\_CreateMigrationBlob  (i. e., authorize migration key command)}
+	\end{itemize}
+
+    \item {Give a short description of the command TPM\_ConvertMigrationBlob.}
+	\begin{itemize}
+	    \item {This command enables a migration-blob to be loaded into a TPM as a 'normal', wrapped blob.\\
+From TPM part 3 pdf: "Loading one of these wrapped blobs does not require authorization, since correct blobs were created by the TPM under Owner authorization, and unwrapped blobs cannot be used without Owner authorisation." \\
+So: unwrapped blobs cannot be used without owner authorization, wrapped without. This command makes a blob usable for the "new" TPM, so that it can use the keys in the blob without prompting the user.}
+	\end{itemize}
+
+    \item {Which TPM command loads the migrated keys into the TPM?}
+	\begin{itemize}
+	    \item {TPM\_LoadKey}
+	\end{itemize}
+
+    \item {Is it the TPM or the TSS that handles the transfer of the migration blob? }
+	\begin{itemize}
+	    \item {The TPM.}
+	\end{itemize}
+\end{enumerate}
+
+\subsection{Instructions: Key migration in the TPM emulator}
+\textit{First: create a migration key blob on TPM1 for B that can be saved and then reloaded on TPM2.}
+
+TPM2: moved existing TPM state (00.permall) to other directory. Checked IP address with \command{ifconfig eth0}, was 10.0.2.15. Ran \command{tpm\_server}
+
+TSS: Made a new directory for TPM2 named TPM2. Ran following commands: \\
+\begin{quote}
+(in dir TPM1:) cd ../TPM2 \\
+export TPM\_SERVER\_NAME=10.0.2.15 \\
+export TCSD\_TCP\_DEVICE\_HOSTNAME=10.0.2.15 \\
+tpmbios \\
+(in other terminal window, TSS\#2) sudo -E /usr/local/sbin/tcsd -e -f \\
+
+createek \\
+takeown -pwdo tpm2\_o -pwds tpm2\_s \\
+
+tpm2\_sk: SRK, migratable storage key \\
+createkey \textbackslash \\
+    -kt e \textbackslash \\
+    -pwdp tpm2\_s \textbackslash \\
+    -pwdk tpm2\_sk \textbackslash \\
+    -pwdm tpm\_m \textbackslash \\
+    -ok tpm2\_sk \textbackslash \\
+    -hp 40000000 \\
+
+loadkey \textbackslash \\
+    -hp 40000000 \textbackslash \\
+    -ik tpm2\_sk.key \textbackslash \\
+    -pwdp tpm2\_s \\
+New Key Handle = 12AACB57 \\
+
+cp tpm2\_sk.key ../TPM1/tpm2\_sk.key \\
+cd ../TPM1
+\end{quote}
+
+Shut down daemon in TSS\#2.
+
+TPM1:  \command{tpm\_server } \\
+
+TSS: \\
+\begin{quote}
+export TPM\_SERVER\_NAME=10.0.2.14 \\
+export TCSD\_TCP\_DEVICE\_HOSTNAME=10.0.2.14 \\
+tpmbios \\
+(TSS\#2) sudo -E /usr/local/sbin/tcsd -e -f \\
+
+(TSS\#1) export TPM\_SERVER\_NAME=10.0.2.14 \\
+export TCSD\_TCP\_DEVICE\_HOSTNAME=10.0.2.14 \\
+    
+migrate -hp 9B84E1AD -pwdp superhemligt\_A -pwdo superhemligt\_o -im tpm2\_sk.key -pwdk tpm2\_sk -pwdm superhemligt\_m -ik B.key -ok migrationblob.bin
+\end{quote}
+
+\subsection{Questions}
+\begin{enumerate}
+    \item {There are other ways to migrate keys. When do you use a key of type TPM\_KEY\_USAGE = TPM\_Migrate? }
+	\begin{itemize}
+	    \item {"TPM\_KEY\_MIGRATE; 0x0016; This SHALL indicate a key in use for TPM\_MigrateKey" - from TPM commands document.}
+	\end{itemize}
+    \item {What is the rewrap option of the migrate command used for? }
+	\begin{itemize}
+	    \item {To directly transfer a key to another TPM.}
+	\end{itemize}
+\end{enumerate}
+
+
+%\begin{enumerate}
+    %\item {}
+	%\begin{itemize}
+	    %\item {}
+	%\end{itemize}
+%\end{enumerate}
+
+
+\section{Assignment 5: Extending values to PCRs}
+\subsection{Questions}
+\subsection{SHA-1 calculation and PCR extending using the TPM emulator}
+\section{Assignment 6: File encryption}
+\subsection{Questions}
+\subsection{Data binding using the TPM emulator}
+\subsection{Data sealing using the TPM emulator}
+\section{Assignment 7: TPM Authentication}
+\subsection{Questions}
+\subsection{Authentication exercises}
+\section{Assignment 8: Attestation}
+\subsection{Signature based attestation}
+\subsection{Decryption-based attestation}
+\section{Assignment 9: Your first TPM application}
+
+The sample.c code was modified to produce the final tpm-program which can be
+found here: \url{https://pastebin.com/0m2e2GRQ}.
+
+Where the following section is of the most interest:
+
+\begin{lstlisting}
+[...]
+// Set up parameters for random byte generation.
+UINT32 size_random = 32;
+BYTE * random_bytes = NULL;
+
+// Generate and print the random bytes.
+Tspi_TPM_GetRandom(hTPM, size_random, &random_bytes);
+printf("Generating %zu random bytes.\n", size_random);
+for (UINT32 i=0; i<size_random; i++) {
+    printf("  Random byte #%d: %2x\n", i+1, random_bytes[i]);
+}
+printf("Done with byte-generation.\n");
+
+// Free random data.
+Tspi_Context_FreeMemory(hTPM, random_bytes);
+DBG("Free memory allocated to random bytes.\n", result);
+
+// Read values from the first 3 PCR registers.
+printf("Printing values of first 3 PCR registers.\n");
+BYTE * pcr_data_pointer = NULL;
+for (UINT32 i=0; i<3; i++) {
+    UINT32 size_pcr_data = 0;
+    Tspi_TPM_PcrRead(hTPM, i, &size_pcr_data, &pcr_data_pointer);
+    printf("Value in PCR-register#%zu: ", i);
+    for (UINT32 j=0; j<size_pcr_data; j++) {
+        printf("%2x", pcr_data_pointer[j]);
+    }
+    printf(".\n");
+}
+printf("Done printing PCR registers.\n");
+[...]
+\end{lstlisting}
+
+Where 32 random bytes are generated and printed, and the data from the first 3 PCR-registers
+are displayed.
+
+\textbf{To get the code running from newly started TPM-emulator:}
+
+Copy the code from the paste bin into a file called tpmcode.c.
+
+Commands in the connected TSS-command-window.
+\begin{itemize}
+  \item{forceclear}
+  \item{tmp\_setenable -e -f}
+  \item{tpm\_takeownership -z -y}
+  \item{gcc -o tpmcode tpmcode.c -ltspi -std=c99 -Wall}
+  \item{./tpmcode}
+\end{itemize}
+
+\end{document}

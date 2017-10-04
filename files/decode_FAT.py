@@ -72,7 +72,7 @@ root  = """
  """
 
 def format_as_bytes(text):
-    return [ ''.join([a,b]) for a,b in zip(text[0::2], text[1::2])]
+    return [''.join([a,b]) for a,b in zip(text[0::2], text[1::2])]
 
 def hexdump_to_bytes(text):
     hex_string = ""
@@ -81,20 +81,39 @@ def hexdump_to_bytes(text):
         if not line:
             continue
         tokens = re.split(r'\s+', line)
-        hexes = tokens[1:8]
+        hexes = tokens[1:9]
         hex_string += ''.join(hexes)
     return format_as_bytes(hex_string)
 
 string = hexdump_to_bytes(root)
 
 def hex_to_char(hexvalue):
-    return chr(int(hexvalue, 16))
+    return chr(int(hexvalue, 16)).replace('\x00','')
 
 def bytelist_to_char(byte_list):
     return ''.join([hex_to_char(value) for value in byte_list])
 
 def parse_dict_attributes(byte_list):
-    return "NOT IMPLEMENTED"
+
+    attribute_structure = [
+    (0, 0x01, "Read-only"),
+    (1, 0x02, "Hidden"),
+    (2, 0x04, "System"),
+    (3, 0x08, "Volume label"),
+    (4, 0x10, "Subdirectory"),
+    (5, 0x20, "Archive"),
+    (6, 0x40, None),
+    (7, 0x80, None),
+    ]
+
+    byte = int(byte_list[0], 16)
+    attribute_list = []
+    for _, mask, attribute in attribute_structure:
+        if not attribute:
+            continue
+        boolean =  byte & mask != 0
+        attribute_list.append("{:<12} = {}".format(attribute, boolean))
+    return attribute_list
 
 def get_time(byte_list):
     return "NOT IMPLEMENTED"
@@ -123,13 +142,32 @@ directorie_structure = [
 (28, 4, "File Size (in bytes)", get_size),
 ]
 
-dict_file = {}
-for _, length, description, parsing_method in directorie_structure:
-    # Extract bytes.
-    attrib_byte_list = string[:length:]
-    # Remove bytes from string.
-    string = string[length:]
-    if parsing_method:
-        dict_file[description] = parsing_method(attrib_byte_list)
+def grab_next_file(string):
+    dict_file = {}
+    for _, length, description, parsing_method in directorie_structure:
+        # Extract bytes.
+        attrib_byte_list = string[:length:]
+        # Remove bytes from string.
+        string = string[length:]
+        if parsing_method:
+            dict_file[description] = parsing_method(attrib_byte_list)
+    return dict_file, string
 
-print(dict_file)
+files = []
+while string:
+    dict_file, string = grab_next_file(string)
+    files.append(dict_file)
+
+for file_dict in files:
+    name = file_dict['Filename']
+    if not name.strip():
+        continue
+    for key, value in file_dict.items():
+        print("{}:".format(key))
+        if type(value) == list:
+            for v in value:
+                print("  {}".format(v))
+        else:
+            print("  {}".format(value))
+
+    print("\n---\n")
