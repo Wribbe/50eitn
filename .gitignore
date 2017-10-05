@@ -3,4 +3,5 @@ tmpcode
 *.tmp
 *.log
 *.out
+*.swp
 handin.pdf
