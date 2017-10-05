@@ -2,4 +2,5 @@ tmpcode
 *.aux
 *.tmp
 *.log
+*.out
 handin.pdf
