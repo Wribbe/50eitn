@@ -35,7 +35,22 @@
 
   \section{Assignments}
 
-    \subsection{Assignment 1}
+    \subsection{Assignment 1 -- Running the exploit}
+
+      Executing the exploit.py file without the software started resulted in a
+      command prompt displays the following:
+      \begin{verbatim}
+        [*] Connecting to 192.168.0.1...
+      \end{verbatim}
+      And nothing else happens.
+
+      Analyzing the exploit script reveals that it tries to connect to and
+      exploit an instance of Easy File Management Web Server v5.3 to trigger a
+      remote buffer overflow. When the exploit is successful, it should close the
+      management software and bring up an instance of the windows calculator.
+
+      After starting the web management software and running the exploit again,
+      this is what happens.
 
     \subsection{Assignment 2}
 
