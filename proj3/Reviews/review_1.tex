@@ -104,14 +104,13 @@
   \end{center}
   % End title.
 
-  \grade{assignment 1}{3}{5}
+  \grade{assignment 1}{5}{5}
   {
     Report describes the necessary steps to repeat the group's
     experimental setup.
   }
   {
-    The description is a bit terse, would probably suffice for anyone already
-    comfortable with virtual machines, Linux and the TPM.
+    The reproducability is high, most steps are explained in detail.
   }
 
   \grade{generating EK}{1}{2}
@@ -130,16 +129,16 @@ The byte sequence follows here:
 It would have been more correct if the actual key part would have been marked in the dump.
   }
 
-  \grade{dump SRK public key}{0}{2}
+  \grade{dump SRK public key}{2}{2}
   {
     Report should contain a dump SRK pubkey and description how it was
     obtained.
   }
   {
-    Nothing about the SRK public key in the report.
+    Contains both.
   }
 
-  \grade{Key hierarchy questions}{6}{6}
+  \grade{Key hierarchy questions}{4}{6}
   {
     Each correct answer to the questions equals 2 points.
   }
@@ -148,22 +147,34 @@ It would have been more correct if the actual key part would have been marked in
       Difference between identity and signature keys?
     }
     {
-      One of the differences between the two is that the identity key is used
-      for attestation while the signature key is used to sign user data.
+      An identity key must meet minimum security requirements and needs the SRK as its
+parent while the signature key does not need any specific security and can be created
+further down the key hierarchy.
     }
     {
-      ''Signing keys only for signing'' (L4 -- 59), Attestation identity
-      key involved in remote attestation (L5 -- 23).
+      Correct. \escape{http://opensecuritytraining.info/IntroToTrustedComputing_files/Day1-7-tpm-keys.pdf} , slide 8.
     }
 
-    \QAN{2}{C}{
+    \QAN{2}{F}{
       Which keys can be used for file encryption?
     }
     {
-      Legacy keys and storage keys can be used for file encryption.
+      All keys can theoretically be used for file encryption but, since we do not want to
+compromise our key hierarchy and provide adequate security, the best key to use is a
+storage key whose main purpose is to encrypt the file contents.
     }
     {
-      TPM key types (L4 -- 59).
+      It is correct that all of the key types could theoretically in isolation be used for encryption, but in a TPM system that is not allowed; the documentation on the TPM places restrictions on using certain key types for certain operations, as well as almost full restriction on EK. TPM key types (L4 -- 59), and:
+
+\begin{quote}
+"The EK is only available for two operations:
+establishing the TPM Owner and establishing Attestation Identity Key (AIK) values and
+credentials. There is a prohibition on the use of the EK for any other operation."
+	\hfill
+	-- (TPM Part1, page 58)
+\end{quote}
+
+Correct that a storage key is best, but motivation is not complete or correct.
     }
 
     \QAN{2}{C}{
@@ -171,8 +182,9 @@ It would have been more correct if the actual key part would have been marked in
       is that, and why does it exist?
     }
     {
-      Legacy keys. The legacy keys exist because of the fact that they are
-      compatible with older system.
+     Legacy key, which can be used both for signing and encryption although not recommended.
+They have lower security in order to provide backwards compatibility with
+older standards.
     }
     {
       Combination of ''There was a TPM version 1.0 but we can today forget
@@ -188,8 +200,10 @@ It would have been more correct if the actual key part would have been marked in
       Are all combinations possible? if not, why?
     }
     {
-      The key named C could not be created. The reason for this is that a non
-      migratable key can not be a child of a migratable key.
+      Note that the creation
+      of key C failed since all children of a migratable key also needs to be migratable.
+     % The key named C could not be created. The reason for this is that a non
+      %migratable key can not be a child of a migratable key.
     }
     {
       Creating non-migratable keys with migratable parent as base should return
@@ -199,15 +213,15 @@ It would have been more correct if the actual key part would have been marked in
 
   \newpage
 
-  \grade{Key hierarchy -- Correct drawing}{2}{2}
+  \grade{Key hierarchy -- Correct drawing}{1}{2}
   {
     Drawing / representation of correct hierarchy.
   }
   {
-    Representation is correct, does not include the C - key.
+    Representation is almost correct, but includes the C - key.
   }
 
-  \grade{Key migration - questions}{8}{10}
+  \grade{Key migration - questions}{7}{10}
   {
     Each correct answer gives 2 points.
   }
@@ -217,10 +231,12 @@ It would have been more correct if the actual key part would have been marked in
       key?
     }
     {
-      No, it is not possible for a migratable key to be the parent of
-      non-migratable keys. When a key is migrated, all of its children are
-      migrated as well. Thus, all children of a migratable key have to be
-      migratable
+     No, since when a migratable parent key is exported, all its children needs to be able
+to tag along. Having the child non-migratable would then cause a contradiction.
+    %  No, it is not possible for a migratable key to be the parent of
+      %non-migratable keys. When a key is migrated, all of its children are
+      %migrated as well. Thus, all children of a migratable key have to be
+      %migratable
     }
     {
       Creating non-migratable keys with migratable parent as base should return
@@ -232,11 +248,14 @@ It would have been more correct if the actual key part would have been marked in
       migration?
     }
     {
-      \escape{TPM_CreateMigrationBlob} is the command that implements the first
-      step in the process of moving a key to a new parent or platform.
+On the TPM you are about to import into [..] you should create a
+new migrateable storage key that can then be used with TPM1 to encrypt keys you
+want to export with the command \escape{TPM_CreateMigrationBlob}.      
+%\escape{TPM_CreateMigrationBlob} is the command that implements the first
+      %step in the process of moving a key to a new parent or platform.
     }
     {
-           % Correct according to description (TPM-part2 -- p.85).
+     % Correct according to description (TPM-part2 -- p.85).
  Not correct according to description (TPM-part3 -- p.85):
 
 \begin{quote}
@@ -245,16 +264,20 @@ prior to the execution of \escape{TPM_CreateMigrationBlob} by performing the
 \escape{TPM_AuthorizeMigrationKey} command.
 \end{quote}
 
-According to this \escape{TPM_AuthorizeMigrationKey} is the second command to be executed, after \escape{TPM_CreateMigrationBlob}.
+According to this \escape{TPM_CreateMigrationBlob} is the second command to be executed, after \escape{TPM_AuthorizeMigrationKey}. This is also supported by \escape{https://shazkhan.files.wordpress.com/2010/10/http__www-trust-rub-de_media_ei_lehrmaterialien_trusted-computing_keyreplication_.pdf}, page 4.
     }
 
     \QAN{3}{F}{
       Give a short description of the command \escape{TPM_ConvertMigrationBlob}
     }
     {
-      This command takes migration blob and creates a normal wrapped blob. The
-      migrate blob must be loaded into the TPM using the normal
-      \escape{TPM_loadKey} function.
+This command takes a migration blob and decrypts it to a normal wrapped blob
+which is then possible load into the TPM using the \escape{TPM_LoadKey} function. Note that
+the command migrates private keys only. The migration of the associated public keys
+is not specified by TPM because they are not security sensitive.
+      %This command takes migration blob and creates a normal wrapped blob. The
+      %migrate blob must be loaded into the TPM using the normal
+      %\escape{TPM_loadKey} function.
     }
     {
       One point deduction due to \escape{TPM_loadKey} being deprecated and \\
@@ -265,7 +288,9 @@ According to this \escape{TPM_AuthorizeMigrationKey} is the second command to be
       Which TPM command load the migrated keys into the TPM?
     }
     {
-      \escape{TPM_loadKey}
+After the migration blob has been converted, the command to load the wrapped key
+into the TPM is \escape{TPM_LoadKey}.
+      %\escape{TPM_loadKey}
     }
     {
       Same as above, \escape{TPM_loadKey} is deprecated, should use
@@ -276,52 +301,55 @@ According to this \escape{TPM_AuthorizeMigrationKey} is the second command to be
       Is it the TPM or the TSS that handles the transfer of the migration blob?
     }
     {
-      The TSS handles the transfer of the migration blob.
+It is the TSS, since TPM:s have no ability to communicate directly with another
+TPM.
+      %The TSS handles the transfer of the migration blob.
     }
     {
-      Since the TPM only handles conversion of input and output data, the
+      Correct. Since the TPM only handles conversion of input and output data, the
       transfer of the resulting/necessary data is handled by the software stack
-      (TSS). A more motivated answer wouldn't hurt.
+      (TSS).
     }
   }
 
-  \grade{Key migration -- migration \& documentation}{1}{2}
+  \grade{Key migration -- migration \& documentation}{2}{2}
   {
     Do the key migration specified in the project instructions and document it
     (Q1).
   }
   {
-    Commands are cut off, seems to be ok but can't be verified.
+    Good.
   }
 
-  \grade{Key migration -- remaining questions}{2}{4}
+  \grade{Key migration -- remaining questions}{1}{4}
   {}
   {
     \QAN{2}{F}{
       When do you use a key of type \escape{TPM_KEY_USAGE = TPM_Migrate}?
     }
     {
-      When using migration authority.
+\escape{TPM_KEY_USAGE} can have the value \escape{TPM_KEY_MIGRATE}, which is used when there is a
+need for a migration authority (we did not find any \escape{TPM_migrate} command).
+      %When using migration authority.
     }
     {
-      While the answer is 'correct' it is a bit short.  \\
       The \escape{TPM_KEY_USAGE = TPM_Migrate} is used to restrict a specific
-      key in such a way that it can only be used in the \escape{TMP_MigrateKey}
+      key in such a way that it can only be used in the \escape{TPM_MigrateKey}
       function. Since this function performs the function of a migration
       authority with limited knowledge about the key, the physical security of
       the executing system is assumed to be high (TPM-part3 p.93).
     }
 
     \QAN{3}{F}{
-      What is the rewrap option option of the \escape{migrate} command used
+      What is the rewrap option of the \escape{migrate} command used
       for?
     }
     {
-      The rewrap option is use to directly move a key to a new parent.
+This is used when migration authority is needed.
+      %The rewrap option is use to directly move a key to a new parent.
     }
     {
-      Missing explanation on what enables the key to be 'directly moved' to
-      another parent. The flag tells the TPM to re-wrap
+Not correct. It allows a key to be directly moved to another parent, either in the same or another TPM. The re-wrap flag tells the TPM to re-wrap
       (decrypt$\rightarrow$encrypt) the key with a new parent, which enables
       that parent to load the key as a normal encrypted element (TPM-part3
       p.85).
@@ -335,8 +363,11 @@ According to this \escape{TPM_AuthorizeMigrationKey} is the second command to be
       Describe one TPM command that can be used to extend the SHA-1 digest to a
       PCR.
     }{ % Answer
-      The \escape{TPM_Extend} command can be used to extend the SHA-1 digest to
-      a PCR by adding a new measurement to a PCR.
+      \escape{TPM_SHA1CompleteExtend}
+“This capability terminates a pending SHA-1 calculation and EXTENDS the result
+into a Platform Configuration Register using a SHA-1 hash process.”
+%The \escape{TPM_Extend} command can be used to extend the SHA-1 digest to
+     % a PCR by adding a new measurement to a PCR.
     }{ % Note
       Correct (TPM-part3 p.160).
     }
@@ -344,54 +375,67 @@ According to this \escape{TPM_AuthorizeMigrationKey} is the second command to be
     \QAN{2}{C}{ % Question
       Describe one TPM command that can be used to read a PCR value.
     }{ % Answer
-      The \escape{TPM_PCRread} command can be used to read a PCR value.
+\escape{TPM_PCRRead}
+“The \escape{TPM_PCRRead} operation provides non-cryptographic reporting of the contents of
+a named PCR.”      
+%The \escape{TPM_PCRread} command can be used to read a PCR value.
     }{ % Note
       Correct (TPM-part3 p.162)
     }
   }
 
-  \grade{Extending the PCRs -- PCR 'overflow'}{1}{2}
+  \grade{Extending the PCRs -- PCR 'overflow'}{2}{2}
   {
     Run \escape{sha -if <filename> -ix <PCR index>} on a large file and show
     the result.
   }{
-    The figure shows that the command has been run, but since it is run on \\
-    \escape{text.txt} and there is no indication of then file size of the file
-    it's hard to figure out if the run illustrated the functionality or not.
+The command was run on the \escape{tpmbios} file and adequate prints have been included in the report.
+%    The figure shows that the command has been run, but since it is run on \\
+    %\escape{text.txt} and there is no indication of then file size of the file
+    %it's hard to figure out if the run illustrated the functionality or not.
   }
 
-  \grade{File encryption -- Questions}{3}{6}
+  \grade{File encryption -- Questions}{6}{6}
   {}
   {
     \QAN{1}{C}{ % Question
       Why is \escape{TSS_Bind} a TSS command, and not a TPM command?
     }{ % Answer
-      The encryption is done outside of the TPM and is therefor not a TPM
-      command.
+The public part of the binding key pair is used for encrypting data. This should be
+possible to do from anywhere, so the need to load the private key is unnecessary.
+Once the data is bound, only the one with control over the private part should be
+able to decrypt it, which is why the private key needs to be loaded for decryption to
+be possible. This only requires the unbind operation to be a TPM command.
+%      The encryption is done outside of the TPM and is therefor not a TPM
+    %  command.
     }{ % Note
       Correct (L5 - p.11).
     }
 
-    \QAN{2}{F}{ % Question
+    \QAN{2}{C}{ % Question
       Give some difference between data binding and data sealing.
     }{ % Answer
-      Data binding uses a symmetric key for encryption and data sealing uses
-      asymmetric encryption.
+\begin{itemize}
+	\item “Binding”: we can encrypt data on another computer, and decryption can only be
+done on the computer which has the TPM with the private key. 
+	\item “Sealing”: binds data to a certain value of the PCR and a key that is not migratable.
+Then only this specific TPM can decrypt (unseal) the data, and even then only if the
+PCR value is the same as when encryption happened (sealing). 
+\end{itemize}
+%      Data binding uses a symmetric key for encryption and data sealing uses
+    %  asymmetric encryption.
     }{ % Note
-      Could not verify that this is true, and since sealing is binding but
-      where the data is locked to a given PCR state, it should be the same type
-      of encryption?
+      Correct.
     }
 
-    \QAN{3}{F}{ % Question
+    \QAN{3}{C}{ % Question
       Can a key used for data sealing be migrated to another TPM?
     }{ % Answer
-      No, because sealing data to one TPM platform makes it illegal to migrate
-      a key to another TPM.
+No since, the key used for the sealing is required to be non-migratable.      
+%No, because sealing data to one TPM platform makes it illegal to migrate
+      %a key to another TPM.
     }{ % Note
-      Deducting one point because the answer makes it sound like no migration
-      is possible after sealing any data on a TPM. The key used to seal the
-      data can not be migrated (L5 -- p.2).
+      Correct.
     }
   }
 
@@ -402,20 +446,26 @@ According to this \escape{TPM_AuthorizeMigrationKey} is the second command to be
       Why does the key have to be loaded inside the TPM when decrypting, but
       not when encrypting?
     }{ % Answer
-      When encrypting, only the public key is needed, while decryption uses the
-      private key, which is not accessible outside of the TPM.
+Since we not only need secure keys but also a secure platform in order to correctly
+decrypt the file, i.e. not possible without a authorized TPM. This is implemented
+in parts by requiring the private key to be descended from SRK which in turn is
+related to the unique secret of the TPM chip, the decryption needs parts of the secret
+only known to the chip manufacturer. [..] The key is also encrypted via the need for
+password previously set by the TPM.
+%      When encrypting, only the public key is needed, while decryption uses the
+    %  private key, which is not accessible outside of the TPM.
     }{ % Note
-      This makes sense, since this is how asymmetric cryptography works.
+	Not a very clear description, but correct. 
     }
 
     \QAN{2}{C}{ % Question
       Migrate the binding key to TPM2 and see if the file can be decrypted
       there.
     }{ % Answer
-      To be able to decrypt the binding key is needed. Since the binding key
-      was migrated to TPM2, the file was able to be decrypted there too.
+      %To be able to decrypt the binding key is needed. Since the binding key
+      %was migrated to TPM2, the file was able to be decrypted there too.
     }{ % Note
-      Should be possible.
+      Should be possible, and it worked.
     }
   }
 
@@ -426,12 +476,19 @@ According to this \escape{TPM_AuthorizeMigrationKey} is the second command to be
       Test if you can do a sealing with a legacy key, a binding key or a
       signing key. If not, why?
     }{ % Answer
-      It was not possible to do a sealing with a legacy key, binding key or
-      signing-key. The reason for this is that sealing only can be done with
-      storage keys.
+As can be seen, it is only the non-migratable storage key that can be used for
+sealing. [..] The key needs to be non-migratable in order to be used by the sealfile command.
+It was however possible to use migratable keys when using bindfile command,
+since with bind we only encrypt with the key itself. Contrast this with sealing
+were we also bind the encryption with the PCR values of the TPM. Therefore it is
+impossible to seal a file with migratable keys as they would be useless for decryption
+since some PCR values can’t be extracted out of the TPM.
+      %It was not possible to do a sealing with a legacy key, binding key or
+      %signing-key. The reason for this is that sealing only can be done with
+      %storage keys.
     }{ % Note
       \begin{quote}
-        If the keyUsage field of the key indicated by the keyHandle dose not
+        If the keyUsage field of the key indicated by the keyHandle does not
         have the value \escape{TPM_KEY_STORAGE} the TPM must return the error
         code \escape{TPM_INVALID_KEYUSAGE}.
 
@@ -444,10 +501,14 @@ According to this \escape{TPM_AuthorizeMigrationKey} is the second command to be
       Now migrate the storage key to TPM2 and see if you can unseal the file
       there too. Explain what you observe.
     }{ % Answer
-      The storage key is not migratable and could therefor not be migrated to
-      TPM2. Since TPM2 did not have access to the storage key, unsealing was
-      not achieved.
+	
+ %     The storage key is not migratable and could therefor not be migrated to
+     % TPM2. Since TPM2 did not have access to the storage key, unsealing was
+     % not achieved.
     }{ % Note
+	An attempt was made, but did not work, it is described why ("As can be seen, it is only the non-migratable storage key that can be used for
+sealing.")
+
       \begin{quote}
         If the keyHandle points to a migratable key then the TPM MUST return
         the error code \escape{TPM_INVALID_KEYUSAGE}.
@@ -458,14 +519,16 @@ According to this \escape{TPM_AuthorizeMigrationKey} is the second command to be
     }
   }
 
-  \grade{TPM -- Authentication}{4}{6}
+  \grade{TPM -- Authentication}{6}{6}
   {}
   {
     \QAN{1}{C}{ % Question
       In the above, could the \escape{verifyfile} command been done by another
       TPM?
     }{ % Answer
-      Yes it is possible because only the public key is used.
+Yes, since the signing is done by the private key, the public part can be used for
+verifying the private signing. And since that part is public, any TPM can use it.
+%      Yes it is possible because only the public key is used.
     }{ % Note
       The usage string for verifyfile agrees with only using public part:
       \escape{verifyfile [-ss info|der] -is <sig file> -if <data file> -ik
@@ -477,16 +540,23 @@ According to this \escape{TPM_AuthorizeMigrationKey} is the second command to be
     \QAN{2}{C}{ % Question
       Which TPM command is used to decrypt the file?
     }{ % Answer
-      The command that is used to decrypt files is \escape{TPM_UnBind}.
+“\escape{TPM_UnBind} takes the data blob that is the result of a \escape{Tspi_Data_Bind} command
+and decrypts it for export to the User.” [..]
+The binding operation is undone by unbind. This requires the private part of the
+keypair and is done inside the TPM.
+%      The command that is used to decrypt files is \escape{TPM_UnBind}.
     }{ % Note
       Same decryption command as earlier.
     }
 
-    \QAN{3}{F}{ % Question
+    \QAN{3}{C}{ % Question
       Can the decryption based authentication be done by using data sealing
       instead of binding?
     }{ % Answer
-      No it can not because the TPMs have different PCR values.
+Not really. Sealing limits the encryption and decryption to only one specific TPM.
+No other TPM should be able to encrypt or decrypt it which means the only external
+party that the TPM can authenticate towards is itself, which is kind of moot.
+%      No it can not because the TPMs have different PCR values.
     }{ % Note
       Sealing can work to identify a TPM. If a user encrypts a piece of data
       with the public part of the key, only the TPM that has the correct
@@ -507,7 +577,7 @@ According to this \escape{TPM_AuthorizeMigrationKey} is the second command to be
 
   \grade{Encryption}{2}{2}
   {
-    Use \escape{bindefile} and \escape{unbindfile} to encrypt and decrypt a
+    Use \escape{bindfile} and \escape{unbindfile} to encrypt and decrypt a
     text file.
   }
   {
@@ -534,16 +604,15 @@ According to this \escape{TPM_AuthorizeMigrationKey} is the second command to be
     The correct commands are provided.
   }
 
-  \grade{Creating a TPM program}{2}{4}
+  \grade{Creating a TPM program}{4}{4}
   {
     Provide correctly working program with source code and documentation to
     repeat the work.
   }
   {
-    Only a small snippet provided, which should work. Should instruct where
-    rest of the code is.
+    Program is included, should work.
   }
 
-  \textbf{Total: 52/67}
+  \textbf{Total: 63/67} %note: tpm project description says there should be 71 points, I don't have time to find the last point atm though
 
 \end{document}
