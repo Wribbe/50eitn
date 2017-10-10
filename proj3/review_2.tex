@@ -304,7 +304,7 @@ According to this \escape{TPM_AuthorizeMigrationKey} is the second command to be
     {
       While the answer is 'correct' it is a bit short.  \\
       The \escape{TPM_KEY_USAGE = TPM_Migrate} is used to restrict a specific
-      key in such a way that it can only be used in the \escape{TMP_MigrateKey}
+      key in such a way that it can only be used in the \escape{TPM_MigrateKey}
       function. Since this function performs the function of a migration
       authority with limited knowledge about the key, the physical security of
       the executing system is assumed to be high (TPM-part3 p.93).
@@ -364,7 +364,7 @@ According to this \escape{TPM_AuthorizeMigrationKey} is the second command to be
     \QAN{1}{C}{ % Question
       Why is \escape{TSS_Bind} a TSS command, and not a TPM command?
     }{ % Answer
-      The encryption is done outside of the TPM and is therefor not a TPM
+      The encryption is done outside of the TPM and is therefore not a TPM
       command.
     }{ % Note
       Correct (L5 - p.11).
@@ -376,9 +376,16 @@ According to this \escape{TPM_AuthorizeMigrationKey} is the second command to be
       Data binding uses a symmetric key for encryption and data sealing uses
       asymmetric encryption.
     }{ % Note
-      Could not verify that this is true, and since sealing is binding but
-      where the data is locked to a given PCR state, it should be the same type
-      of encryption?
+      % Could not verify that this is true, and since sealing is binding but
+      %where the data is locked to a given PCR state, it should be the same type
+      %of encryption?
+     \begin{quote}
+       "The two functions provided by the TPM to encrypt data are
+      binding and sealing. Both of them encrypt data using asymmetric techniques."
+
+            \hfill
+            -- \escape{https://shazkhan.files.wordpress.com/2010/10/http__www-ei-rub-de_media_ei_lehrmaterialien_trusted-computing_exercise-sealing.pdf}
+      \end{quote}
     }
 
     \QAN{3}{F}{ % Question
@@ -429,7 +436,7 @@ According to this \escape{TPM_AuthorizeMigrationKey} is the second command to be
       storage keys.
     }{ % Note
       \begin{quote}
-        If the keyUsage field of the key indicated by the keyHandle dose not
+        If the keyUsage field of the key indicated by the keyHandle does not
         have the value \escape{TPM_KEY_STORAGE} the TPM must return the error
         code \escape{TPM_INVALID_KEYUSAGE}.
 
