@@ -1,0 +1,155 @@
+\documentclass[10pt]{article}
+\usepackage{enumitem}
+\usepackage{parskip}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{hyperref}
+
+\newcommand{\command}[1]{\texttt{#1}}
+
+\begin{document}
+
+  % Title page.
+  %------------
+
+  \thispagestyle{empty}
+  \vspace*{3cm}
+  \begin{center}
+    \huge{EITN50 -- Advanced Computer Security} \\
+    \vspace{0.3cm}
+    \LARGE{Anatomy of an Exploit} \\
+    \vspace{1cm}
+    \large{by: \\ \vspace{0.2cm}
+        Stefan Eng \texttt{<atn08sen@student.lu.se>} \\
+        Rasmus Olofzon \texttt{<muh11rol@student.lu.se>}
+        } \\
+  \end{center}
+
+  % First page
+  %-----------
+
+  \newpage
+
+  \section*{Introduction}
+
+  \section{Assignments}
+
+    \subsection{Assignment 1 -- Running the exploit}
+
+      Executing the exploit.py file without the software started resulted in a
+      command prompt displays the following:
+      \begin{verbatim}
+        [*] Connecting to 192.168.0.1...
+      \end{verbatim}
+      And nothing else happens.
+
+      Analyzing the exploit script reveals that it tries to connect to and
+      exploit an instance of Easy File Management Web Server v5.3 to trigger a
+      remote buffer overflow. When the exploit is successful, it should close the
+      management software and bring up an instance of the windows calculator.
+
+      After starting the web management software and running the exploit again,
+      this is what happens.
+
+    \subsection{Assignment 2}
+
+      Descriptions of the different gadgets present in the payload code:
+
+      \begin{description}
+        \item[junk0]{placeholder}
+        \item[call\_edgx]{placeholder}
+        \item[junk1]{placeholder}
+        \item[ppr]{placeholder}
+        \item[crafted\_jmp\_esp]{placeholder}
+        \item[test\_bl]{placeholder}
+        \item[kungfu]{placeholder}
+        \item[nopsled]{placeholder}
+        \item[shellcode]{placeholder}
+      \end{description}
+
+      This is a schematic representation of the stack before the payload has
+      been deployed.
+
+      \begin{verbatim}
+        [schematic repreentation of stack before payload]
+      \end{verbatim}
+
+      And this is a schematic representation of the stack after the payload
+      has been deployed.
+
+      \begin{verbatim}
+        [schematic repreentation of stack after payload]
+      \end{verbatim}
+
+    \subsection{Assignment 3}
+
+      After attaching to the software and putting a breakpoint at the address
+      0x00468702, the following instructions were executed until the executable
+      hit the shell-code payload.
+
+      \begin{verbatim}
+        [list of all the instructions with NOP sections compressed]
+      \end{verbatim}
+
+      Analyzing the instructions the following were deemed most vital for the
+      exploit to work.
+
+      \begin{verbatim}
+        [Numbered list of exploites picked from the list above]
+      \end{verbatim}
+
+      The purpose of each of these instructions is documented below.
+
+      \begin{verbatim}
+        [Enumerated / Description environment that explains all
+        the highlighted instructions from above]
+      \end{verbatim}
+
+
+    \subsection{Assignment 4}
+
+      The following parts of the memory are not protected by the ASLR:
+
+      \begin{verbatim}
+   [ I guess this will be replaced with some kind of memory ranges? ]
+      \end{verbatim}
+
+      Which is possible to tell because of:
+
+      \begin{verbatim}
+   [ Explain how to tell that the memory was not protected by ASLR ]
+      \end{verbatim}
+
+    \subsection{Assignment 5}
+
+      The exploit uses the unprotected pats of the memory in the following way:
+
+      \begin{verbatim}
+   [ Explain how the exploit uses the
+   unprotected memory to do the remote execution ]
+      \end{verbatim}
+
+    \subsection{Assignment 6}
+
+      \begin{verbatim}
+   [ Tell if the software has DEP enabled or not ]
+      \end{verbatim}
+
+      Which can be determined by ...
+
+      \begin{verbatim}
+   [ Explain how to detect if DEP is enabled or not (screenshot?) ]
+      \end{verbatim}
+
+
+    \subsection{Assignment 7}
+
+      The exploit could be modified in the following way to work under DEP:
+
+      \begin{verbatim}
+   [ Text explaining how the exploit could
+     be modifed to work under DEP. ]
+      \end{verbatim}
+
+\end{document}
