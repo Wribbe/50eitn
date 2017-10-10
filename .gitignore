@@ -4,4 +4,8 @@ tmpcode
 *.log
 *.out
 *.swp
+*.dvi
+*.fls
+*.fdb_latexmk
+*.synctex*
 handin.pdf
