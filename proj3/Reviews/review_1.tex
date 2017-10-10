@@ -110,7 +110,7 @@
     experimental setup.
   }
   {
-    The reproducability is high, most steps are explained in detail.
+    The reproducibility is high, most steps are explained in detail.
   }
 
   \grade{generating EK}{1}{2}
@@ -541,7 +541,7 @@ verifying the private signing. And since that part is public, any TPM can use it
       Which TPM command is used to decrypt the file?
     }{ % Answer
 “\escape{TPM_UnBind} takes the data blob that is the result of a \escape{Tspi_Data_Bind} command
-and decrypts it for export to the User.” [..]
+and decrypts it for export to the User." [..]
 The binding operation is undone by unbind. This requires the private part of the
 keypair and is done inside the TPM.
 %      The command that is used to decrypt files is \escape{TPM_UnBind}.
@@ -558,11 +558,14 @@ No other TPM should be able to encrypt or decrypt it which means the only extern
 party that the TPM can authenticate towards is itself, which is kind of moot.
 %      No it can not because the TPMs have different PCR values.
     }{ % Note
-      Sealing can work to identify a TPM. If a user encrypts a piece of data
-      with the public part of the key, only the TPM that has the correct
-      private part and is in the correct measured configuration state can
-      decrypt it and return the data. Which in turn proves that it's the same
-      TPM, with the same configuration.
+      %Sealing can work to identify a TPM. If a user encrypts a piece of data
+      %with the public part of the key (and PCR values for that TPM is included), only the TPM that has the correct
+      %private part and is in the correct measured configuration state can
+      %decrypt it and return the data. Which in turn proves that it's the same
+      %TPM, with the same configuration. 
+
+From \escape{http://opensecuritytraining.info/IntroToTrustedComputing_files/Day2-1-auth-and-att.pdf} one can see that
+"If you want.. \escape{Decryption-based Authentication}, Use key type.. \escape{Binding} with..  \escape{Bind}" (paraphrase of table on Summary page).
     }
   }
 
@@ -614,5 +617,7 @@ party that the TPM can authenticate towards is itself, which is kind of moot.
   }
 
   \textbf{Total: 65/75} %note: ben says 74 points, but after counting ~5 times I still get 75 /raz
+
+One could see that several parts of the report were rewritten parts from the project description. On the other hand, this together with some augmenting explanations, clear commands and printouts made for a very readable report that left few questions as to reproducibility. Good job.
 
 \end{document}
