@@ -357,7 +357,7 @@ function only under PP regime
 * TakeOwnership
 * ForceClear
 ### Where (in a system) is the physical presence enforced?
-??? Perhaps the CRTM? *"Note: at startup the CRTM will check for physical presence of the TPM"*
+(Perhaps the CRTM?) *"Note: at startup the CRTM will check for physical presence of the TPM"*
 ### What are the monotonic counters in a TPM and explain one use case of them?
 TPM has monotonic counters (at least 4). Increment rate: Every 5 secs for at least 7 years (so at least 26 bit counter needed).
 
@@ -450,7 +450,8 @@ Legacy: signing or encryption (compatible with TPM v1)
 bind key is non-migratable the encrypted data is binded to the TPM
 where the secret portion of the bind key resides.
 
-* “Sealing”: binds data to a certain value of the PCR and a key that is not migratable. Then the TPM can only decrypt (unseal) if the PCR value(s) is the same as when encryption happened (seal)
+* “Sealing”: binds data to a certain value of the PCR and a key that is not migratable. Then the TPM can only decrypt (unseal) if the PCR value(s) is the same as when encryption happened (seal)
+
 ### Who is doing the binding operation, the TPM or some other entity?
 *"Binding is done outside the TPM (so there is no TPM_Bind command)"*
 ### What is (TPM) ownership?
@@ -557,7 +558,7 @@ Trusted Computing Base.
 ### What is UEFI boot (ignore use of TPM)?
 ### Primary objective of OS in trusted platform is to create isolation. Explain role of MMU and why this solution is effective in keeping user applications apart. Understand the importance of privileged (super user) mode and Non-privileged (user) mode.
 ### Isolation by abstraction: virtualization and (later) containers.
-
+See slide 83 (also article about Docker security! Interesting)
 ### By able to describe differences between the execution environment alternative on Slide19/Lect5.
 ### Virtualization: what is type 1 and type 2 virtualization. What is Full/pure and impure/para virtualization?
 **Type 1:** Runs on 'bare metal', **Type 2:** Runs on host.
@@ -571,19 +572,58 @@ the virtual machine and replace them with virtualization
 code.
 
 Also **para-virtualization**.
+
 ## Java
 ### Java as example of trusted execution environment. Evolution of the sandbox model. Role of signed software.
 ### Role of components to java security on Slide 30, 40/Lect8.
 ### What is STIP?
+
 ## SELinux
 ### MAC added to Linux DAC (recall MAC and DAC from your basic computer security course). Understand this via Slide 61/Lect8. Understand what this means for the access control to, for example, a file where we give permissions via the Linux DAC system and also have the MAC policies in place.
+**DAC: Discreationary Acces Control**
+
+**MAC: Mandatory Access Control**
 ### What is the purpose of a SELinux policy?
-### What are the differences between the three reference policies? Slide 67/lect8
+?
+
+### What are the differences between the three reference policies? Slide 68/lect8
+* **Strict**
+* **Targeted**
+* **MLS**
 ### What happens when SELinux is operating in permissive or in enforcing mode?
+SELinux modes = {Enabled = { Enforcing, Permissive }, Disabled }
+
+**Enforcing:** fully functional
+
+**Permissive:** not blocking anything, but logging
 ### What is MLS? Example of MLS in basic computer security book.
+**MLS:** Multi-Level Security
+
 ### Why has SELinux problems with Text Relocation?
+A text relocation is a memory address in the "LOAD
+READ-EXECUTE" text segment of a shared library where
+text segment means the segment that contains the
+program code. Such a non-PIC text segment often
+contains large amounts of memory addresses that need
+to be "patched" (manipulated, modified, corrected) with
+the runtime location of functions and data. This is
+performed by the dynamic loader (ld.so in glibc) during
+startup of the dynamically linked executable and
+invocation of these libraries in the process space.
+
+BUT many existing shared libraries are non-PIC compiled!
+
+So relocating the “TEXT” means changing the executable
+code segment so that the absolute addresses (of both
+functions and data — variables and constants) are correct
+for the base address the segment was loaded at. Doing
+this, causes a Copy-on-Write for the executable area.
+SELinux will normally (in enforcing mode) not allow this.
+But can be allowed by applying special rules on the code
+file (often a shared library).
 ## ARM TrustZone
 ### ARM Architecture: modes Privileged (super user) and non-Privileged (user).
+
 ### Role of NS bit and which parts of the HW carry the NS bit. What is the role of the monitor? A secure mode process can access normal world objects if it has the same or higher privilege. A normal world process can never get access to any object marked as belonging to the secure world.
 ### What is the benefit from the NX bit?
 ## HSM
@@ -630,9 +670,27 @@ Physical Unclonable Functions. E. g. ASICs, no two are alike physically, due to 
 ### EPID: Revocation lists
 ## Android and iOS
 ### Explain difference in the use of signatures on applications.
+
 ### Explain DM-verity.
+
 ### How is the root hash value protected in DM-verity?
+
 ### How are apps isolated in Android? Slide 101-107/Lect8
+
 ### How are apps isolated in iOS? Slide 129/Lect8
+
 ### What is BYOD?
+Bring Your Own Device
+
+KNOX concept?
 ### Why is isolation important in BYOD?
+
+
+"In Android, signatures have nothing to do w/ trustworthiness" "Only thing it says is that it has been signed by somebody else, separation of applications(?), nothing more" "Virus checkers are useless here, they cannot access other aplications' code, only if OS allows them. They can ask for the name of another app, nothing more."
+
+**$Z_N$** 
+
+* the set of elements in $Z$ That are relatively prime to $N$.
+* E. g. $Z_4 = {1,3}$
+* $a^2mod N$, squares
+* $(a/N)=(p/N)(q / N)$
