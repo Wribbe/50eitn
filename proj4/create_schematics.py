@@ -5,10 +5,12 @@ OUTPUT_PATH="input"
 stack_base = \
 """
 \\begin{{figure}}[!h]
-  \\centering
+%  \\centering
+\\hspace{{5.0cm}}
   \\begin{{tikzpicture}}
 {}
   \\end{{tikzpicture}}
+  \\caption{{Representation of the stack created by the ROP.}}
 \\end{{figure}}
 """
 
