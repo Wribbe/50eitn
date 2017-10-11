@@ -6,6 +6,7 @@
 \usepackage{listings}
 \usepackage{hyperref}
 \usepackage{tikz}
+\usepackage{enumitem}
 
 \newcommand{\command}[1]{\texttt{#1}}
 
@@ -57,10 +58,10 @@
 
       Descriptions of the different gadgets present in the payload code:
 
-      \begin{description}
-        \item[junk0]{placeholder}
-        \item[call\_edgx]{placeholder}
-        \item[junk1]{placeholder}
+      \begin{description}[style=multiline,leftmargin=3.5cm]
+        \item[junk0]{80 \texttt{NOP}}
+        \item[call\_edx]{placeholder}
+        \item[junk1]{280 \texttt{NOP}}
         \item[ppr]{placeholder}
         \item[crafted\_jmp\_esp]{placeholder}
         \item[test\_bl]{placeholder}
