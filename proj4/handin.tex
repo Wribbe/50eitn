@@ -56,18 +56,37 @@
 
     \subsection{Assignment 2}
 
-      Descriptions of the different gadgets present in the payload code:
+      Clarification of which instructions the different gadgets are composed
+      of.
 
       \begin{description}[style=multiline,leftmargin=3.5cm]
         \item[junk0]{80 \texttt{NOP}}
-        \item[call\_edx]{placeholder}
+        \item[call\_edx]{\texttt{JMP 0xffffffda \\
+                                 ADD DWORD PTR [EAX],EDX}}
         \item[junk1]{280 \texttt{NOP}}
-        \item[ppr]{placeholder}
-        \item[crafted\_jmp\_esp]{placeholder}
-        \item[test\_bl]{placeholder}
-        \item[kungfu]{placeholder}
-        \item[nopsled]{placeholder}
-        \item[shellcode]{placeholder}
+        \item[ppr]{\texttt{%
+            POP EBX \\
+            POP ECX \\
+            RETN
+        }}
+        \item[crafted\_jmp\_esp]{\texttt{%
+            JMP ESP
+        }}
+        \item[test\_bl]{\texttt{%
+            ADD BYTE PTR DS:[EAX],AL
+        }}
+        \item[kungfu]{\texttt{%
+            MOV EAX,EBX\\
+            POP ESI\\
+            POP EBX\\
+            RETN\\
+            %DEADBEEF \\
+            %DEADBEEF \\
+            ADD EAX,5BFFC883\\
+            RETN\\
+            PUSH EAX\\
+            RETN
+        }}
       \end{description}
 
       This is a schematic representation of the stack before the payload has
