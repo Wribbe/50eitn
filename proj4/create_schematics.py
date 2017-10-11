@@ -82,3 +82,6 @@ if not os.path.isdir(OUTPUT_PATH):
 
 with open(os.path.join(OUTPUT_PATH, 'stack_before.tex'), 'w') as fp:
     fp.write(stack_base.format('\n'.join(internal_code_buffer))+"\n")
+
+instructions = [l.strip() for l in open('all_instructions.txt').readlines()]
+print(instructions)
