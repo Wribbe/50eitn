@@ -125,49 +125,85 @@
 
       After attaching to the software and putting a breakpoint at the address
       \\
-      \escape{0x00468702}, the following instructions were run until the
+      \escape{0x00468702}, the following instructions were run before the
       execution hit the shell-code payload.
 
       \input{input/command_selection.tex}
 
       where the marked entries were those deemed most vital for the exploit
-      functionality.
+      functionality. The purpose of each of these instructions is documented below.
 
-      \begin{description}[style=multiline]
-        \item[00]{
-          The entry point of the exploit since the overflow makes it
-          possible to specify the value of \escape{EDX}.
+      \begin{description}[style=multiline,leftmargin=1.7cm]
+        \item[26]{
+            Moves the program execution to the stack pointer. The execution is
+            now under the attackers control.
         }
-        \item[09-14{
-          This sequence enables the stack-pivot to occur. This makes the
-          execution to continue
+        \item[24-25]{
+            The value from \escape{EAX}, which contains the memory address to a
+            \escape{JPM ESP} instruction is pushed to the stack where the
+            subsequent \escape{RETN} executes it.
+        }
+        \item[22-23]{
+            Add the calculated value to \escape{EAX} in order to create the
+            correct address for the \escape{JMP ESP} instruction in
+            \escape{EAX}.
+        }
+        \item[18,21]{
+            Move the offset of the \escape{JMP ESP} address from \escape{EBX}
+            to \escape{EBX}. The pop instructions are fed \escape{DEADBEEF}.
+        }
+        \item[15-17]{
+            Populate \escape{EBX} and \escape{ECX} with values from the stack.
+            Pops address for the zero-value to be used to circumvent the
+            \escape{TEST BL BL} and \escape{JNZ} instructions to \escape{ECX}.
+            Also pops the shifted address for the \escape{JMP ESP} instruction
+            (has to be shifted because it begins with a NULL byte otherwise) to
+            \escape{EBX}.
+        }
+        \item[13]{
+          This instruction enables the stack-pivot to occur. The stack-pointer
+          now points to the stack that the attacker created with the overflow.
+        }
+        \item[00]{
+            Entry point of the exploit. Since the overflow enables the attacker
+            to write anything to EDX, this call can be used to direct the
+            control flow of the program. The call the executes address contained
+            at the
+            \escape{EDX+28} memory location.
+
+            Since the attacker wants to come as close to the stack-pivot, \\
+            \escape{0x1001d89b} as possible, the data \escape{\x7A\xD8\x01\x10}
+            is found, which corresponds to the address \escape{0x1001D87A} if
+            read by a jump instruction.
+
+            To accommodate for the offset, 28 is subtracted and the resulting
+            value of \escape{0x1001D8C8} is written to \escape{EBX} through the
+            overflow.
         }
       \end{description}
 
-      \begin{verbatim}
-        [Numbered list of exploites picked from the list above]
-      \end{verbatim}
-
-      The purpose of each of these instructions is documented below.
-
-      \begin{verbatim}
-        [Enumerated / Description environment that explains all
-        the highlighted instructions from above]
-      \end{verbatim}
-
       With the other instructions doing the following:
 
-      \begin{verbatim}
-        [ Discussion about the other instructions and their purpose ]
-      \end{verbatim}
+      \begin{description}[style=multiline,leftmargin=1.7cm]
+        \item[01-07]{
+            Instructions that happens to be ''in the way'' of the sought after
+            stack-pivot instruction. There is really no interest in these
+            instructions as long as they do not disturb the intended exploit
+            execution. In this case, 07 will disrupt the execution if not
+            handled through the 01 and 04 instructions.
+        }
+        \item[08-12]{
+            \escape{POP} and \escape{MOV} instructions that don't really affect
+            the execution and can be ignored.
+        }
+      \end{description}
 
-      The filler is there to [...]
-
-
-      \begin{verbatim}
-        [ Discussion about NOP-sleads (+ pictures) ]
-      \end{verbatim}
-
+      The filler is there to align the different overflow values to the correct
+      stack-positions. Since there is a instruction that moves a value from the
+      memory-address contained at \escape{ESP+264} before the \escape{JNZ}
+      instruction, the zero-value for circumventing the jump needs to be
+      located at \escape{ESP+264}. And this can be arranged by utilizing the
+      \escape{NOP} as filler.
 
     \subsection{Assignment 4}
 
