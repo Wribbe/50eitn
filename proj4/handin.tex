@@ -281,12 +281,14 @@ From this can be seen that ImageLoad.dll is relocatable but ASLR is not enabled,
 
     \subsection{Assignment 5}
 
-      The exploit uses the unprotected pats of the memory in the following way:
-
-      \begin{verbatim}
-   [ Explain how the exploit uses the
-   unprotected memory to do the remote execution ]
-      \end{verbatim}
+      The exploit utilizes the unprotected parts of the code to find
+      gadgets consisting of ''trusted'' instructions inside of the genuine
+      program code. Since the gadgets are located in non-protected memory, they
+      can be referenced through static memory locations pushed to the stack.
+      This in turn enables the exploit to chain different gadgets together to
+      manipulate the stack and register in a way that ultimately enables the
+      attacker to force the execution onto the stack and execute the shell-code
+      payload.
 
     \subsection{Assignment 6}
 One way to check if DEP is enabled for a program in Windows 8 is to open the Task Manager, go to the 'Processes' tab, open 'View' \escape{>} 'Select Columns...' and make sure the 'Data Execution Prevention' check button is checked. Press 'OK'. This then shows in the table if DEP is enabled for the different processes. When doing this on the virtual machine we could see that DEP was disabled for fmws.exe (see figure \ref{DEP}).
