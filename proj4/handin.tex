@@ -194,7 +194,7 @@ From this (\escape{https://stackoverflow.com/questions/39189477/how-do-i-determi
 \begin{itemize}
 	\item In the \escape{IMAGE_FILE_HEADER} structure we can see that if the flag \escape{IMAGE_FILE_RELOCS_STRIPPED = 0x0001} is set in the Characteristics field, this means that the file is not relocatable. (\escape{https://msdn.microsoft.com/en-us/library/windows/desktop/ms680313(v=vs.85).aspx})
 
-	\item In the \escape{IMAGE_OPTIONAL_HEADER} structure we can see that the if flag \escape{IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE = 0x0040} is set in the DLLCharacteristics field, it means that the file can be relocated at load time (relate this to /DYNAMICBASE from above). (\escape{https://msdn.microsoft.com/en-us/library/windows/desktop/ms680339(v=vs.85).aspx})
+	\item In the \escape{IMAGE_OPTIONAL_HEADER} structure we can see that the if flag \escape{IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE = 0x0040} is set in the DLLCharacteristics field, it means that the file can be relocated at load time (relate this to /DYNAMICBASE from above). (\escape{https://msdn.microsoft.com/en-us/library/windows/desktop/ms680339(v=vs.85).aspx}). A file must be relocatable in order to have ASLR enabled.
 \end{itemize}
 
 As suggested in the StackOverflow answer mentioned above, we installed PEView and checked the file headers for ImageLoad.dll and fmws.exe. See figures \ref{relocImg}, \ref{dynamicImg}, \ref{reloc-fmws} and \ref{dynamic-fmws} for this.
@@ -265,6 +265,10 @@ One way to check if DEP is enabled for a program in Windows 8 is to open the Tas
     \subsection{Assignment 7}
 
       The exploit could be modified in the following way to work under DEP:
+
+Find gadgets so that we have an uninterrupted ROP chain (without NOPs)
+
+Use Windows functions. \escape{https://www.exploit-db.com/exploits/42304/} and \escape{https://www.corelan.be/index.php/2010/06/16/exploit-writing-tutorial-part-10-chaining-dep-with-rop-the-rubikstm-cube/}
 
       \begin{verbatim}
    [ Text explaining how the exploit could
