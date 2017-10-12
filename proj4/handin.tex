@@ -7,8 +7,10 @@
 \usepackage{hyperref}
 \usepackage{tikz}
 \usepackage{enumitem}
+\usepackage[Q=yes]{examplep}
 
 \newcommand{\command}[1]{\texttt{#1}}
+\newcommand{\escape}[1]{\PVerb{#1}}
 
 \begin{document}
 
@@ -23,6 +25,7 @@
     \LARGE{Anatomy of an Exploit} \\
     \vspace{1cm}
     \large{by: \\ \vspace{0.2cm}
+	\textit{adsec03} \\
         Stefan Eng \texttt{<atn08sen@student.lu.se>} \\
         Rasmus Olofzon \texttt{<muh11rol@student.lu.se>}
         } \\
@@ -39,7 +42,7 @@
 
     \subsection{Assignment 1 -- Running the exploit}
 
-      Executing the exploit.py file without the software started resulted in a
+      Executing the python file exploit.py without the software started resulted in a
       command prompt displays the following:
       \begin{verbatim}
   [*] Connecting to 192.168.0.1...
@@ -49,21 +52,22 @@
       Analyzing the exploit script reveals that it tries to connect to and
       exploit an instance of \textit{Easy File Management Web Server v5.3} to trigger a
       remote buffer overflow. If the exploit is successful, it should close the
-      management software and bring up an instance of the windows calculator.
+      management software and bring up an instance of the Windows calculator.
 
       After starting the web management software and running the exploit again,
       this is what happens.
 
     \subsection{Assignment 2}
+	In the exploit.py file a \texttt{payload} string is constructed. Most of the parts it is constructed with are hex values packed in an unsigned long little endian fashion (e. g. \escape{pack('<L',0x10022aac)}). A relatively low-risk guess is that these hex values are memory addresses for different gadgets used in the attack. This is also in part confirmed by the comments supplied in the code. Some parts are also \escape{\x90} repeated a number of times. \escape{\x90} in x86 architecture corresponds to the NOP operation, which does nothing (stands for no operation). Last in the \texttt{payload} is a \texttt{shellcode} string, which after consulting \escape{https://defuse.ca/online-x86-assembler.htm} seems to be x86 instructions.
 
-      Clarification of which instructions the different gadgets are composed
-      of.
+      Here follows a clarification of which instructions the different gadgets are composed
+      of. The NOPs and the shellcode are left out.
 
       \begin{description}[style=multiline,leftmargin=3.5cm]
-        \item[junk0]{80 \texttt{NOP}}
+        %\item[junk0]{80 \texttt{NOP}}
         \item[call\_edx]{\texttt{JMP 0xffffffda \\
                                  ADD DWORD PTR [EAX],EDX}}
-        \item[junk1]{280 \texttt{NOP}}
+        %\item[junk1]{280 \texttt{NOP}}
         \item[ppr]{\texttt{%
             POP EBX \\
             POP ECX \\
@@ -92,7 +96,10 @@
       This is a schematic representation of the stack after the overflow with
       the payload has occurred.
 
-      \input{input/stack_before.tex}
+      %\input{input/stack_before.tex}
+	\begin{verbatim}
+        		[input stack illustration here]
+	\end{verbatim}
 
     \subsection{Assignment 3}
 
@@ -133,7 +140,52 @@
 
     \subsection{Assignment 4}
 
-      The following parts of the memory are not protected by the ASLR:
+Firstly, since the memory addresses specified in exploit.py are constants, this tells us that at least ImageLoad.dll (where the parts of the payload that are not \texttt{shellcode} are injected) does not have ASLR enabled. However, let us look for some answers:
+
+From Microsoft's documentation for ISVs (Independent Software Vendor) (\escape{https://msdn.microsoft.com/en-us/library/bb430720.aspx}) we find that:
+
+\begin{itemize}
+	\item "ASLR moves executable images into random locations when a system boots [..]" \\
+	\item "By default, Windows Vista and later will randomize system DLLs and EXEs, but  DLLs and EXEs created by ISVs must opt in to support ASLR using the /DYNAMICBASE linker option." 
+%\end{itemize}
+	\item "ASLR also randomizes heap and stack memory:
+
+\begin{itemize}
+		\item When an application creates a heap in Windows Vista and later, the heap manager will create that heap at a random location to help reduce the chance that an attempt to exploit a heap-based buffer overrun succeeds. Heap randomization is enabled by default for all applications running on Windows Vista and later.
+		\item When a thread starts in a process linked with /DYNAMICBASE, Windows Vista and later moves the thread's stack to a random location to help reduce the chance that a stack-based buffer overrun exploit will succeed"
+	\end{itemize}
+\end{itemize}
+
+This tells us that the location for executables is randomised at system boot, the location for application heap is randomised at heap creation and the location for a thread's stack is randomised at process start. This means that if ASLR is enabled, heap and stack memory addresses should change between program executions (in our case debugging sessions) and application's location in memory should change after a restart of the virtual machine. Let us try that, but first let us take a theoretical (sort of) approach to this: from this (\escape{https://stackoverflow.com/questions/39189477/how-do-i-determine-if-an-exe-or-dll-participate-in-aslr-i-e-is-relocatable}) answer to a StackOverflow question we see how we can check if the ISV has opted in to support ASLR, as described above. This is also described in Microsoft's own documentation on file headers:
+
+\begin{itemize}
+	\item In the \escape{IMAGE_FILE_HEADER} structure we can see that if the flag \escape{IMAGE_FILE_RELOCS_STRIPPED = 0x0001} is set in the Characteristics field, this means that the file is not relocatable. (\escape{https://msdn.microsoft.com/en-us/library/windows/desktop/ms680313(v=vs.85).aspx})
+
+	\item In the \escape{IMAGE_OPTIONAL_HEADER} structure we can see that the if flag \escape{IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE = 0x0040} is set in the DLLCharacteristics field, it means that the file can be relocated at load time. (\escape{https://msdn.microsoft.com/en-us/library/windows/desktop/ms680339(v=vs.85).aspx}) 
+\end{itemize}
+
+As suggested in the StackOverflow answer mentioned above, we installed PEView and checked the file headers for ImageLoad.dll and fmws.exe. See Figure X, Y, Z, and Å for this.
+
+	\begin{verbatim}
+		[ INSERT PICS HERE]
+	\end{verbatim}
+ 
+From this can be seen that ImageLoad.dll is not relocatable and ASLR is not enabled, and that fmws.exe is relocatable but ASLR is not enabled. Now, with a hypothesis about our experiment (i. e. memory location for fmws.exe contra Imageload.dll and stack addresses will not change between debugging sessions or VM restarts) from above, let us register stack memory address for ImageLoad.dll and fmws.exe between to debugging sessions. We set a breakpoint at \texttt{kungfu} gadget's address and also check the memory address when fmws.exe is entered.
+
+Run 1
+\begin{center}
+  \begin{tabular}{ | l | c | r }
+    \hline
+    Memory address IL &  1 & 2  \\ \hline
+    Stack address IL & 5 & 6  \\ \hline
+    Memory  address IL & 5 & 6  \\ \hline
+    Memory address fmws &  1 & 2  \\ \hline
+    Stack address fmws & 5 & 6  \\ \hline
+    Memory  address fmws & 5 & 6  \\ \hline
+  \end{tabular}
+\end{center}
+
+
 
       \begin{verbatim}
    [ I guess this will be replaced with some kind of memory ranges? ]

@@ -116,7 +116,9 @@ Because hidden_data may also be encrypted?
 
 ## Key handling:
 ### What is OoB? Key type: session, short –lived, master keys?
+**OoB**: Out of Bound, not created inside entity but in other place
 
+**Ephemeral keys** contra **master keys**
 
 ### Simmons’ Bound. Key entropy loss as result of protection (probability of impersonation).
 
@@ -125,20 +127,32 @@ Because hidden_data may also be encrypted?
 
 ## Authentication:
 ### What does AAA stands for?
-
+* **Authentication** - Is this the right person/entity?
+* **Authorization** - What is this person allowed to do?
+* **Accounting** - Logging of user activity
 ### What is a challenge-response scheme and what is it used for.
 
 ### What can be used for authentication? What is two or three and multi factor authentication?
 
 ### What is CHAP and how does it work?
+**Challenge Handshake Authentication Protocol**
+
+Both CHAP and PAP protocols were created to manage remote access
+users.
 
 ### Radius: how do the two Radius alternatives work? Where is the key stored used during the authentication? Compare here the two alternatives. Pros and cons to use alternative 2?
+
+(CHAP and RADIUS can be used together, then Radius as the database lookup part of CHAP)
 
 ### What is Diameter?
 
 ### Give some examples of features that make Diameter better than Radius.
 
 ### What is EAP and what is its purpose?
+(PAP and CHAP) => **EAP**!
+
+* Is a framework to support different authentication methods
+* has certain predefined auth methods
 
 ### What is EAP-AKA?
 
@@ -599,7 +613,7 @@ SELinux modes = {Enabled = { Enforcing, Permissive }, Disabled }
 ### What is MLS? Example of MLS in basic computer security book.
 **MLS:** Multi-Level Security
 
-### Why has SELinux problems with Text Relocation?
+### Why does SELinux have problems with Text Relocation?
 A text relocation is a memory address in the "LOAD
 READ-EXECUTE" text segment of a shared library where
 text segment means the segment that contains the
@@ -630,6 +644,7 @@ file (often a shared library).
 ### What is an HSM? See Link to SANS: An Overview of Hardware Security Modules in literature list.
 ### What is PKCS#11?
 ### How can people trust a HSM product?
+
 ## Smartcard
 ### How can you interact with the functions in a smartcard: APDUs. Command and response APDUs. When does the card itself send data, which is not as a result of command. The smartcard is essentially a server.
 ### Existence of the T=0 protocol and T=1 protocol. What is T=1 especially designed for? You do not have to know the details by heart of these protocols. Such will be given if needed.
@@ -645,7 +660,7 @@ file (often a shared library).
 ### Why is crypto considered to be problematic for contactless cards? Think here about power and allowed
 ### time to interact with the reading device.
 ### How does the Hopper-Blum scheme work and why is it secure?
-###W hy is the blinding vector needed on slide 108/ Lect7
+### Why is the blinding vector needed on slide 108/ Lect7
 ### What is the importance of the presence of noise problem for the Hopper-Blum scheme?
 ### What is SGX?
 ### What is an enclave and what protection one has for data and code in an enclave?
@@ -694,3 +709,10 @@ KNOX concept?
 * E. g. $Z_4 = {1,3}$
 * $a^2mod N$, squares
 * $(a/N)=(p/N)(q / N)$
+
+# SW security
+**static/dynamic analysis**
+* låt kvalificerade personer använda dessa (ex om errors från en sådan checker som inte eg är fel, men okvalificerad/klantig person gick in och ändrade koden för att 'programmet skulle bli nöjt' och introducerade då fel i huvudprogrammet)
+* Fr o m (Lect10, slide 59) 
+
+**Taint analysis** - som magoperation med kontrastvätska
