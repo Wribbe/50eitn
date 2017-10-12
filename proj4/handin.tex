@@ -9,6 +9,7 @@
 \usepackage{enumitem}
 \usepackage[Q=yes]{examplep}
 \usepackage{graphicx}
+\usepackage{multicol}
 
 \newcommand{\command}[1]{\texttt{#1}}
 \newcommand{\escape}[1]{\PVerb{#1}}
@@ -72,10 +73,20 @@
        \escape{https://defuse.ca/online-x86-assembler.htm} seems to be x86
        instructions.
 
-      This is a schematic representation of the stack after the overflow with
-      the payload has occurred.
+       \newpage
 
-      \input{input/stack_before.tex}
+      This is a schematic representation of the stack before the overflow has
+      occurred.
+
+      \begin{multicols}{3}
+        \input{input/stack_before_0.tex}
+        \input{input/stack_before_1.tex}
+        \input{input/stack_before_2.tex}
+      \end{multicols}
+
+      These are the same relative positions after the overflow has occurred.
+
+      \input{input/stack_after.tex}
 
       Clarification of which instructions the different gadgets are composed
       of.
@@ -110,21 +121,28 @@
         }}
       \end{description}
 
-      This is a schematic representation of the stack after the overflow with
-      the payload has occurred.
-
     \subsection{Assignment 3}
 
       After attaching to the software and putting a breakpoint at the address
-      0x00468702, the following instructions were executed until the executable
-      hit the shell-code payload.
+      \\
+      \escape{0x00468702}, the following instructions were run until the
+      execution hit the shell-code payload.
 
-      \begin{verbatim}
-        [list of all the instructions with NOP sections compressed]
-      \end{verbatim}
+      \input{input/command_selection.tex}
 
-      Analyzing the instructions the following were deemed most vital for the
-      exploit to work.
+      where the marked entries were those deemed most vital for the exploit
+      functionality.
+
+      \begin{description}[style=multiline]
+        \item[00]{
+          The entry point of the exploit since the overflow makes it
+          possible to specify the value of \escape{EDX}.
+        }
+        \item[09-14{
+          This sequence enables the stack-pivot to occur. This makes the
+          execution to continue
+        }
+      \end{description}
 
       \begin{verbatim}
         [Numbered list of exploites picked from the list above]
@@ -144,6 +162,7 @@
       \end{verbatim}
 
       The filler is there to [...]
+
 
       \begin{verbatim}
         [ Discussion about NOP-sleads (+ pictures) ]
@@ -168,8 +187,8 @@ From Microsoft's documentation for ISVs (Independent Software Vendor) (\escape{h
 	\end{itemize}
 \end{itemize}
 
-This tells us that if ASLR is enabled, the location for executables is randomised at system boot, the location for application heap is randomised at heap creation and the location for a thread's stack is randomised at process start. 
-%This means that if ASLR is enabled, heap and stack memory addresses should change between program executions (in our case debugging sessions) and application's location in memory should change after a restart of the virtual machine. Let us try that, but first let us take a theoretical (sort of) approach to this: 
+This tells us that if ASLR is enabled, the location for executables is randomised at system boot, the location for application heap is randomised at heap creation and the location for a thread's stack is randomised at process start.
+%This means that if ASLR is enabled, heap and stack memory addresses should change between program executions (in our case debugging sessions) and application's location in memory should change after a restart of the virtual machine. Let us try that, but first let us take a theoretical (sort of) approach to this:
 From this (\escape{https://stackoverflow.com/questions/39189477/how-do-i-determine-if-an-exe-or-dll-participate-in-aslr-i-e-is-relocatable}) answer to a StackOverflow question we see how we can check if the ISV has opted in to support ASLR, as described above. This is also described in Microsoft's own documentation on file headers:
 
 \begin{itemize}
@@ -204,9 +223,9 @@ As suggested in the StackOverflow answer mentioned above, we installed PEView an
 	\includegraphics[width=\textwidth]{noASLRforfmws.png}
 \end{figure}
 
-From this can be seen that ImageLoad.dll is relocatable but ASLR is not enabled, and that fmws.exe is not relocatable and ASLR is not enabled. 
+From this can be seen that ImageLoad.dll is relocatable but ASLR is not enabled, and that fmws.exe is not relocatable and ASLR is not enabled.
 
-%Now, with a hypothesis about our experiment from above (i. e. memory location for fmws.exe contra Imageload.dll and stack addresses will not change between debugging sessions or VM restarts), let us register relevant values and see if we can reject our hypothesis or not. 
+%Now, with a hypothesis about our experiment from above (i. e. memory location for fmws.exe contra Imageload.dll and stack addresses will not change between debugging sessions or VM restarts), let us register relevant values and see if we can reject our hypothesis or not.
 
 %We set a breakpoint at \texttt{kungfu} gadget's address (\escape{0x10022aac}) and also check when fmws.exe is entered and c.
 
@@ -221,7 +240,7 @@ From this can be seen that ImageLoad.dll is relocatable but ASLR is not enabled,
   %\end{tabular}
 %\end{center}
 
-%(Sidenote: if breakpoint at 0x00457452, this is inside 0x00457451, which has value E8 FFE40C00 | CALL fmws.00525955. But, .52 has value ? FFE4 | JMP ESP . 
+%(Sidenote: if breakpoint at 0x00457452, this is inside 0x00457451, which has value E8 FFE40C00 | CALL fmws.00525955. But, .52 has value ? FFE4 | JMP ESP .
 %Guess this is the alignment exploit thingie.)
 
     \subsection{Assignment 5}
