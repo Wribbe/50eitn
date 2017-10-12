@@ -8,6 +8,7 @@
 \usepackage{tikz}
 \usepackage{enumitem}
 \usepackage[Q=yes]{examplep}
+\usepackage{graphicx}
 
 \newcommand{\command}[1]{\texttt{#1}}
 \newcommand{\escape}[1]{\PVerb{#1}}
@@ -167,21 +168,43 @@ From Microsoft's documentation for ISVs (Independent Software Vendor) (\escape{h
 	\end{itemize}
 \end{itemize}
 
-This tells us that the location for executables is randomised at system boot, the location for application heap is randomised at heap creation and the location for a thread's stack is randomised at process start. This means that if ASLR is enabled, heap and stack memory addresses should change between program executions (in our case debugging sessions) and application's location in memory should change after a restart of the virtual machine. Let us try that, but first let us take a theoretical (sort of) approach to this: from this (\escape{https://stackoverflow.com/questions/39189477/how-do-i-determine-if-an-exe-or-dll-participate-in-aslr-i-e-is-relocatable}) answer to a StackOverflow question we see how we can check if the ISV has opted in to support ASLR, as described above. This is also described in Microsoft's own documentation on file headers:
+This tells us that if ASLR is enabled, the location for executables is randomised at system boot, the location for application heap is randomised at heap creation and the location for a thread's stack is randomised at process start. 
+%This means that if ASLR is enabled, heap and stack memory addresses should change between program executions (in our case debugging sessions) and application's location in memory should change after a restart of the virtual machine. Let us try that, but first let us take a theoretical (sort of) approach to this: 
+From this (\escape{https://stackoverflow.com/questions/39189477/how-do-i-determine-if-an-exe-or-dll-participate-in-aslr-i-e-is-relocatable}) answer to a StackOverflow question we see how we can check if the ISV has opted in to support ASLR, as described above. This is also described in Microsoft's own documentation on file headers:
 
 \begin{itemize}
 	\item In the \escape{IMAGE_FILE_HEADER} structure we can see that if the flag \escape{IMAGE_FILE_RELOCS_STRIPPED = 0x0001} is set in the Characteristics field, this means that the file is not relocatable. (\escape{https://msdn.microsoft.com/en-us/library/windows/desktop/ms680313(v=vs.85).aspx})
 
-	\item In the \escape{IMAGE_OPTIONAL_HEADER} structure we can see that the if flag \escape{IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE = 0x0040} is set in the DLLCharacteristics field, it means that the file can be relocated at load time. (\escape{https://msdn.microsoft.com/en-us/library/windows/desktop/ms680339(v=vs.85).aspx})
+	\item In the \escape{IMAGE_OPTIONAL_HEADER} structure we can see that the if flag \escape{IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE = 0x0040} is set in the DLLCharacteristics field, it means that the file can be relocated at load time (relate this to /DYNAMICBASE from above). (\escape{https://msdn.microsoft.com/en-us/library/windows/desktop/ms680339(v=vs.85).aspx})
 \end{itemize}
 
-As suggested in the StackOverflow answer mentioned above, we installed PEView and checked the file headers for ImageLoad.dll and fmws.exe. See Figure X, Y, Z, and Å for this.
+As suggested in the StackOverflow answer mentioned above, we installed PEView and checked the file headers for ImageLoad.dll and fmws.exe. See figures \ref{relocImg}, \ref{dynamicImg}, \ref{reloc-fmws} and \ref{dynamic-fmws} for this.
 
-	\begin{verbatim}
-		[ INSERT PICS HERE]
-	\end{verbatim}
- 
-From this can be seen that ImageLoad.dll is not relocatable and ASLR is not enabled, and that fmws.exe is relocatable but ASLR is not enabled. 
+\begin{figure}
+	\caption{\escape{IMAGE_FILE_RELOCS_STRIPPED} is not set \escape{=>} ImageLoad.dll is relocatable.}\vspace{0.2em}
+	\label{relocImg}
+	\includegraphics[width=\textwidth]{noRelocImageLoad.png}
+\end{figure}
+
+\begin{figure}
+	\caption{\escape{IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE} is not set \escape{=>} ImageLoad.dll is not relocated at load time \escape{=>} ASLR not enabled.}\vspace{0.2em}
+	\label{dynamicImg}
+	\includegraphics[width=\textwidth]{noASLRforImageLoad.png}
+\end{figure}
+
+\begin{figure}
+	\caption{\escape{IMAGE_FILE_RELOCS_STRIPPED} is set \escape{=>} fmws.exe is not relocatable.}\vspace{0.2em}
+	\label{reloc-fmws}
+	\includegraphics[width=\textwidth]{relocfmws.png}
+\end{figure}
+
+\begin{figure}
+	\caption{\escape{IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE} is not set \escape{=>} fmws.exe is not relocated at load time \escape{=>} ASLR not enabled.} \vspace{0.2em}
+	\label{dynamic-fmws}
+	\includegraphics[width=\textwidth]{noASLRforfmws.png}
+\end{figure}
+
+From this can be seen that ImageLoad.dll is relocatable but ASLR is not enabled, and that fmws.exe is not relocatable and ASLR is not enabled. 
 
 %Now, with a hypothesis about our experiment from above (i. e. memory location for fmws.exe contra Imageload.dll and stack addresses will not change between debugging sessions or VM restarts), let us register relevant values and see if we can reject our hypothesis or not. 
 
@@ -212,15 +235,12 @@ From this can be seen that ImageLoad.dll is not relocatable and ASLR is not enab
 
     \subsection{Assignment 6}
 
-      \begin{verbatim}
-   [ Tell if the software has DEP enabled or not ]
-      \end{verbatim}
 
-      Which can be determined by ...
-
-      \begin{verbatim}
-   [ Explain how to detect if DEP is enabled or not (screenshot?) ]
-      \end{verbatim}
+ \begin{figure}
+	\caption{Screenshot of task manager with column DEP enabled, showing that DEP is disabled for fmws.exe.}\vspace{0.2em}
+	\label{DEP}
+	\includegraphics[width=\textwidth]{DEPdisabled-fmws.png}
+\end{figure}
 
 
     \subsection{Assignment 7}
