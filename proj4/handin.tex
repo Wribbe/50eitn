@@ -301,9 +301,9 @@ One way to check if DEP is enabled for a program in Windows 8 is to open the Tas
     \subsection{Assignment 7}
 We have found different approaches to write an exploit that bypasses DEP:
 \begin{itemize}
-	\item Find gadgets so that we have an uninterrupted ROP chain (without e. g. NOPs)
+	\item Find gadgets so that we have an uninterrupted ROP chain (without e. g. NOPs). A tool that could help find such a chain is \texttt{mona.py}, \escape{https://github.com/corelan/mona}
 	\item "change the DEP settings for the current process before running shellcode" (\escape{https://www.corelan.be/index.php/2010/06/16/exploit-writing-tutorial-part-10-chaining-dep-with-rop-the-rubikstm-cube/})
-	\item Use Windows functions. (\escape{https://www.exploit-db.com/exploits/42304/}) and (\escape{https://www.exploit-db.com/exploits/42186/}) both use Windows function calls, which is also described in corelan site linked above as a strategy for bypassing DEP.
+	\item Use Windows functions. (\escape{https://www.exploit-db.com/exploits/42304/}) and (\escape{https://www.exploit-db.com/exploits/42186/}) both use Windows function calls, which is also described in corelan site linked above (rubik's cube) as a strategy for bypassing DEP.
 \end{itemize}
 
 \end{document}
