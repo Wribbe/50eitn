@@ -4,12 +4,14 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{listings}
-\usepackage{hyperref}
 \usepackage{tikz}
 \usepackage{enumitem}
 \usepackage[Q=yes]{examplep}
 \usepackage{graphicx}
 \usepackage{multicol}
+\usepackage[hidelinks]{hyperref}
+\usepackage{breakurl}
+%\usepackage[hyphens]{url}
 
 \newcommand{\command}[1]{\texttt{#1}}
 \newcommand{\escape}[1]{\PVerb{#1}}
@@ -70,7 +72,7 @@
        corresponds to the NOP operation, which does nothing (stands for no
        operation). Last in the \texttt{payload} is a \texttt{shellcode} string,
        which after consulting
-       \escape{https://defuse.ca/online-x86-assembler.htm} seems to be x86
+       \url{https://defuse.ca/online-x86-assembler.htm} seems to be x86
        instructions.
 
        \newpage
@@ -208,7 +210,7 @@
 
 Firstly, since the memory addresses specified in exploit.py are constants, this tells us that at least ImageLoad.dll (where the parts of the payload that are not \texttt{shellcode} are injected) does not have ASLR enabled. However, let us look for some answers:
 
-From Microsoft's documentation for ISVs (Independent Software Vendor) (\escape{https://msdn.microsoft.com/en-us/library/bb430720.aspx}) we find that:
+From Microsoft's documentation for ISVs (Independent Software Vendor) (\url{https://msdn.microsoft.com/en-us/library/bb430720.aspx}) we find that:
 
 \begin{itemize}
 	\item "ASLR moves executable images into random locations when a system boots [..]" \\
@@ -224,12 +226,17 @@ From Microsoft's documentation for ISVs (Independent Software Vendor) (\escape{h
 
 This tells us that if ASLR is enabled, the location for executables is randomised at system boot, the location for application heap is randomised at heap creation and the location for a thread's stack is randomised at process start.
 %This means that if ASLR is enabled, heap and stack memory addresses should change between program executions (in our case debugging sessions) and application's location in memory should change after a restart of the virtual machine. Let us try that, but first let us take a theoretical (sort of) approach to this:
-From this (\escape{https://stackoverflow.com/questions/39189477/how-do-i-determine-if-an-exe-or-dll-participate-in-aslr-i-e-is-relocatable}) answer to a StackOverflow question we see how we can check if the ISV has opted in to support ASLR, as described above. This is also described in Microsoft's own documentation on file headers:
+From this (\url{https://stackoverflow.com/questions/39189477/how-do-i-determine-if-an-exe-or-dll-participate-in-aslr-i-e-is-relocatable}) answer to a StackOverflow question we see how we can check if the ISV has opted in to support ASLR, as described above. This is also described in Microsoft's own documentation on file headers:
 
 \begin{itemize}
-	\item In the \escape{IMAGE_FILE_HEADER} structure we can see that if the flag \escape{IMAGE_FILE_RELOCS_STRIPPED = 0x0001} is set in the Characteristics field, this means that the file is not relocatable. (\escape{https://msdn.microsoft.com/en-us/library/windows/desktop/ms680313(v=vs.85).aspx})
+	\item In the \escape{IMAGE_FILE_HEADER} structure we can see that if the flag
+    \escape{IMAGE_FILE_RELOCS_STRIPPED = 0x0001} is set in the Characteristics
+    field, this means that the file is not relocatable. (\url{https://msdn.microsoft.com/en-us/library/windows/desktop/ms680313(v=vs.85).aspx})
 
-	\item In the \escape{IMAGE_OPTIONAL_HEADER} structure we can see that the if flag \escape{IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE = 0x0040} is set in the DLLCharacteristics field, it means that the file can be relocated at load time (relate this to /DYNAMICBASE from above). (\escape{https://msdn.microsoft.com/en-us/library/windows/desktop/ms680339(v=vs.85).aspx}). A file must be relocatable in order to have ASLR enabled.
+	\item In the \escape{IMAGE_OPTIONAL_HEADER} structure we can see that the if
+    flag \escape{IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE = 0x0040} is set in the
+    DLLCharacteristics field, it means that the file can be relocated at load
+    time (relate this to /DYNAMICBASE from above). (\url{https://msdn.microsoft.com/en-us/library/windows/desktop/ms680339(v=vs.85).aspx}). A file must be relocatable in order to have ASLR enabled.
 \end{itemize}
 
 As suggested in the StackOverflow answer mentioned above, we installed PEView and checked the file headers for ImageLoad.dll and fmws.exe. See figures \ref{relocImg}, \ref{dynamicImg}, \ref{reloc-fmws} and \ref{dynamic-fmws} for this.
@@ -304,8 +311,8 @@ One way to check if DEP is enabled for a program in Windows 8 is to open the Tas
 We have found different approaches to write an exploit that bypasses DEP:
 \begin{itemize}
 	\item Find gadgets so that we have an uninterrupted ROP chain (without e. g. NOPs). A tool that could help find such a chain is \texttt{mona.py}, \escape{https://github.com/corelan/mona}
-	\item "change the DEP settings for the current process before running shellcode" (\escape{https://www.corelan.be/index.php/2010/06/16/exploit-writing-tutorial-part-10-chaining-dep-with-rop-the-rubikstm-cube/})
-	\item Use Windows functions. (\escape{https://www.exploit-db.com/exploits/42304/}) and (\escape{https://www.exploit-db.com/exploits/42186/}) both use Windows function calls (namely to \escape{VirtualProtect()}, which is also described in corelan site linked above (rubik's cube) as a strategy for bypassing DEP.
+	\item "change the DEP settings for the current process before running shellcode" (\url{https://www.corelan.be/index.php/2010/06/16/exploit-writing-tutorial-part-10-chaining-dep-with-rop-the-rubikstm-cube/})
+	\item Use Windows functions. (\url{https://www.exploit-db.com/exploits/42304/}) and (\url{https://www.exploit-db.com/exploits/42186/}) both use Windows function calls (namely to \url{VirtualProtect()}, which is also described in corelan site linked above (rubik's cube) as a strategy for bypassing DEP.
 \end{itemize}
 
 \end{document}
