@@ -133,12 +133,12 @@
       where the marked entries were those deemed most vital for the exploit
       functionality.
 
-      \begin{description}[style=multiline]
+      \begin{description}[style=multiline,leftmargin=1.5cm]
         \item[00]{
           The entry point of the exploit since the overflow makes it
           possible to specify the value of \escape{EDX}.
         }
-        \item[09-14{
+        \item[09-14]{
           This sequence enables the stack-pivot to occur. This makes the
           execution to continue
         }
