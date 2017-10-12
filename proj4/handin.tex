@@ -58,10 +58,26 @@
       this is what happens.
 
     \subsection{Assignment 2}
-	In the exploit.py file a \texttt{payload} string is constructed. Most of the parts it is constructed with are hex values packed in an unsigned long little endian fashion (e. g. \escape{pack('<L',0x10022aac)}). A relatively low-risk guess is that these hex values are memory addresses for different gadgets used in the attack. This is also in part confirmed by the comments supplied in the code. Some parts are also \escape{\x90} repeated a number of times. \escape{\x90} in x86 architecture corresponds to the NOP operation, which does nothing (stands for no operation). Last in the \texttt{payload} is a \texttt{shellcode} string, which after consulting \escape{https://defuse.ca/online-x86-assembler.htm} seems to be x86 instructions.
+       In the exploit.py file a \texttt{payload} string is constructed. Most of
+       the parts it is constructed with are hex values packed in an unsigned
+       long little endian fashion (e. g. \escape{pack('<L',0x10022aac)}). A
+       relatively low-risk guess is that these hex values are memory addresses
+       for different gadgets used in the attack. This is also in part confirmed
+       by the comments supplied in the code. Some parts are also \escape{\x90}
+       repeated a number of times.  \escape{\x90} in x86 architecture
+       corresponds to the NOP operation, which does nothing (stands for no
+       operation). Last in the \texttt{payload} is a \texttt{shellcode} string,
+       which after consulting
+       \escape{https://defuse.ca/online-x86-assembler.htm} seems to be x86
+       instructions.
 
-      Here follows a clarification of which instructions the different gadgets are composed
-      of. The NOPs and the shellcode are left out.
+      This is a schematic representation of the stack after the overflow with
+      the payload has occurred.
+
+      \input{input/stack_before.tex}
+
+      Clarification of which instructions the different gadgets are composed
+      of.
 
       \begin{description}[style=multiline,leftmargin=3.5cm]
         %\item[junk0]{80 \texttt{NOP}}
@@ -95,11 +111,6 @@
 
       This is a schematic representation of the stack after the overflow with
       the payload has occurred.
-
-      %\input{input/stack_before.tex}
-	\begin{verbatim}
-        		[input stack illustration here]
-	\end{verbatim}
 
     \subsection{Assignment 3}
 
@@ -146,7 +157,7 @@ From Microsoft's documentation for ISVs (Independent Software Vendor) (\escape{h
 
 \begin{itemize}
 	\item "ASLR moves executable images into random locations when a system boots [..]" \\
-	\item "By default, Windows Vista and later will randomize system DLLs and EXEs, but  DLLs and EXEs created by ISVs must opt in to support ASLR using the /DYNAMICBASE linker option." 
+	\item "By default, Windows Vista and later will randomize system DLLs and EXEs, but  DLLs and EXEs created by ISVs must opt in to support ASLR using the /DYNAMICBASE linker option."
 %\end{itemize}
 	\item "ASLR also randomizes heap and stack memory:
 
@@ -161,7 +172,7 @@ This tells us that the location for executables is randomised at system boot, th
 \begin{itemize}
 	\item In the \escape{IMAGE_FILE_HEADER} structure we can see that if the flag \escape{IMAGE_FILE_RELOCS_STRIPPED = 0x0001} is set in the Characteristics field, this means that the file is not relocatable. (\escape{https://msdn.microsoft.com/en-us/library/windows/desktop/ms680313(v=vs.85).aspx})
 
-	\item In the \escape{IMAGE_OPTIONAL_HEADER} structure we can see that the if flag \escape{IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE = 0x0040} is set in the DLLCharacteristics field, it means that the file can be relocated at load time. (\escape{https://msdn.microsoft.com/en-us/library/windows/desktop/ms680339(v=vs.85).aspx}) 
+	\item In the \escape{IMAGE_OPTIONAL_HEADER} structure we can see that the if flag \escape{IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE = 0x0040} is set in the DLLCharacteristics field, it means that the file can be relocated at load time. (\escape{https://msdn.microsoft.com/en-us/library/windows/desktop/ms680339(v=vs.85).aspx})
 \end{itemize}
 
 As suggested in the StackOverflow answer mentioned above, we installed PEView and checked the file headers for ImageLoad.dll and fmws.exe. See Figure X, Y, Z, and Å for this.
