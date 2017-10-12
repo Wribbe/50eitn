@@ -170,32 +170,25 @@ As suggested in the StackOverflow answer mentioned above, we installed PEView an
 		[ INSERT PICS HERE]
 	\end{verbatim}
  
-From this can be seen that ImageLoad.dll is not relocatable and ASLR is not enabled, and that fmws.exe is relocatable but ASLR is not enabled. Now, with a hypothesis about our experiment (i. e. memory location for fmws.exe contra Imageload.dll and stack addresses will not change between debugging sessions or VM restarts) from above, let us register stack memory address for ImageLoad.dll and fmws.exe between to debugging sessions. We set a breakpoint at \texttt{kungfu} gadget's address and also check the memory address when fmws.exe is entered.
+From this can be seen that ImageLoad.dll is not relocatable and ASLR is not enabled, and that fmws.exe is relocatable but ASLR is not enabled. 
 
-Run 1
-\begin{center}
-  \begin{tabular}{ | l | c | r }
-    \hline
-    Memory address IL &  1 & 2  \\ \hline
-    Stack address IL & 5 & 6  \\ \hline
-    Memory  address IL & 5 & 6  \\ \hline
-    Memory address fmws &  1 & 2  \\ \hline
-    Stack address fmws & 5 & 6  \\ \hline
-    Memory  address fmws & 5 & 6  \\ \hline
-  \end{tabular}
-\end{center}
+%Now, with a hypothesis about our experiment from above (i. e. memory location for fmws.exe contra Imageload.dll and stack addresses will not change between debugging sessions or VM restarts), let us register relevant values and see if we can reject our hypothesis or not. 
 
+%We set a breakpoint at \texttt{kungfu} gadget's address (\escape{0x10022aac}) and also check when fmws.exe is entered and c.
 
+%\begin{center}
+  %\begin{tabular}{ | l | c | c | c }
+    %\hline
+   %- & \#1 & \#2 (debug sess) & \#3 (system reboot) \\ \hline
+   % Memory address start IL &  0x00577000 & 0x00577000  & 0x00577000 \\ \hline
+   % Stack address IL & 0x03E599FC & 0x03D399FC & 0x03FF99FC   \\ \hline
+   % Memory address fmws &  0x77CB014D & 0x77CB014D & 0x750678D7   \\ \hline
+   % Stack address fmws & 0x03B0FDF4 & 0x0393FDF4 & 0x001820D8   \\ \hline
+  %\end{tabular}
+%\end{center}
 
-      \begin{verbatim}
-   [ I guess this will be replaced with some kind of memory ranges? ]
-      \end{verbatim}
-
-      Which is possible to tell because of:
-
-      \begin{verbatim}
-   [ Explain how to tell that the memory was not protected by ASLR ]
-      \end{verbatim}
+%(Sidenote: if breakpoint at 0x00457452, this is inside 0x00457451, which has value E8 FFE40C00 | CALL fmws.00525955. But, .52 has value ? FFE4 | JMP ESP . 
+%Guess this is the alignment exploit thingie.)
 
     \subsection{Assignment 5}
 
