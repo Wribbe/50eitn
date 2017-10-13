@@ -15,6 +15,7 @@
 
 \newcommand{\command}[1]{\texttt{#1}}
 \newcommand{\e}[1]{\PVerb{#1}}
+\newcommand{\comm}[1]{\itshape{{\leavevmode\color{gray}#1}}}
 \newcommand{\todo}[1]{
   \begin{center}
     [\textcolor{red}{\textbf{\textit{#1}}}]
@@ -45,16 +46,171 @@
 
   \newpage
 
+
+  \comm{%
+    Project description:
+
+    We have a battery driven camera device that has the following components:
+    camera, PCB board with flash memory, RAM, ARM TrustZone CPU, TPM, JTAG
+    debug interface, LTE subsystem with USIM card reader, and special Flash
+    to hold an ID.
+
+    The battery is connected via a power management system, see Figure 1. You
+    can assume that the battery is normally connected to a charger and that
+    the battery lasts for 3 days of operation or recording and transmission.
+
+    Based on the requirements you should come up with an architecture/desing
+    of the camera device that meets the security, production and maintenance
+    requirements. You have to document the design and your motivations in the
+    projects report. In your design you can use various features from course
+    material presented thus far but you make use other insights too.
+  }
+
+  \section{General notes}
+
+    \subsection{Acronyms}
+
+    \begin{description}[style=multiline,leftmargin=1.7cm]
+      \item[CC]{
+          (Common Criteria) Secure systems evaluation criteria adopted by
+          $\sim$25 countries.
+      }
+      \item[TOE]{
+          (Target Of Evaluation) The system submitted for evaluation.
+      }
+      \item[ST]{
+          (Security Target) The set of security requirements used as the basis
+          for a security evaluations.
+      }
+      \item[EAL]{
+          (Evaluation Assurance Level) The evaluation level that is being
+          targeted (there are different levels that can be reached).
+      }
+      \item[TSF]{
+          (TOE Security Functions) The combination of software and hardware
+          that is necessary to enforce the chosen policy.
+      }
+      \item[PP]{
+          (Protection Profiles) Type of Common Criteria evaluation. Consists of
+          implementation-independent security requirements.
+      }
+      \item[SFR]{
+          (Security Functional Requirements) Describes a functional requirement
+          (input $\rightarrow$ behaviour $\rightarrow$ output) related to
+          security.
+      }
+    \end{description}
+
+    \subsection{CC evaluation types}
+
+      There are two types of Common Criteria evaluations.
+
+      \subsubsection{Protection profile evaluation}
+
+        The evaluation is concerned with a set of implementation-independent
+        requirements that are established for a category of similar products
+        and systems. A typical protection profile includes:
+        \begin{itemize}
+          \item{Introduction containing a description and overview of the
+            targeted system.}
+          \item{Description of the products or systems in question.}
+          \item{Description of the security environment in relation to the
+            products or systems.}
+          \item{Relevant security objectives.}
+          \item{Requirements on IT security.}
+          \item{Rationale behind the grouping.}
+        \end{itemize}
+        Example of protection profile groupings are; antivirus on workstations,
+        biometrics, firewalls and intrusion detection systems.
+
+      \subsubsection{Evaluation against a security target}
+      Sources:
+      \begin{itemize}
+        \item{\url{https://en.wikipedia.org/wiki/Security_Target}}
+        \item{\e{slides_on_cc.pdf}}
+      \end{itemize}
+
+        The security target contains a list of implementation-specific security
+        requirements that should be met by the system or product in question
+        together with the steps taken to meet those requirements. The document
+        can also reference relevant protection profiles that are fulfilled.
+         A typical security target includes:
+
+        \begin{itemize}
+          \item{Introduction of what the target does, key features and purpose.}
+          \item{Description of threats and assumptions present in the
+            operational environment.}
+          \item{Security objectives specifying solutions to the perceived
+            threats in both the target and its environment together with the
+            rationale these were chosen.}
+          \item{Definition of functional and assurance security requirements
+            together with the reason these are sufficient and necessary.}
+          \item{Target summary specification that enables readers to get a
+            general understanding of how the target is structured and
+            implemented. This section also provides a high-level view of how
+            each security functional requirement is solved through developed
+            software.}
+        \end{itemize}
+
   \section{Product description}
+
+    \comm{Description of product and design requirements that have been
+    considered.}
+
     \todo{0.5 page}
 
-  \section{Design requirements}
-    \todo{0.5 page}
+    \subsection{Security assumptions}
 
-  \section{High-level architectural overview}
+      \comm{Product-assumptions that affect security, maintenance and production
+      costs should be taken into account here.}
+
+      \todo{0.5 page}
+
+  \section{Architectural overview}
+
+    \comm{%
+      The first part is a short high-level architectural overview that explains
+      how your design is structured.  The level of your description is the
+      important focus here. Motivate your design choices. Do not go into
+      insignificant details. Upon reading your architectural overview, the
+      reader should clearly, correctly and quickly understand the structure of
+      your system. You are required to draw an image to illustrate this
+      structure (half page).
+
+      Your main challenge here is to use your technical writing ability to
+      explain technical details in a way that is easily absorbed and not so
+      easily misunderstood. Keep your description at a high structural level.
+      Only include details if they are important from a security perspective.
+      The intended audience for this part should be a student in your program
+      that has only taken the Basic Computer Security course. Upon reading your
+      description, the reader should understand the structure and main points
+      of your protection system.
+
+      This part should contain your Target Of Evaluation (TOE) and Security
+      Target (ST). Here you can be informal and not follow the Common Criteria
+      style of naming.
+    }
+
+
     \todo{2-3 pages}
 
   \section{Security evaluation}
+
+  \comm{%
+    The second part is a short Security evaluation of your design that explains
+    what types of protection you use and why. The list of security
+    consideration should list all attack types and major security issues you
+    can think of and explain if, why and/or how it is or is not applicable to
+    your system.  For each attack/issue, explain clearly and concisely what you
+    have done to protect your solution.  Or briefly explain why no protection
+    is needed. Your report should clearly contain a description that gives the
+    motives of your security related design choices.
+
+    Do not forget the consequences for design choices for the manufacturing and
+    repair costs.  Your evaluation should contain a table which row wise lists
+    the threats that you considered and
+  }
+
     \todo{2-3 pages + summery}
 
   \section{Peer reviews}
