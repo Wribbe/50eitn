@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+<!-- #set var="headImage"     value="/mall11/images/header-overlay-idalogo.png" -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html lang="en">
+<!-- LiU-mall --> 
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
+    <meta content='IE=EDGE' http-equiv='X-UA-Compatible'>
+    <title>IDA &gt; Home</title>
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <link rel="apple-touch-icon" href="/apple-touch-icon-114x114.png"/>
+
+    <meta name="dcterms.title" content="IDA &gt; Home"/>
+    <meta name="dcterms.creator" content="Webmaster"/>
+    <meta name="dcterms.format" content="text/html"/>
+    <meta name="dcterms.language" content="en" />
+    <meta name="dcterms.publisher" content="Linköping University"/>
+    <meta name="dcterms.date" content="2014-06-10"/>
+    <meta name="dcterms.modified" content="2014-06-10"/>
+
+
+    <meta name="viewport" id="viewport" content="width=device-width, user-scalable=yes,initial-scale=1.0"/>
+
+    <link rel="stylesheet" href="https://www.ida.liu.se/mall11/css/content.css" type="text/css"/>
+    <link rel="stylesheet" href="https://www.ida.liu.se/mall11/css/screen.css" media="screen" type="text/css"/>
+    <!--[if IE 6]><link rel="stylesheet" href="https://www.ida.liu.se/mall11/css/ie6.css" media="screen" type="text/css"/><![endif]-->
+    <link rel="stylesheet" href="https://www.ida.liu.se/mall11/css/print.css" media="print" type="text/css"/>
+    <link rel="stylesheet" href="https://www.ida.liu.se/mall11/css/mobile.css" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="/mall11/css/ida.css"/>
+
+    <link rel="stylesheet" type="text/css" href="/index.css?2"/>
+
+    <link rel="alternate" href="http://www.liu.se/liu-nytt/arkiv/nyhetsarkiv?l=sv&amp;format=rss" type="application/rss+xml" title="LiU-nytt" />
+    <link rel="alternate" href="http://www.liu.se/liu-nytt/arkiv/nyhetsarkiv?l=en&amp;format=rss" type="application/rss+xml" title="LiU-news" />
+    <link rel="alternate" href="http://www.liu.se/liu-nytt/pressmed/arkiv?format=rss" type="application/rss+xml" title="Pressmeddelanden"/>
+    <link rel="alternate" href="http://www.liu.se/rss/liu-jobs-sv.rss" type="application/rss+xml" title="Lediga jobb"/>
+    <link rel="alternate" href="http://www.liu.se/rss/liu-jobs-en.rss" type="application/rss+xml" title="Vacancies"/>
+
+    <script type="text/javascript" src="https://www.ida.liu.se/mall11/script/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.ida.liu.se/mall11/script/jquery.cookie.min.js"></script>
+    <script type="text/javascript" src="https://www.ida.liu.se/mall11/script/mobile.js"></script>
+
+    <script type="text/javascript" src="/static/javascript/jquery.innerfade-fix.js"></script>
+
+  </head>
+  <body class="full">
+
+  <!-- Google Tag Manager -->
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-M3QRGB" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-M3QRGB');</script>
+  <!-- End Google Tag Manager -->
+
+    <div id="head">
+      
+      <div id="head-top">&nbsp;</div>
+      <div id="head-content"><div class="head-width-limit">
+        <div id="head-lang">
+	  <a title="Swedish web site" href="/index.sv.shtml"><img src="/mall11/images/flag-sv.png" alt="" width="17" height="10"/>Swedish web site</a>
+	</div>
+        <div id="head-search">
+          <form action="/bin/search_redirect.pl" method="post">
+	    <p>
+	      <input id="search-string" accesskey="4" name="q" size="12" title="Enter search string" placeholder="Search"/>
+	      <select id="search-source" name="site" title="Select search area">
+	        
+		<option value="ida">Search IDA.LiU.se</option>
+		<option value="idaempl">Find IDA employee</option>
+		<option value="idamap">Find IDA room</option>
+		<option value="liu">Search LiU.se</option>
+		<option value="liuempl">Find LiU employee</option>
+	      </select>
+              <input type="hidden" name="hl" value="en"/>
+	      <input id="search-submit" type="submit" value="Search" title="Search"/>
+	    </p>
+	  </form>
+          <div id="search-other">
+<!--
+	    <a href="http://www.liu.se/search/sitemap?l=en" accesskey="3">Site map</a> |
+-->
+            <a href="/A-Z/index.en.shtml">A &#151; Z</a>
+          </div>
+        </div>
+        <div id="logo">
+          <a href="http://www.liu.se/?l=sv" accesskey="1">
+          
+          <img class="screen" src="https://www.ida.liu.se/mall11/images/logo-sv.png" alt="Logotyp"/>
+          
+          <img class="handheld" alt="Sigill" src="https://www.ida.liu.se/mall11/images/sigill.png" width="0" height="0"/>
+          </a>
+          <img class="print" alt="Logotyp" src="https://www.ida.liu.se/mall11/images/logo-print.png" width="0" height="0"/>
+        </div>
+        <div id="head-text"><h1>IDA - Department of Computer and Information Science</h1></div>
+      </div></div>
+      <div id="head-bottom">
+        <div id="navbar">
+	  <a href='http://www.liu.se/?l=en'>LiU</a>  &#9654;  IDA
+	</div>
+	<div id="page-lang">
+           	  <a title="View page in Swedish" href="/index.sv.shtml"><img src="/mall11/images/flag-sv.png" alt="" width="17" height="10"/>Page in Swedish</a>
+
+	</div>
+	<div id="head-bottom-end"></div>
+      </div>
+    </div>
+    <div id="middle">
+
+      <div class="handheld" id="hidemenu" onmouseover="">Hide menu</div>
+      <div id="menu">
+        <div class="handheld" id="showmenu" onmouseover="">Display menu</div>
+        <ul>
+  
+  <li class='menu_heading_first'><a href="/index.en.shtml">IDA</a></li>
+  <li><a href="/department/index.en.shtml">About IDA</a></li>
+  <li><a href="/edu/index.en.shtml">Education</a></li>
+  <li class="submenu1"><a href="/edu/ugrad/index.en.shtml">Undergraduate studies</a></li>
+  <li class="submenu1"><a href="/edu/master/index.en.shtml">Master's programmes</a></li>
+  <li class="submenu1"><a href="/edu/grad/index.en.shtml">Doctoral studies</a></li>
+  <li class="submenu1"><a href="/edu/commissioned/index.en.shtml">Commissioned education</a></li>
+  <li><a href="/research/index.en.shtml">Research</a></li>
+  <li><a href="/department/org/index.en.shtml">Organization</a></li>
+  <li class="submenu1"><a href="/divisions/index.en.shtml">Divisions</a></li>
+
+  
+  
+  
+  
+  
+  
+  <li class='empty'>&nbsp;</li>
+<li class='menu_heading'>Internal</li>
+  <li><a href="/local/ida/index.en.shtml">IDA internal</a></li>
+  <li><a href="/students/index.en.shtml">Student Pages</a></li>
+  <li><a href="/department/emergency/index.en.shtml">Emergency</a></li>
+
+  
+        </ul>
+      </div>
+      <div id="content">
+
+	<div class="text">
+
+<!-- CONTENT -->
+
+
+<div id="welcome">
+  <h1>Welcome to the Department of<br>Computer and Information Science</h1>
+</div>
+
+<div id="index-banner">
+  <img src='/images/index_banners/nao/nao_2.jpg'>
+  <img src='/images/index_banners/datorhallen/datorhallen1.jpg' style='display:none'>
+  <img src='/images/index_banners/outside/b29_1.jpg' style='display:none'>
+  <img src='/images/index_banners/mbd_/mbd_2.jpg' style='display:none'>
+  <img src='/images/index_banners/rmax/rmax_banner5b.jpg' style='display:none'>
+
+</div>
+
+<br class="cleaner">
+
+<div class="content-left">
+  <div class="text">
+    <div id="news">
+ 
+   <h2 class="list-item"><a href='/department/news/2017.en.shtml#167'>Detecting Unsolvable Planning Instances </a></h2>
+    
+           <a href="/department/news/2017.en.shtml#167" title=""><img src='/images/thumbs/createthumb.php?size=100&file=/department/news/images/167_37_portrtt.jpg'></a>
+   <p> 
+    Automated planning is a branch of artificial intelligence which deals with the construction of plans. Simon Ståhlberg, in his PhD thesis, studies planning problems that have no solutions and presents several methods for detecting such planning problems. 
+   </p>
+ 
+   <h2 class="list-item"><a href='/department/news/2017.en.shtml#164'>Completion of Ontologies and Ontology Networks</a></h2>
+    
+           <a href="/department/news/2017.en.shtml#164" title=""><img src='/images/thumbs/createthumb.php?size=100&file=/department/news/images/164_24_ja.jpg'></a>
+   <p> 
+    The Web contains large amounts of data, often with no explicit structure. A step towards a more structured Web is the Semantic Web, which associates meaning with the data on the Web. In his thesis, Zlatan Dragisic has dealt with the problem of completing ontologies, data models used on the Semantic Web, which enable automated agents to understand and use data on the Web.
+   </p>
+ 
+   <h2 class="list-item"><a href='/department/news/2017.en.shtml#165'>Gated Bayesian Networks</a></h2>
+    
+           <a href="/department/news/2017.en.shtml#165" title=""><img src='/images/thumbs/createthumb.php?size=100&file=/department/news/images/165_98_marcus.png'></a>
+   <p> 
+    Marcus Bendtsen has in his PhD thesis introduced a new graphical model which can represent and identify changes among studied phenomena over time. The model, which is called gated Bayesian networks, is used to automate financial asset trading, to represent changes in volatility of financial markets, as well as changes in performance of professional athletes.
+
+   </p>
+ 
+</div>
+
+    <br clear="all">
+
+    <p class="link">
+      <a href="/department/news/index.en.shtml">More News</a>
+    </p>
+    <br>
+  </div>
+</div>
+
+<div class="content-right">
+  <div class="text">
+    <div class="greyblock">
+  <h2 class="vinjett">Today's events</h2>
+
+  <b>15:15</b> <small>Master's Thesis</small> 
+  <p class='link' title="Effects of Mutation Testing on Safety Critical Software"><a href="/edu/ugrad/thesis/presentations.shtml">Rebecca Johnsson, Nathalie Svensson</a></p>
+ 
+</div>
+
+
+    <div class="greyblock">
+      <h2 class="vinjett">Coming up soon</h2>
+      
+      <br>
+
+      <p class="link"><a href="/department/calendar/index.en.shtml">IDA:s Calendar of Events</a></p>
+      <p class="link"><a href="/edu/ugrad/thesis/presentations.shtml">Thesis presentations</a></p>
+    </div>
+
+    <br>
+
+    <h2 class="vinjett">Links</h2>
+
+    <ul>
+      <li><a href="/ida30/">IDA 30th anniversary</a></li>
+
+      <li><a href="/projects/isoc/">IDA Summer of Code</a></li>
+
+      <li><a href="/department/jobs/index.en.shtml">Vacancies</a></li>
+      <li><a href="/edu/ugrad/thesis/katalog.shtml">Thesis opportunities</a></li>
+      <li><a href="/department/external/index.en.shtml">Business and Society</a></li>
+      <li><a href="/publications/index.en.shtml">Publications & Theses</a></li>
+    </ul>
+
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#index-banner').innerfade({ speed: 1000, timeout: 6000 });
+  });
+</script>
+
+
+	  <br class="cleaner"/>
+	  <p class="content-responsible">
+            Page responsible: <a title="Email Webmaster (webmaster@ida.liu.se)" href="mailto:webmaster@ida.liu.se?subject=https://www.ida.liu.se/">Webmaster</a><br />
+
+	  </p>
+	</div>
+      </div>
+      <br class="cleaner"/>
+    </div>
+    <div id="foot"><div class="foot-width-limit">
+      <div id="foot-content">
+	<div class="foot-column">
+          <div class="text">
+            <p><strong>Department of Computer and Information Science</strong><br/>
+            Linköping University<br/>
+            581&nbsp;83 LINKÖPING<br/>
+	    Tel: +46&nbsp;13&nbsp;28&nbsp;10&nbsp;00<br/>
+	    Fax: +46&nbsp;13&nbsp;14&nbsp;22&nbsp;31<br/>
+	    </p>
+            <p>
+              <a href="/department/contact/index.en.shtml" title="Contact IDA">Contact IDA</a> |
+	      <a href="/department/location/index.en.shtml" title="Maps">Maps</a>
+            </p>
+            <p><a href="http://www.liu.se/om-webb?l=en" accesskey="0">About this web site</a></p>
+          </div>
+        </div>
+        <div class="foot-column">
+          <div class="text">
+            <p>
+              <strong>LiU organization</strong>
+            </p>
+            <ul>
+              <li><a href="http://liu.se/en/about-liu">About LiU</a></li>
+            </ul>
+            <ul>
+              <li><a href="http://www.filfak.liu.se/?l=en">Arts &amp; Sciences</a></li>
+              <li><a href="http://www.liu.se/uv?l=en">Educational Sciences</a></li>
+              <li><a href="http://www.hu.liu.se/?l=en">Health Sciences</a></li>
+              <li><a href="http://www.lith.liu.se/?l=en">Science and Engineering</a></li>
+            </ul>
+            <ul>
+              <li><a href="http://www.liu.se/om-liu/organisation/institutioner?l=en">Departments</a></li>
+              <li><a href="http://www.liu.se/om-liu/organisation/uf?l=en">Offices &amp; Administration</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="foot-column">
+          <div class="text">
+            <p><strong>At LiU</strong></p>
+            <ul>
+              <li><a href="http://liu.se/en/education" title="Education">Education</a></li>
+              <li><a href="http://liu.se/en/research" title="Research">Research</a></li>
+              <li><a href="http://liu.se/en/collaboration" title="Collaboration">Collaboration</a></li>
+            </ul>
+            <ul>
+              <li><a href="http://www.student.liu.se/?l=en" title="LiU Students">LiU Students</a></li>
+              <li><a href="http://old.liu.se/insidan?l=en" title="LiU Employees">LiU Employees</a></li>
+              <li><a href="http://liu.se/en/alumni" title="LiU Alumni">LiU Alumni</a></li>
+              <li><a href="http://www.liu.se/fundraising?l=en" title="LiU Fundraising">LiU Fundraising</a></li>
+            </ul>
+            <ul>
+              <li><a href="http://www.bibl.liu.se/?l=en" title="Library">Library</a></li>
+              <li><a href="http://liu.se/en/work-at-liu" title="Vacancies">Vacancies</a></li>
+              <li><a href="http://liu.se/en/news/press-contacts" title="Press Room">Press Room</a></li>
+              <li><a href="http://www.ep.liu.se/index.en.asp" title="LiU Electronic Press">LiU Electronic Press</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="foot-column">
+          <div class="text">
+            <p><strong>At IDA</strong></p>
+            <ul>
+              <li><a href="/edu/ugrad/index.en.shtml">Undergraduate studies</a></li>
+              <li><a href="/edu/ugrad/thesis/index.en.shtml">Final Thesis</a></li>
+              <li><a href="/edu/grad/index.en.shtml">Doctoral studies</a></li>
+              <li><a href="/research/index.en.shtml">Research</a></li>
+              <li><a href="/department/org/index.en.shtml">Organization</a></li>
+              <li><a href="/local/ida/index.en.shtml">Internal</a></li>
+              <li><a href="/department/emergency/index.en.shtml">Emergency</a></li>
+            </ul>
+          </div>
+        </div>
+	<div id="foot-content-end"></div>
+      </div>
+      <div id="page-icons">
+	<script type="text/javascript" src="https://s7.addthis.com/js/250/addthis_widget.js?pub=xa-4a437c18540088bc"></script>
+	<div class="addthis_toolbox addthis_default_style">
+	  <a class="addthis_button_facebook"></a>
+	  <a class="addthis_button_twitter"></a>
+	  <a class="addthis_button_email"></a>
+	  <span class="addthis_separator">&nbsp;</span>
+	  <a class="addthis_button_compact">Share</a>
+	  <span class="addthis_separator">&nbsp;</span>
+	  <a href="#">Top of page <img src="/mall11/images/till_toppen.png" alt="Top of page"/></a>
+	</div>
+	<script type="text/javascript">
+	  var addthis_config = {
+	    username: "liuweb",
+	    ui_language: "en",
+	    data_use_flash: false,
+	    data_use_cookies: false
+	  };
+	  var addthis_share = {
+	    templates: {
+	      twitter: "{{title}}: {{url}} #LiU"
+	    },
+            url: "https://www.ida.liu.se/",
+            title: "IDA"
+	  };
+	</script>
+      </div>
+      <br>
+    </div></div>
+    <script type="text/javascript">
+     var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-2538626-1']);
+      _gaq.push(['_setDomainName', '.liu.se']);
+      _gaq.push(['_addIgnoredRef', 'liu.se']);
+      _gaq.push(['_gat._anonymizeIp']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>
+
