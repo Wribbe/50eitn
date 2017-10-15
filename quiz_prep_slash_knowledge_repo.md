@@ -716,3 +716,53 @@ KNOX concept?
 * Fr o m (Lect10, slide 59) 
 
 **Taint analysis** - som magoperation med kontrastvätska
+
+# Quiz prep - IPCHOLM (Cloud, Homomorphic, DRM, SW SEC)
+
+## Cloud
+### What is SaaS, PaaS, IaaS?
+aaS = as a Service
+* **SaaS** = Software aaS (ex Gmail)
+* **PaaS** = Platform aaS (ex Microsoft Azure)
+* **IaaS** = Infrastructure aaS (ex Amazon AC2) 
+### What is OpenStack?
+### What are Trusted compute pools in Openstack?
+### What means multiple tenancy?
+### What is keystone and Nova in OpenStack?
+### Difference between public and private cloud.
+### List 3 risks with Cloud computing?
+### Transparency issues for tenants with cloud computing?
+### Secure Virtual Machine launch Slide 67/Lect 9- See also paper Secure VM launch
+### Understand process in Slide 67/Lect 9 of using bind keys, role of TTP, and TPM.
+## DRM
+### What is and the purpose of a protected media path?
+### Cooperative use of technical protection solutions and legal frameworks to achieve content protection: reason behind this setup.
+### Use and limitations of watermarking and tracing traitors.
+## Homomorphic encryption
+### Understand difference between fully and somewhat fully homomorphic encryption
+### Additive and Multiplicative homomorphic encryption. Can you give examples?
+### Role of randomization in homomorphic encryption. Slide 14/Lect9
+### Explain how RSA based homomorphic encryption works
+### GM homomorphic encryption: understand how it works: encrypt and decrypt
+### Paillier homomorphic encryption: understand why it is additive homomorphic. Slides 25/Lect9
+### Legendre symbol, square root and non-square root mod p=prime. What happens if we consider mod n, n product of two primes.
+### Use of homomorphic encryption in cloud computing.
+### Practicality of homomorphic encryption.
+## Software security – code protection
+### What is the purpose of dongles? Slide 25/Lect10
+### SW protection by making the program into a service. Slide 32/Lect10
+### What is obfuscation?
+### Techniques for obfuscation.
+### Theoretical result on obfuscation:
+## Software security – code design
+### What is an attack tree?
+### What does least privilege mean?
+### Describe 4 ways/secure practices to secure code: Slide 44/Lect10?
+### What aspects are considered in a threat model?
+## Software security – code analysis and processes
+### What is static code analysis?
+### What is dynamic code analysis?
+### Soundness and precision in
+### How does taint analysis work? Slide 75/Lect10
+### What is fuzz testing?
+### What is ROP exploit (see exploit project and slide 5,6/Lect10)?
