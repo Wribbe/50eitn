@@ -57,6 +57,98 @@
 
   \newpage
 
+  \section{Product description}
+
+    \comm{Describe the product and point out which deign requirements that have
+    been considered. (Which requirements? Software, hardware, both?)}
+
+    \textbf{Functional requirements:}
+    \begin{checklist}
+      \item{SRTP stream for data.}
+      \item{Possible to update firmware of camera securely.}
+      \item{Embed cryptographically strong identifier during production.}
+      \item{Flash storage for configurations and recording of 60 min + loop of 60 minutes.}
+      \item{Repair/Maintenance personell should not have access to stored data.}
+      \item{Possible for user to wipe data on decommission.}
+      \item{GUI with information about attestation, firmware, and hash of key
+        that protects SRTP stream and stored video.}
+      \item{Tamper sensor in camera housing.}
+      \item{Possible to patch hardware errors with software and ROM path
+        functionality.}
+    \end{checklist}
+
+    \todo{0.5 page}
+
+    \subsection{Security assumptions}
+
+      \comm{
+        List all the assumptions that affect any of the following:
+        \begin{itemize}
+          \item{Security.}
+          \item{Maintenance.}
+          \item{Production costs.}
+        \end{itemize}
+      }
+
+      \todo{0.5 page}
+
+  \section{Architectural overview}
+
+    \comm{%
+      Short high-level architectural overview (guessing hardware?) that
+      describes how the design is structured. Motivate all design-choices,
+      don't go into to much detail, the level of the description is the
+      important part. The design should be presented in such a way that it is
+      easy to understand. This section also includes a half page illustration
+      of the structure together with the Target Of Evaluation (TOE) and
+      Security Target (ST).
+
+      The main point is to exercise technical writing ability. Said description
+      should only include details that are important from a security
+      perspective. The intended audience is a student that has completed the
+      basic computer security course.
+    }
+
+    \todo{2-3 pages}
+
+  \section{Security evaluation}
+
+  \textbf{Threats to consider:}
+  \begin{checklist}
+    \item{Avoid bugs in the (remote) management that would allow someone to
+      insert executable foreign code.}
+    \item{Should not be possible to load unauthorized firmware.}
+    \item{Don't allow loading of SRTP keys for a incorrect receiver.}
+    \item{Include safeguards concerning removing flash memory and loading it
+      with altered configurations or code.}
+    \item{Deploy routines that circumvents dishonest repair personnel.}
+    \item{Secure JTAG debug interface against misuse.}
+    \item{Mitigate damage due to lost key or camera.}
+  \end{checklist}
+
+  \comm{%
+    Short security evaluation of the design that explained the used security
+    measures and the motivation behind them. Should include a list of all
+    threats and security issues that are deemed applicable to the system,
+    together with any threats that were deemed a non-issue.
+
+    This section contains a table where the problems are listed on the y-axis
+    against the solutions on the x-axis where a 'X' marks with solution
+    protects against which threat.
+  }
+
+    \todo{2-3 pages + summery}
+
+    \input{input/security_table.tex}
+
+  \section{Peer reviews}
+    \todo{2 pages}
+
+  \section{Improvement sheet}
+    \todo{1-2 pages}
+
+  \newpage
+
   \textbf{Parts of camera:}
   \begin{itemize}
     \item{PCB board.}
@@ -197,96 +289,6 @@
             each security functional requirement is solved through developed
             software.}
         \end{itemize}
-
-  \section{Product description}
-
-    \comm{Describe the product and point out which deign requirements that have
-    been considered. (Which requirements? Software, hardware, both?)}
-
-    \textbf{Functional requirements:}
-    \begin{checklist}
-      \item{SRTP stream for data.}
-      \item{Possible to update firmware of camera securely.}
-      \item{Embed cryptographically strong identifier during production.}
-      \item{Flash storage for configurations and recording of 60 min + loop of 60 minutes.}
-      \item{Repair/Maintenance personell should not have access to stored data.}
-      \item{Possible for user to wipe data on decommission.}
-      \item{GUI with information about attestation, firmware, and hash of key
-        that protects SRTP stream and stored video.}
-      \item{Tamper sensor in camera housing.}
-      \item{Possible to patch hardware errors with software and ROM path
-        functionality.}
-    \end{checklist}
-
-    \todo{0.5 page}
-
-    \subsection{Security assumptions}
-
-      \comm{
-        List all the assumptions that affect any of the following:
-        \begin{itemize}
-          \item{Security.}
-          \item{Maintenance.}
-          \item{Production costs.}
-        \end{itemize}
-      }
-
-      \todo{0.5 page}
-
-  \section{Architectural overview}
-
-    \comm{%
-      Short high-level architectural overview (guessing hardware?) that
-      describes how the design is structured. Motivate all design-choices,
-      don't go into to much detail, the level of the description is the
-      important part. The design should be presented in such a way that it is
-      easy to understand. This section also includes a half page illustration
-      of the structure together with the Target Of Evaluation (TOE) and
-      Security Target (ST).
-
-      The main point is to exercise technical writing ability. Said description
-      should only include details that are important from a security
-      perspective. The intended audience is a student that has completed the
-      basic computer security course.
-    }
-
-    \todo{2-3 pages}
-
-  \section{Security evaluation}
-
-  \textbf{Threats to consider:}
-  \begin{checklist}
-    \item{Avoid bugs in the (remote) management that would allow someone to
-      insert executable foreign code.}
-    \item{Should not be possible to load unauthorized firmware.}
-    \item{Don't allow loading of SRTP keys for a incorrect receiver.}
-    \item{Include safeguards concerning removing flash memory and loading it
-      with altered configurations or code.}
-    \item{Deploy routines that circumvents dishonest repair personnel.}
-    \item{Secure JTAG debug interface against misuse.}
-    \item{Mitigate damage due to lost key or camera.}
-  \end{checklist}
-
-  \comm{%
-    Short security evaluation of the design that explained the used security
-    measures and the motivation behind them. Should include a list of all
-    threats and security issues that are deemed applicable to the system,
-    together with any threats that were deemed a non-issue.
-
-    This section contains a table where the problems are listed on the y-axis
-    against the solutions on the x-axis where a 'X' marks with solution
-    protects against which threat.
-  }
-
-    \todo{2-3 pages + summery}
-
-    \input{input/security_table.tex}
-
-  \section{Peer reviews}
-    \todo{2 pages}
-
-  \section{Improvement sheet}
-    \todo{1-2 pages}
 
   \section{Link dump}
     SRTP protocol definition -- \url{https://tools.ietf.org/html/rfc3711} \\
