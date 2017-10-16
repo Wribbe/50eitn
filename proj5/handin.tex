@@ -78,8 +78,32 @@
 
     \textbf{Functional requirements:}
     \begin{checklist}
-      \item{SRTP stream for data.}
-      \item{Possible to update firmware of camera securely.}
+      \item{
+        SRTP stream for data.
+
+        This should be quite simple? ''Just'' use a library and create a
+        stream? Link to open cisco implementation:
+        \url{https://github.com/cisco/libsrtp}
+      }
+      \item{
+        Possible to update firmware of camera securely.
+
+        Assuming following types of firmware updates; local, remote pull or
+        remote push. Ensure that the software is legit through signing.
+        Integrity protection through MAC. New firmware installation should
+        include some kind TPM-involved sealing to ensure that the configuration
+        has not been tampered with.
+
+        Questions: \\
+        -- Which key to sign with? \\
+        A: \\
+        -- Which key to create MAC with? \\
+        A: \\
+        -- How to involve TPM-sealing on upgrade? Need to seal information that
+        is necessary for the fw-upgrade.\\
+        A: \\
+
+      }
       \item{Embed cryptographically strong identifier during production.}
       \item{Flash storage for configurations and recording of 60 min + loop of 60 minutes.}
       \item{Repair/Maintenance personell should not have access to stored data.}
