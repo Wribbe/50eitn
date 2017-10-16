@@ -57,25 +57,30 @@
 
   \newpage
 
+  \textbf{Parts of camera:}
+  \begin{itemize}
+    \item{PCB board.}
+    \item{Flash memory.}
+    \item{RAM.}
+    \item{ARM TrustZone CPU}
+    \item{TPM}
+    \item{JTAG debug interface.}
+    \item{LTE subsystem:}
+    \begin{itemize}
+      \item{USIM card reader.}
+      \item{Specific flash memory to hold ID.}
+    \end{itemize}
+    \item{Battery holding 3 days operational reserve power.}
+  \end{itemize}
 
-  \comm{%
-    Project description:
-
-    We have a battery driven camera device that has the following components:
-    camera, PCB board with flash memory, RAM, ARM TrustZone CPU, TPM, JTAG
-    debug interface, LTE subsystem with USIM card reader, and special Flash
-    to hold an ID.
-
-    The battery is connected via a power management system, see Figure 1. You
-    can assume that the battery is normally connected to a charger and that
-    the battery lasts for 3 days of operation or recording and transmission.
-
-    Based on the requirements you should come up with an architecture/design
-    of the camera device that meets the security, production and maintenance
-    requirements. You have to document the design and your motivations in the
-    projects report. In your design you can use various features from course
-    material presented thus far but you make use other insights too.
-  }
+  \textbf{Report objects:}
+  Come up with a architecture/design that meets following requirements:
+  \begin{itemize}
+    \item{Security.}
+    \item{Production.}
+    \item{Maintenance.}
+  \end{itemize}
+  With motivations!
 
   \section{General notes}
 
