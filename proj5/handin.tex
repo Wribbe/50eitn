@@ -12,6 +12,7 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{color}
 \usepackage{wasysym}
+\usepackage{listings}
 
 \newcommand{\command}[1]{\texttt{#1}}
 \newcommand{\e}[1]{\PVerb{#1}}
@@ -32,6 +33,19 @@
   \end{list}
 }
 
+\lstdefinestyle{customc}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=C,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
 
 \begin{document}
 
@@ -292,5 +306,29 @@
 
   \section{Link dump}
     SRTP protocol definition -- \url{https://tools.ietf.org/html/rfc3711} \\
+
+  \section{Source-code example.}
+    \lstset{escapechar=@,style=customc}
+    \begin{lstlisting}
+      #include <stdio.h>
+      #define N 10
+      /* Block
+       * comment */
+
+      int main()
+      {
+          int i;
+
+          // Line comment.
+          puts("Hello world!");
+
+          for (i = 0; i < N; i++)
+          {
+              puts("LaTeX is also great for programmers!");
+          }
+
+          return 0;
+      }
+    \end{lstlisting}
 
 \end{document}
