@@ -33,16 +33,15 @@
 
       \subsubsection{Security features}
 
-    \subsection{Security assumptions}
+    \subsubsection{Security assumptions}
 
-      \textbf{Assumptions:}
-         \begin{itemize}
-           \assumption{LOCATION}{Mounting place}{The camera is designed to be mounted on outside of building of a tech company.}
-           \assumption{CORRECT\_CONFIG}{Correct configuration}{It is assumed that SRTP is used and that authentication and encryption in it are enabled.}
-           \assumption{TIMELY\_MAINT}{Maintenance schedule followed}{It is assumed that maintenance personnel follows the maintenance schedule
-           and that no deterioration of product due to neglected maintenance occurs.}
-           \assumption{QA}{Quality Assurance}{No more than 0.5\% of units are shipped with faulty components.}
-         \end{itemize}
+       \begin{itemize}
+         \assumption{LOCATION}{Mounting place}{The camera is designed to be mounted on outside of building of a tech company.}
+         \assumption{CORRECT\_CONFIG}{Correct configuration}{It is assumed that SRTP is used and that authentication and encryption in it are enabled.}
+         \assumption{TIMELY\_MAINT}{Maintenance schedule followed}{It is assumed that maintenance personnel follows the maintenance schedule
+         and that no deterioration of product due to neglected maintenance occurs.}
+         \assumption{QA}{Quality Assurance}{No more than 0.5\% of units are shipped with faulty components.}
+       \end{itemize}
 
   \section{Security problem definition}
 
@@ -111,8 +110,15 @@
         }
       \end{itemize}
 
-    \input{input/security_table.tex}
+    \subsection{Security solutions}
+
+      \subsubsection{Rationale}
+
+      \subsubsection{Coverage}
+        \input{input/security_table.tex}
 
   \section{Peer reviews}
 
   \section{Improvement sheet}
+
+\end{document}
