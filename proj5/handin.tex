@@ -112,7 +112,7 @@
           leaked, physical components of camera damaged, camera not mounted on
           wall correctly etc.
         }
-        \threat{DISHONESTY}{Dishonest repair personnel}{ %please help me find better name than DISHONEST...
+        \threat{Adversarial}{Adversarial repair personnel}{ %better?
           The repair personnel may be dishonest and try to access the video
           files, the keys, may try to inject code or access internal memory of
           camera.
@@ -126,25 +126,27 @@
           An attacker either physically makes off with a camera or gets hold of
           a crypto key.
         }
-        \item{
+        \threat{MANAGEMENT\_TESTING}{Faulty management software}{
           Avoid bugs in the (remote) management that would allow someone to
           insert executable foreign code. This should be under T.NETWORK.
         }
-        \item{
+        \threat{SIGNED\_FIRMWARE}{Running unauthorized firmware}{
           Should not be possible to load unauthorized firmware.
         }
-        \item{
+        \threat{SRTP\_RECV}{Loading non-matching SRTP keys}{
           Don't allow loading of SRTP keys for an incorrect receiver.
         }
-        \item{
+        \threat{FLASHMEM\_INTEGRITY}{Flashing faulty code/config}{
           Include safeguards concerning removing flash memory and loading it
           with altered configurations or code.
         }
-        \item{
+        \threat{JTAG\_ABUSE}{Unauthorized access through JTAG}{
           Secure JTAG debug interface against misuse. Check article about
           JTAG interface attacking from first part of course.
         }
-        \item{
+
+        % TODO: Do we want this?
+        \threat{DESOLDER}{Dismantling/modifying physical components}{
           From first part of course, attack where microprocessor is removed
           and is either probed or re-soldered (BGA) in order to access memory.
           Defense against this dark art? Check article again. Note: perhaps
