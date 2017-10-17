@@ -61,16 +61,6 @@
 
         % TODO: Write about all the requirements from the introduction.
 
-      \subsubsection{Security features}
-
-        % TODO: Expand with more security features.
-        % TODO: Determine the X in X-bt encrypted RSTP stream.
-        % TODO: Add tamper protection.
-        The product features secure video streaming capabilities through a
-        X-bit encrypted RSTP stream with fully encrypted data storage. Internal
-        keys are stored and protected by the onboard TPM. 
-	ARM CPU has NX enabled. % (W xor X-protection from project 4, to protect against code injection). Could perhaps add more on trustzone, from Lect6, security rings and running code in privileged mode etc. Could perhaps mitigate some threats here. Last slide of Lect6 says embedded cpus work differently though, and here we use an embedded system, I would say.
-
       \subsubsection{Security assumptions}
 
          \begin{itemize}
@@ -78,26 +68,53 @@
              The product is assumed to be mounted on the outer or inner walls of
              a building at a height that requires a small ladder to reach it.
            }
-           \assumption{CORRECT\_CONFIG}{Correct configuration}{
-             The running product is assumed to have a correct configuration that
-             enables a fully encrypted and authenticated SRTP stream to be used
-             for data transfer.
-           }
            \assumption{TIMELY\_MAINT}{Maintenance schedule followed}{
              It is assumed that the maintenance schedule is followed and that any
              defects or deteriorations outside of regular maintenance are
              reported as soon as they are detected.
            }
-           % TODO: Ha kvar denna?
-           \assumption{QA}{Quality Assurance}{
-             No more than 0.5\% of units are shipped with faulty components.
-           }
          \end{itemize}	
 
-  % TODO: Motsvarar detta ST?
-  \section{Security problem definition}
+\subsection{Architectural Overview}
+	\textbf{External entities}
+	\begin{itemize}
+		\item User, connected to: '4G modem'
+		\begin{itemize}
+			\item TPM
+		\end{itemize}
+		\item Maintenance Person, connected to: \{'4G modem' for remote management, 'JTAG debug port' for close management\}
+		\begin{itemize}
+			\item TPM
+		\end{itemize}
+		\item Power supply, connected to: 'Battery'
+		\item Repair Person, connected to: all components of camera %state this, don't draw it..
+	\end{itemize}
+	\textbf{Changes to PCB picture}
+	\begin{itemize}
+		\item Change 'button/sensor1' to 'Tamper switch' 
+		\item Remove 'button/sensor2'
+		\item Add 'Burnt-in Master Key', connected to: TPM(?) %R@S: where is this 'burnt in'?
+		\item Add text 'SRTP', connected to: 4G modem antenna
+		\item ? Add text 'Encryption of video data', connected to path between CPU and Flash memory ? % perhaps too detailed
+		%\item Add `Key Blobs (TPM)', in Flash
+	\end{itemize}
+	\textbf{TPM}
+	\begin{itemize} %perhaps not have keys at all
+		\item EK
+		\item SRK
+		\item AIK
+	\end{itemize}
 
-    \subsection{Assets}
+	\subsubsection{Life cycle of TOE}
+	\begin{itemize}
+		\item 'Production', connected to: 'User operation'
+		\item 'User operation', conn to: \{'Service/repair', 'Maintenance'\}
+		\item 'Maintenance', conn to: 'User operation'
+		\item 'Service/repair', conn to: \{'User operation', 'Decommission'\}
+		\item 'Decommission'
+	\end{itemize}
+
+	\subsubsection{Assets}
 
       The product contains two types of valuable assets; physical and
       non-physical. Among the product hardware, the TPM and flash memory
@@ -108,76 +125,35 @@
       the video recordings themselves and possible sensitive configuration
       information.
 
-    \subsection{Threat agents}
+ \subsubsection{Security objectives for the TOE}
+	\begin{itemize}
+		\objective{TPM\_KEY\_STRG}{Storage of keys in camera}{The storage of internal keys of camera should be done in the TPM.}
+		\objective{TRUSTZONE\_NX}{Nx enabled in ARM CPU}{The ARM Trustzone CPU should have Nx bit enabled.}  % (W xor X-protection from project 4, to protect against code injection). Could perhaps add more on trustzone, from Lect6, security rings and running code in privileged mode etc. Could perhaps mitigate some threats here. Last slide of Lect6 says embedded cpus work differently though, and here we use an embedded system, I would say.
+		\objective{DECOMM}{Easy erasure of data}{When the TOE is decommissioned, it should be easy for the user to make stored user
+information and data stored unreadable (or wiped).}
+		\objective{ID}{Strong identity}{The camera should have a unique, cryptographically strong, identity that is programmed during camera manufacturing.}
+		\objective{NO\_TAMPER}{Detect tampering}{The TOE should have a tamper switch on backside of housing, in order to detect if pulled off of wall.}
+		\objective{PWR\_OUT}{Notify if lost power}{A notification should be sent if connection to power source is cut off.}
+		\objective{ATTEST}{Attestation used for remote}{When a Maintenance Person is to update firmware, attestation should be carried out with the help of the TPMs in MP's computer and the TOE.}
+		 \objective{SECURE\_COMMS}{Secure communictions}{
+             The TOE should have a correct configuration that
+             enables a fully encrypted and authenticated SRTP stream to be used
+             for data transfer, and also use it.
+           }
+	\end{itemize}
+        % TODO: Expand with more security features.
+        % TODO: Determine the X in X-bt encrypted RSTP stream.
+        % TODO: Add tamper protection.
+        The product features secure video streaming capabilities through a
+        X-bit encrypted SRTP stream with fully encrypted data storage. 
 
-      The following attack vectors are deemed relevant for the product.
-      Physical attacks in order to disable and dismantle product by
-      unauthorized individual inside perimeter. Extracting non-physical
-      assets ill-intentioned maintenance personell, analyzing data in
-      traffic or by unauthorized network access.
+  \subsubsection{Security Objectives for the Operational Environment}
+	\begin{itemize}
+		\objenv{NO\_ADVERSARIAL}{No adversarial personnel}{It is assumed that background checks on repair personnel are carried out.} % R: maybe not have this, but could mitigate T_ADVERSARIAL. Otherwise, an example of OpEnv-obj
+	\end{itemize}
 
-    \subsection{Threats}
-      \begin{itemize}[label={}]
-        \threat{PHYSICAL}{Physical Access} {
-          An attacker can physically access the camera. This can result in
-          destruction of camera in pure vandalizing, removal of camera from
-          premises opening up for other threats (T.X and T.Y), covering camera
-          with other physical object or smearing something on camera
-          housing/lens rendering recorded video useless.
-        }
-        \threat{NETWORK}{Network attack} {
-          Since the camera is outfitted with a 4G subsystem, attacks relevant for
-          such a system are relevant here.
-          \\ Note: Go all the way as teacher's pets and specify that object
-          security should be used?
-        }
-        \threat{MISMANAGE}{Incompetent personnel} {
-          There is a risk that the persons managing and servicing the camera do
-          not have the skills required, which can result in password being
-          leaked, physical components of camera damaged, camera not mounted on
-          wall correctly etc.
-        }
-        \threat{Adversarial}{Adversarial repair personnel}{ %better?
-          The repair personnel may be dishonest and try to access the video
-          files, the keys, may try to inject code or access internal memory of
-          camera.
-        }
-        \threat{PERSISTENT}{Persistent presence}{
-          If the (remote) management system is flawed an attacker could,
-          besides inserting executable foreign code, access camera through the
-          management interface at their convenience.
-        }
-        \threat{LOST\_ASSET}{Camera/key is lost}{
-          An attacker either physically makes off with a camera or gets hold of
-          a crypto key.
-        }
-        \threat{MANAGEMENT\_TESTING}{Faulty management software}{
-          Avoid bugs in the (remote) management that would allow someone to
-          insert executable foreign code. This should be under T.NETWORK.
-        }
-        \threat{SIGNED\_FIRMWARE}{Running unauthorized firmware}{
-          Should not be possible to load unauthorized firmware.
-        }
-        \threat{SRTP\_RECV}{Loading non-matching SRTP keys}{
-          Don't allow loading of SRTP keys for an incorrect receiver.
-        }
-        \threat{FLASHMEM\_INTEGRITY}{Flashing faulty code/config}{
-          Include safeguards concerning removing flash memory and loading it
-          with altered configurations or code.
-        }
-        \threat{JTAG\_ABUSE}{Unauthorized access through JTAG}{
-          Secure JTAG debug interface against misuse. Check article about
-          JTAG interface attacking from first part of course.
-        }
-
-        % TODO: Do we want this?
-        \threat{DESOLDER}{Dismantling/modifying physical components}{
-          From first part of course, attack where microprocessor is removed
-          and is either probed or re-soldered (BGA) in order to access memory.
-          Defense against this dark art? Check article again. Note: perhaps
-          part of 'flash memory' entry above in this list. Or T.LOST\_ASSET.
-        }
-      \end{itemize}
+  % TODO: Motsvarar detta ST? R: Nej, jag tror att i ST:n ingår threats och objectives för TOE:n. Flyttar därför upp. Edit: Bör göra det utifrån exempel jag sett, men i projektbeskrivningen står uttryckligen att threat-listan ska vara i andra delen. Flyttade därför ner den igen... Edit2: Wikipedia säger också att threats bör vara ovan.. https://en.wikipedia.org/wiki/Security_Target
+  \section{Security problem definition}
 
     \subsection{Security solutions}
 
@@ -190,7 +166,74 @@
       %against the solutions on the x-axis where a 'X' marks with solution
       %protects against which threat.
 
+ \subsubsection{Threat agents}
+
+      The following attack vectors are deemed relevant for the product.
+      Physical attacks in order to disable and dismantle product by
+      unauthorized individual inside perimeter. Extracting non-physical
+      assets ill-intentioned maintenance personnel, analyzing data in
+      traffic or by unauthorized network access.
+
+    \subsubsection{Threats}
+      \begin{itemize}[label={}]
+        \threat{PHYSICAL}{Physical Access} {
+          An attacker can physically access the camera. This can result in
+          destruction of camera in pure vandalizing, removal of camera from
+          premises opening up for other threats (T.FLASHMEM\_INTEGRITY and T.LOST\_ASSET), covering camera
+          with other physical object or smearing something on camera
+          housing/lens rendering recorded video useless.
+        }
+        \threat{NETWORK}{Network attack} {
+          Since the camera is outfitted with a 4G subsystem, attacks relevant for
+          such a system are relevant here. }
+        \threat{MISMANAGE}{Incompetent personnel} {
+          There is a risk that the persons managing and servicing the camera do
+          not have the skills required, which can result in password being
+          leaked, physical components of camera damaged, camera not mounted on
+          wall correctly etc.
+        }
+        \threat{ADVERSARIAL}{Adversarial repair personnel}{ %better? R: very fancy
+          The repair personnel may be dishonest and try to access the video
+          files, the keys, may try to inject code or access internal memory of
+          camera.
+        }
+        \threat{PERSISTENT}{Persistent presence}{
+          If the (remote) management system is flawed an attacker could, access camera through the
+          management interface at their convenience.
+        }
+        \threat{LOST\_ASSET}{Camera/key is lost}{
+          An attacker either physically makes off with a camera or gets hold of
+          a crypto key.
+        }
+        \threat{MANAGEMENT\_TESTING}{Faulty management software}{
+          If bugs exist in the (remote) management system, that would allow an attacker to
+          insert executable foreign code.
+        }
+        \threat{SIGNED\_FIRMWARE}{Running unauthorized firmware}{
+          An attacker could load unauthorized firmware.
+        }
+        \threat{SRTP\_RECV}{Loading non-matching SRTP keys}{
+          An attacker could load SRTP keys for an incorrect receiver.
+        }
+        \threat{FLASHMEM\_INTEGRITY}{Flashing faulty code/config}{
+          Include safeguards concerning removing flash memory and loading it
+          with altered configurations or code.
+        }
+        \threat{JTAG\_ABUSE}{Unauthorized access through JTAG}{
+          Secure JTAG debug interface against misuse. %Check article about JTAG interface attacking from first part of course.
+        }
+
+        % TODO: Do we want this?
+        %\threat{DESOLDER}{Dismantling/modifying physical components}{
+          %From first part of course, attack where microprocessor is removed
+          %and is either probed or re-soldered (BGA) in order to access memory.
+          %Defense against this dark art? Check article again. Note: perhaps
+          %part of 'flash memory' entry above in this list. Or T.LOST\_ASSET.
+        %}
+      \end{itemize}
+
       \subsubsection{Rationale}
+	%Here, could do tables as in https://www.commoncriteriaportal.org/files/epfiles/ST-FFHDD.pdf
 
       \subsubsection{Coverage}
         \input{input/security_table.tex}

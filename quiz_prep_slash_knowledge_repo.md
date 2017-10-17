@@ -511,7 +511,8 @@ Lect4, slide 59.
 ### Can we have an AIK stored under a migratable storage key?
 AIK = Attestation Identity Key(s). sign data from the TPM. A TPM can have many identities!
 
-???
+"Verify that idKeyParams -> keyFlags -> migratable is FALSE. If it is not, return
+TPM_INVALID_KEYUSAGE" - from TPM 3 Commands, about TPM_MakeIdentity. A child cannot be non-mig w/ a mig parent => No.
 
 "An Attestation Identity Key (AIK) is an alias for the Endorsement Key (EK). The EK cannot
 perform signatures for security reasons and due to privacy concerns." TPM Part 1
