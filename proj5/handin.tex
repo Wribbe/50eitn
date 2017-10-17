@@ -77,20 +77,20 @@
 
   \section{Introduction}
 
-    \comm{
-      Short high-level architectural overview (guessing hardware? Think both hardware and software) that
-      describes how the design is structured. Motivate all design-choices,
-      don't go into too much detail, the level of the description is the
-      important part. The design should be presented in such a way that it is
-      easy to understand. This section also includes a half page illustration
-      of the structure together with the Target Of Evaluation (TOE) and
-      Security Target (ST).
-
-      The main point is to exercise technical writing ability. Said description
-      should only include details that are important from a security
-      perspective. The intended audience is a student that has completed the
-      basic computer security course.
-    }
+%    \comm{
+%      Short high-level architectural overview (guessing hardware? Think both hardware and software) that
+%      describes how the design is structured. Motivate all design-choices,
+%      don't go into too much detail, the level of the description is the
+%      important part. The design should be presented in such a way that it is
+%      easy to understand. This section also includes a half page illustration
+%      of the structure together with the Target Of Evaluation (TOE) and
+%      Security Target (ST).
+%
+%      The main point is to exercise technical writing ability. Said description
+%      should only include details that are important from a security
+%      perspective. The intended audience is a student that has completed the
+%      basic computer security course.
+%    }
 
     \subsection{TOE Overview}
     \subsection{TOE Description}
@@ -98,112 +98,112 @@
       \subsubsection{Intended usage}
       \subsubsection{Security features}
 
-    \textbf{Design requirements:}
-    \begin{checklist}
-      \item{
-        SRTP stream for data (requires a key).
-
-        This should be quite simple? ''Just'' use a library and create a
-        stream? Link to open cisco implementation:
-        \url{https://github.com/cisco/libsrtp}
-
-	Where and how to store key?
-      }
-      \item{
-        Possible to update firmware of camera securely.
-
-        Assuming following types of firmware updates; local, remote pull or
-        remote push. Ensure that the software is legit through signing.
-        Integrity protection through MAC. New firmware installation should
-        include some kind of TPM-involved sealing to ensure that the configuration
-        has not been tampered with. Attestation!
-
-        Questions: \\
-        -- Which key to sign with? \\
-        A: Use a TPM signing key, which operator has knowledge of? \\
-        Note: The hard-to-get-rid-of problem of always needing to store a key
-        somewhere, somehow. Lots of solutions end up 'just' adding complexity and
-        still not solve the actual problem. \\
-        -- Which key to create MAC with? \\
-        A: \\
-        -- How to involve TPM-sealing on upgrade? Need to seal information that
-        is necessary for the fw-upgrade.\\
-        A: \\
-
-      }
-      \item{
-        Embed cryptographically strong identifier during production.
-
-        TPM EK? (A hash function?) \\
-        S: Rather a burned-in 2048-bit RSA-key-pair in manufacturing?
-      }
-      \item{
-          Flash storage for configurations and continuously updated recording
-          of the latest 60 minutes.
-        } %+ loop of 60 minutes.}
-      \item{
-        Repair/Maintenance personnel should not have access to stored data.
-
-        Stored data is in flash memory. Mitigate this through correctly
-        gatekeeped JTAG debug interface and 4G interface?
-
-        Note: should 4G interface be outwards only, or does anything need to be
-        incoming there?  Note on note: In project desc on threats section they
-        mention remote management interface. Guess this means we cannot only
-        have 'out-bound' 4G messages.
-      }
-      \item{
-          Possible for user to wipe data on decommission.
-      }
-      \item{
-          GUI (doen't need to be GUI?) with information about attestation,
-          firmware, and hash of key that protects SRTP stream and stored
-          video.\\
-
-          So, same key for SRTP and encrypting video data.
-      }
-      \item{
-        Tamper sensor in camera housing. \\
-
-        Tamper resistance can be realised with such an 'easy' method as adding
-        a pushbutton on the PCB and connecting this to a plastic rod in the
-        housing of the camera, which connects on one end to the PB and on the
-        other end to the battery hatch (which means PB is a normally-closed
-        circuit). This has the functionality that if the battery hatch is
-        opened (which needs to be done in order to unscrew screws needed to
-        access PCB and other internal components) the PB is no longer pressed
-        down, and this sends an interrupt with a callback that signals
-        'tampering is present'.
-
-        Another part of tamper-sensor should be that
-        if connection to power source is lost, this should notify (? service
-        personnel?).  Could also mount camera on wall and make cables go
-        straight in the wall, and a tamper switch to notice if camera has been
-        pulled off wall.
-
-        Note: Discussion here probably belongs more in Architectural Overview
-        part of report.
-      }
-      \item{
-          Possible to patch hardware errors with software and ROM path
-          functionality.
-
-          This could open up for exploits, e. g. code injection.
-      }
-    \end{checklist}
+%    \textbf{Design requirements:}
+%    \begin{checklist}
+%      \item{
+%        SRTP stream for data (requires a key).
+%
+%        This should be quite simple? ''Just'' use a library and create a
+%        stream? Link to open cisco implementation:
+%        \url{https://github.com/cisco/libsrtp}
+%
+%	Where and how to store key?
+%      }
+%      \item{
+%        Possible to update firmware of camera securely.
+%
+%        Assuming following types of firmware updates; local, remote pull or
+%        remote push. Ensure that the software is legit through signing.
+%        Integrity protection through MAC. New firmware installation should
+%        include some kind of TPM-involved sealing to ensure that the configuration
+%        has not been tampered with. Attestation!
+%
+%        Questions: \\
+%        -- Which key to sign with? \\
+%        A: Use a TPM signing key, which operator has knowledge of? \\
+%        Note: The hard-to-get-rid-of problem of always needing to store a key
+%        somewhere, somehow. Lots of solutions end up 'just' adding complexity and
+%        still not solve the actual problem. \\
+%        -- Which key to create MAC with? \\
+%        A: \\
+%        -- How to involve TPM-sealing on upgrade? Need to seal information that
+%        is necessary for the fw-upgrade.\\
+%        A: \\
+%
+%      }
+%      \item{
+%        Embed cryptographically strong identifier during production.
+%
+%        TPM EK? (A hash function?) \\
+%        S: Rather a burned-in 2048-bit RSA-key-pair in manufacturing?
+%      }
+%      \item{
+%          Flash storage for configurations and continuously updated recording
+%          of the latest 60 minutes.
+%        } %+ loop of 60 minutes.}
+%      \item{
+%        Repair/Maintenance personnel should not have access to stored data.
+%
+%        Stored data is in flash memory. Mitigate this through correctly
+%        gatekeeped JTAG debug interface and 4G interface?
+%
+%        Note: should 4G interface be outwards only, or does anything need to be
+%        incoming there?  Note on note: In project desc on threats section they
+%        mention remote management interface. Guess this means we cannot only
+%        have 'out-bound' 4G messages.
+%      }
+%      \item{
+%          Possible for user to wipe data on decommission.
+%      }
+%      \item{
+%          GUI (doen't need to be GUI?) with information about attestation,
+%          firmware, and hash of key that protects SRTP stream and stored
+%          video.\\
+%
+%          So, same key for SRTP and encrypting video data.
+%      }
+%      \item{
+%        Tamper sensor in camera housing. \\
+%
+%        Tamper resistance can be realised with such an 'easy' method as adding
+%        a pushbutton on the PCB and connecting this to a plastic rod in the
+%        housing of the camera, which connects on one end to the PB and on the
+%        other end to the battery hatch (which means PB is a normally-closed
+%        circuit). This has the functionality that if the battery hatch is
+%        opened (which needs to be done in order to unscrew screws needed to
+%        access PCB and other internal components) the PB is no longer pressed
+%        down, and this sends an interrupt with a callback that signals
+%        'tampering is present'.
+%
+%        Another part of tamper-sensor should be that
+%        if connection to power source is lost, this should notify (? service
+%        personnel?).  Could also mount camera on wall and make cables go
+%        straight in the wall, and a tamper switch to notice if camera has been
+%        pulled off wall.
+%
+%        Note: Discussion here probably belongs more in Architectural Overview
+%        part of report.
+%      }
+%      \item{
+%          Possible to patch hardware errors with software and ROM path
+%          functionality.
+%
+%          This could open up for exploits, e. g. code injection.
+%      }
+%    \end{checklist}
 
     \todo{0.5 page}
 
     \subsection{Security assumptions}
 
-      \comm{
-        List all the assumptions that affect any of the following:
-        \begin{itemize}
-          \item{Security.}
-          \item{Maintenance.}
-          \item{Production costs.}
-        \end{itemize}
-      }
+ %     \comm{
+ %       List all the assumptions that affect any of the following:
+ %       \begin{itemize}
+ %         \item{Security.}
+ %         \item{Maintenance.}
+ %         \item{Production costs.}
+ %       \end{itemize}
+ %     }
 	\textbf{Assumptions:}
      \begin{itemize}
        \assumption{LOCATION}{Mounting place}{The camera is designed to be mounted on outside of building of a tech company.}
@@ -215,25 +215,25 @@
 
       \todo{0.5 page}
 
-	For the illustration, probs smth like page 15 of \escape{https://www.commoncriteriaportal.org/files/ppfiles/pp0089b_pdf.pdf}
-  \subsection{...}
-    \begin{checklist}
-	\objective{SECURECOMMS} {Protected Communications} {
-	Add stuff here please. Mention SRTP.}
-    \end{checklist}
+%	For the illustration, probs smth like page 15 of \escape{https://www.commoncriteriaportal.org/files/ppfiles/pp0089b_pdf.pdf}
+%  \subsection{...}
+%    \begin{checklist}
+%	\objective{SECURECOMMS} {Protected Communications} {
+%	Add stuff here please. Mention SRTP.}
+%    \end{checklist}
 
     \todo{2-3 pages}
 
-  \comm{%
-    Short security evaluation of the design that explained the used security
-    measures and the motivation behind them. Should include a list of all
-    threats and security issues that are deemed applicable to the system,
-    together with any threats that were deemed a non-issue.
-
-    This section contains a table where the problems are listed on the y-axis
-    against the solutions on the x-axis where a 'X' marks with solution
-    protects against which threat.
-  }
+%  \comm{%
+%    Short security evaluation of the design that explained the used security
+%    measures and the motivation behind them. Should include a list of all
+%    threats and security issues that are deemed applicable to the system,
+%    together with any threats that were deemed a non-issue.
+%
+%    This section contains a table where the problems are listed on the y-axis
+%    against the solutions on the x-axis where a 'X' marks with solution
+%    protects against which threat.
+%  }
 
   \section{Security problem definition}
 
@@ -313,174 +313,174 @@
   \section{Improvement sheet}
     \todo{1-2 pages}
 
-  \newpage
-
-  \textbf{Parts of camera:}
-  \begin{itemize}
-    \item{PCB board.}
-    \item{Flash memory.}
-    \item{RAM.}
-    \item{ARM TrustZone CPU}
-    \item{TPM}
-    \item{JTAG debug interface.}
-    \item{LTE subsystem:}
-    \begin{itemize}
-      \item{USIM card reader.}
-      \item{Specific flash memory to hold ID.}
-    \end{itemize}
-    \item{Battery holding 3 days operational reserve power.}
-  \end{itemize}
-
-  \textbf{Report objects:}
-  Come up with a architecture/design that meets following requirements:
-  \begin{itemize}
-    \item{Security.}
-    \item{Production.}
-    \item{Maintenance.}
-  \end{itemize}
-  With motivations!
-
-  \section{General notes}
-
-    \subsection{Acronyms}
-
-    \begin{description}[style=multiline,leftmargin=1.7cm]
-      \item[CC]{
-          (Common Criteria) Secure systems evaluation criteria adopted by
-          $\sim$25 countries.
-      }
-      \item[TOE]{
-          (Target Of Evaluation) The system submitted for evaluation.
-      }
-      \item[ST]{
-          (Security Target) The set of security requirements used as the basis
-          for a security evaluations.
-      }
-      \item[EAL]{
-          (Evaluation Assurance Level) The evaluation level that is being
-          targeted (there are different levels that can be reached).
-      }
-      \item[TSF]{
-          (TOE Security Functions) The combination of software and hardware
-          that is necessary to enforce the chosen policy.
-      }
-      \item[PP]{
-          (Protection Profiles) Type of Common Criteria evaluation. Consists of
-          implementation-independent security requirements.
-      }
-      \item[SFR]{
-          (Security Functional Requirements) Describes a functional requirement
-          (input $\rightarrow$ behaviour $\rightarrow$ output) related to
-          security.
-      }
-    \end{description}
-
-    \subsection{CC evaluation types}
-
-      There are two types of Common Criteria evaluations.
-
-      \subsubsection{Protection profile evaluation}
-
-        The evaluation is concerned with a set of implementation-independent
-        requirements that are established for a category of similar products
-        and systems. A typical protection profile includes:
-        \begin{itemize}
-          \item{Introduction containing a description and overview of the
-            targeted system.}
-          \item{Description of the products or systems in question.}
-          \item{Description of the security environment in relation to the
-            products or systems.}
-          \item{Relevant security objectives.}
-          \item{Requirements on IT security.}
-          \item{Rationale behind the grouping.}
-        \end{itemize}
-        Example of protection profile groupings are; antivirus on workstations,
-        biometrics, firewalls and intrusion detection systems.
-
-      \subsubsection{Evaluation against a security target}
-      Sources:
-      \begin{itemize}
-        \item{\url{https://en.wikipedia.org/wiki/Security_Target}}
-        \item{\e{slides_on_cc.pdf}}
-      \end{itemize}
-
-      \comm{
-        \textbf{EAL1: Functionally Tested}
-
-        EAL1 is applicable where some confidence in correct operation is
-        required, but the threats to security are not viewed as serious. It
-        will be of value where independent assurance is required to support the
-        contention that due care has been exercised with respect to the
-        protection of personal or similar information. EAL1 provides an
-        evaluation of the TOE (Target of Evaluation) as made available to the
-        customer, including independent testing against a specification, and an
-        examination of the guidance documentation provided. It is intended that
-        an EAL1 evaluation could be successfully conducted without assistance
-        from the developer of the TOE, and for minimal cost. An evaluation at
-        this level should provide evidence that the TOE functions in a manner
-        consistent with its documentation, and that it provides useful
-        protection against identified threats.
-
-        \textbf{EAL2: Structurally Tested}
-
-        EAL2 requires the cooperation of the developer in terms of the delivery
-        of design information and test results, but should not demand more
-        effort on the part of the developer than is consistent with good
-        commercial practice. As such it should not require a substantially
-        increased investment of cost or time.  EAL2 is therefore applicable in
-        those circumstances where developers or users require a low to moderate
-        level of independently assured security in the absence of ready
-        availability of the complete development record. Such a situation may
-        arise when securing legacy systems.
-      }
-
-        The security target contains a list of implementation-specific security
-        requirements that should be met by the system or product in question
-        together with the steps taken to meet those requirements. The document
-        can also reference relevant protection profiles that are fulfilled.
-         A typical security target includes:
-
-        \begin{itemize}
-          \item{Introduction of what the target does, key features and purpose.}
-          \item{Description of threats and assumptions present in the
-            operational environment.}
-          \item{Security objectives specifying solutions to the perceived
-            threats in both the target and its environment together with the
-            rationale these were chosen.}
-          \item{Definition of functional and assurance security requirements
-            together with the reason these are sufficient and necessary.}
-          \item{Target summary specification that enables readers to get a
-            general understanding of how the target is structured and
-            implemented. This section also provides a high-level view of how
-            each security functional requirement is solved through developed
-            software.}
-        \end{itemize}
-
-  \section{Link dump}
-    SRTP protocol definition -- \url{https://tools.ietf.org/html/rfc3711} \\
-
-  \section{Source-code example.}
-    \lstset{escapechar=@,style=customc}
-    \begin{lstlisting}
-      #include <stdio.h>
-      #define N 10
-      /* Block
-       * comment */
-
-      int main()
-      {
-          int i;
-
-          // Line comment.
-          puts("Hello world!");
-
-          for (i = 0; i < N; i++)
-          {
-              puts("LaTeX is also great for programmers!");
-          }
-
-          return 0;
-      }
-    \end{lstlisting}
+%  \newpage
+%
+%  \textbf{Parts of camera:}
+%  \begin{itemize}
+%    \item{PCB board.}
+%    \item{Flash memory.}
+%    \item{RAM.}
+%    \item{ARM TrustZone CPU}
+%    \item{TPM}
+%    \item{JTAG debug interface.}
+%    \item{LTE subsystem:}
+%    \begin{itemize}
+%      \item{USIM card reader.}
+%      \item{Specific flash memory to hold ID.}
+%    \end{itemize}
+%    \item{Battery holding 3 days operational reserve power.}
+%  \end{itemize}
+%
+%  \textbf{Report objects:}
+%  Come up with a architecture/design that meets following requirements:
+%  \begin{itemize}
+%    \item{Security.}
+%    \item{Production.}
+%    \item{Maintenance.}
+%  \end{itemize}
+%  With motivations!
+%
+%  \section{General notes}
+%
+%    \subsection{Acronyms}
+%
+%    \begin{description}[style=multiline,leftmargin=1.7cm]
+%      \item[CC]{
+%          (Common Criteria) Secure systems evaluation criteria adopted by
+%          $\sim$25 countries.
+%      }
+%      \item[TOE]{
+%          (Target Of Evaluation) The system submitted for evaluation.
+%      }
+%      \item[ST]{
+%          (Security Target) The set of security requirements used as the basis
+%          for a security evaluations.
+%      }
+%      \item[EAL]{
+%          (Evaluation Assurance Level) The evaluation level that is being
+%          targeted (there are different levels that can be reached).
+%      }
+%      \item[TSF]{
+%          (TOE Security Functions) The combination of software and hardware
+%          that is necessary to enforce the chosen policy.
+%      }
+%      \item[PP]{
+%          (Protection Profiles) Type of Common Criteria evaluation. Consists of
+%          implementation-independent security requirements.
+%      }
+%      \item[SFR]{
+%          (Security Functional Requirements) Describes a functional requirement
+%          (input $\rightarrow$ behaviour $\rightarrow$ output) related to
+%          security.
+%      }
+%    \end{description}
+%
+%    \subsection{CC evaluation types}
+%
+%      There are two types of Common Criteria evaluations.
+%
+%      \subsubsection{Protection profile evaluation}
+%
+%        The evaluation is concerned with a set of implementation-independent
+%        requirements that are established for a category of similar products
+%        and systems. A typical protection profile includes:
+%        \begin{itemize}
+%          \item{Introduction containing a description and overview of the
+%            targeted system.}
+%          \item{Description of the products or systems in question.}
+%          \item{Description of the security environment in relation to the
+%            products or systems.}
+%          \item{Relevant security objectives.}
+%          \item{Requirements on IT security.}
+%          \item{Rationale behind the grouping.}
+%        \end{itemize}
+%        Example of protection profile groupings are; antivirus on workstations,
+%        biometrics, firewalls and intrusion detection systems.
+%
+%      \subsubsection{Evaluation against a security target}
+%      Sources:
+%      \begin{itemize}
+%        \item{\url{https://en.wikipedia.org/wiki/Security_Target}}
+%        \item{\e{slides_on_cc.pdf}}
+%      \end{itemize}
+%
+%      \comm{
+%        \textbf{EAL1: Functionally Tested}
+%
+%        EAL1 is applicable where some confidence in correct operation is
+%        required, but the threats to security are not viewed as serious. It
+%        will be of value where independent assurance is required to support the
+%        contention that due care has been exercised with respect to the
+%        protection of personal or similar information. EAL1 provides an
+%        evaluation of the TOE (Target of Evaluation) as made available to the
+%        customer, including independent testing against a specification, and an
+%        examination of the guidance documentation provided. It is intended that
+%        an EAL1 evaluation could be successfully conducted without assistance
+%        from the developer of the TOE, and for minimal cost. An evaluation at
+%        this level should provide evidence that the TOE functions in a manner
+%        consistent with its documentation, and that it provides useful
+%        protection against identified threats.
+%
+%        \textbf{EAL2: Structurally Tested}
+%
+%        EAL2 requires the cooperation of the developer in terms of the delivery
+%        of design information and test results, but should not demand more
+%        effort on the part of the developer than is consistent with good
+%        commercial practice. As such it should not require a substantially
+%        increased investment of cost or time.  EAL2 is therefore applicable in
+%        those circumstances where developers or users require a low to moderate
+%        level of independently assured security in the absence of ready
+%        availability of the complete development record. Such a situation may
+%        arise when securing legacy systems.
+%      }
+%
+%        The security target contains a list of implementation-specific security
+%        requirements that should be met by the system or product in question
+%        together with the steps taken to meet those requirements. The document
+%        can also reference relevant protection profiles that are fulfilled.
+%         A typical security target includes:
+%
+%        \begin{itemize}
+%          \item{Introduction of what the target does, key features and purpose.}
+%          \item{Description of threats and assumptions present in the
+%            operational environment.}
+%          \item{Security objectives specifying solutions to the perceived
+%            threats in both the target and its environment together with the
+%            rationale these were chosen.}
+%          \item{Definition of functional and assurance security requirements
+%            together with the reason these are sufficient and necessary.}
+%          \item{Target summary specification that enables readers to get a
+%            general understanding of how the target is structured and
+%            implemented. This section also provides a high-level view of how
+%            each security functional requirement is solved through developed
+%            software.}
+%        \end{itemize}
+%
+%  \section{Link dump}
+%    SRTP protocol definition -- \url{https://tools.ietf.org/html/rfc3711} \\
+%
+%  \section{Source-code example.}
+%    \lstset{escapechar=@,style=customc}
+%    \begin{lstlisting}
+%      #include <stdio.h>
+%      #define N 10
+%      /* Block
+%       * comment */
+%
+%      int main()
+%      {
+%          int i;
+%
+%          // Line comment.
+%          puts("Hello world!");
+%
+%          for (i = 0; i < N; i++)
+%          {
+%              puts("LaTeX is also great for programmers!");
+%          }
+%
+%          return 0;
+%      }
+%    \end{lstlisting}
 
 \end{document}
