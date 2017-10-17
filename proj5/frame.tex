@@ -170,7 +170,30 @@
 	\objective{SECURECOMMS} {Protected Communications} {
 	Add stuff here please. Mention SRTP.}
     \end{checklist}
-
+	
+	\newpage
+	
+	 \subsection{Architectural Overview}
+	\textbf{External entities}
+	\begin{itemize}
+		\item User, connected to: '4G modem'
+		\item Maintenance Person, connected to: 
+		\begin{itemize}
+			\item '4G modem' for remote management
+			\item 'JTAG debug port' for close management
+		\end{itemize}
+		\item Power supply, connected to: 'Battery'
+		\item Repair Person, connected to: all components of camera %state this, don't draw it..
+	\end{itemize}
+	\textbf{Changes to PCB picture}
+	\begin{itemize}
+		\item Change 'button/sensor1' to 'Tamper switch' 
+		\item Remove 'button/sensor2'
+		\item Add 'Burnt-in Master Key', connected to: TPM(?)
+		\item Add 'SRTP', connected to: 4G modem antenna(?)
+		\item ? Add 'Encryption of video data', connected to path between CPU and Flash memory ? % perhaps too detailed
+	\end{itemize}
+	
     \todo{2-3 pages}
 
   \comm{%

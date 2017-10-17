@@ -68,7 +68,8 @@
         % TODO: Add tamper protection.
         The product features secure video streaming capabilities through a
         X-bit encrypted RSTP stream with fully encrypted data storage. Internal
-        keys are stored and protected by the onboard TPM.
+        keys are stored and protected by the onboard TPM. 
+	ARM CPU has NX enabled. % (W xor X-protection from project 4, to protect against code injection). Could perhaps add more on trustzone, from Lect6, security rings and running code in privileged mode etc. Could perhaps mitigate some threats here. Last slide of Lect6 says embedded cpus work differently though, and here we use an embedded system, I would say.
 
       \subsubsection{Security assumptions}
 
@@ -91,7 +92,7 @@
            \assumption{QA}{Quality Assurance}{
              No more than 0.5\% of units are shipped with faulty components.
            }
-         \end{itemize}
+         \end{itemize}	
 
   % TODO: Motsvarar detta ST?
   \section{Security problem definition}
