@@ -42,7 +42,7 @@
 
     \subsection{TOE Description}
 
-      This document describes a design and implementation of a secure network
+      This document describes the design and implementation of a secure network
       camera platform for video surveillance and monitoring.
 
       \begin{figure}[!h]
@@ -59,36 +59,39 @@
 
       \subsubsection{Considered design requirements}
 
+        % TODO: Write about all the requirements from the introduction.
+
       \subsubsection{Security features}
 
         % TODO: Expand with more security features.
         % TODO: Determine the X in X-bt encrypted RSTP stream.
+        % TODO: Add tamper protection.
         The product features secure video streaming capabilities through a
         X-bit encrypted RSTP stream with fully encrypted data storage. Internal
         keys are stored and protected by the onboard TPM.
 
-    \subsubsection{Security assumptions}
+      \subsubsection{Security assumptions}
 
-       \begin{itemize}
-         \assumption{LOCATION}{Mounting place}{
-           The product is assumed to be mounted on the outer or inner walls of
-           a building at a height that requires a small ladder to reach it.
-         }
-         \assumption{CORRECT\_CONFIG}{Correct configuration}{
-           The running product is assumed to have a correct configuration that
-           enables a fully encrypted and authenticated SRTP stream to be used
-           for data transfer.
-         }
-         \assumption{TIMELY\_MAINT}{Maintenance schedule followed}{
-           It is assumed that the maintenance schedule is followed and that any
-           defects or deteriorations outside of regular maintenance are
-           reported as soon as they are detected.
-         }
-         % TODO: Ha kvar denna?
-         \assumption{QA}{Quality Assurance}{
-           No more than 0.5\% of units are shipped with faulty components.
-         }
-       \end{itemize}
+         \begin{itemize}
+           \assumption{LOCATION}{Mounting place}{
+             The product is assumed to be mounted on the outer or inner walls of
+             a building at a height that requires a small ladder to reach it.
+           }
+           \assumption{CORRECT\_CONFIG}{Correct configuration}{
+             The running product is assumed to have a correct configuration that
+             enables a fully encrypted and authenticated SRTP stream to be used
+             for data transfer.
+           }
+           \assumption{TIMELY\_MAINT}{Maintenance schedule followed}{
+             It is assumed that the maintenance schedule is followed and that any
+             defects or deteriorations outside of regular maintenance are
+             reported as soon as they are detected.
+           }
+           % TODO: Ha kvar denna?
+           \assumption{QA}{Quality Assurance}{
+             No more than 0.5\% of units are shipped with faulty components.
+           }
+         \end{itemize}
 
   % TODO: Motsvarar detta ST?
   \section{Security problem definition}
