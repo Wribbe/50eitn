@@ -188,8 +188,8 @@
 
   \section{Security evaluation}
 
-  \textbf{Threats to consider:}
-  \begin{enumerate}
+  \subsection{Threats}
+  \begin{itemize}[label={}]
     \threat{PHYSICAL}{Physical Access} {
 	An attacker can physically access the camera. This can result in destruction of camera in pure vandalizing, removal of camera from premises opening up for other threats (T.X and T.Y),
 	covering camera with other physical object or smearing something on camera housing/lens rendering recorded video useless. }
@@ -212,7 +212,7 @@
       with altered configurations or code.}
     \item{Secure JTAG debug interface against misuse. Check article about JTAG interface attacking from first part of course.}
     \item{From first part of course, attack where microprocessor is removed and is either probed or re-soldered (BGA) in order to access memory. Defense against this dark art? Check article again. Note: perhaps part of 'flash memory' entry above in this list. Or T.LOST\_ASSET.}
-  \end{enumerate}
+  \end{itemize}
 
   \comm{%
     Short security evaluation of the design that explained the used security
