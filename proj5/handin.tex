@@ -83,11 +83,13 @@
     \textbf{Design requirements:}
     \begin{checklist}
       \item{
-        SRTP stream for data.
+        SRTP stream for data (requires a key).
 
         This should be quite simple? ''Just'' use a library and create a
         stream? Link to open cisco implementation:
         \url{https://github.com/cisco/libsrtp}
+
+	Where and how to store key?
       }
       \item{
         Possible to update firmware of camera securely.
@@ -149,10 +151,11 @@
       }
 	\textbf{Assumptions:}
      \begin{itemize}
-	\assumption{LOCATION}{Mounting place}{Mounted on outside of building of a tech company.}
-	\assumption{CORRECT\_CONFIG}{Correct configuration}{It is assumed that SRTP is used and that authentication and encryption are enabled.}
+	\assumption{LOCATION}{Mounting place}{The camera is designed to be mounted on outside of building of a tech company.}
+	\assumption{CORRECT\_CONFIG}{Correct configuration}{It is assumed that SRTP is used and that authentication and encryption in it are enabled.}
 	\assumption{TIMELY\_MAINT}{Maintenance schedule followed}{It is assumed that maintenance personnel follows the maintenance schedule
 	and that no deterioration of product due to neglected maintenance occurs.}
+	\assumption{QA}{Quality Assurance}{No more than 0.5\% of units are shipped with faulty components.}
      \end{itemize}
 
       \todo{0.5 page}
@@ -160,9 +163,9 @@
   \section{Architectural overview}
 
     \comm{
-      Short high-level architectural overview (guessing hardware?) that
+      Short high-level architectural overview (guessing hardware? Think both hardware and software) that
       describes how the design is structured. Motivate all design-choices,
-      don't go into to much detail, the level of the description is the
+      don't go into too much detail, the level of the description is the
       important part. The design should be presented in such a way that it is
       easy to understand. This section also includes a half page illustration
       of the structure together with the Target Of Evaluation (TOE) and
@@ -175,7 +178,7 @@
     }
 
 	For the illustration, probs smth like page 15 of \escape{https://www.commoncriteriaportal.org/files/ppfiles/pp0089b_pdf.pdf}
-  \subsection{TOE}
+  \subsection{...}
     \begin{checklist}
 	\objective{SECURECOMMS} {Protected Communications} {
 	Add stuff here please. Mention SRTP.}
@@ -194,7 +197,7 @@
 	Since the camera is outfitted with a 4G subsystem, attacks relevant for such a system are relevant here. \\
 	Note: Go all the way as teacher's pets and specify that object security should be used?}
     \threat{MISMANAGE}{Incompetent personnel} {
-	There is a risk that the persons managing and serving the camera do not have the skills required, which can result in password being leaked, physical components of camera damaged, camera not mounted on wall correctly etc.}
+	There is a risk that the persons managing and servicing the camera do not have the skills required, which can result in password being leaked, physical components of camera damaged, camera not mounted on wall correctly etc.}
     \threat{DISHONESTY}{Dishonest repair personnel}{ %please help me find better name than DISHONEST...
 	The repair personnel may be dishonest and try to access the video files, the keys, may try to inject code or access internal memory of camera.}
     \threat{PERSISTENT}{Persistent presence}{
@@ -202,7 +205,7 @@
     \threat{LOST\_ASSET}{Camera/key is lost}{An attacker either physically makes off with a camera or gets hold of a crypto key.}
 
     \item{Avoid bugs in the (remote) management that would allow someone to
-      insert executable foreign code.}
+      insert executable foreign code. This should be under T.NETWORK.}
     \item{Should not be possible to load unauthorized firmware.}
     \item{Don't allow loading of SRTP keys for an incorrect receiver.}
     \item{Include safeguards concerning removing flash memory and loading it
