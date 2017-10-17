@@ -22,8 +22,10 @@
     [\textcolor{red}{\textbf{\textit{#1}}}]
   \end{center}
 }
-\newcommand{\threat}[3]{\item{\textbf{T.#1} \hfill \textbf{#2} \\
-	#3}}
+\newcommand{\threat}[3]{\item{\textbf{T.#1} \hfill \textbf{#2} \\ #3}}
+\newcommand{\objective}[3]{\item{\textbf{O.#1} \hfill \textbf{#2} \\ #3}}
+\newcommand{\assumption}[3]{\item{\textbf{A.#1} \hfill \textbf{#2} \\ #3}} %These could absolutely be done better, but these will do til we've decided on a format
+\newcommand{\escape}[1]{\PVerb{#1}}
 
 % Check list evnironment.
 \newenvironment{checklist}{%
@@ -78,7 +80,7 @@
     \comm{Describe the product and point out which design requirements that have
     been considered. (Which requirements? Software, hardware, both?)}
 
-    \textbf{Functional requirements:}
+    \textbf{Design requirements:}
     \begin{checklist}
       \item{
         SRTP stream for data.
@@ -93,8 +95,8 @@
         Assuming following types of firmware updates; local, remote pull or
         remote push. Ensure that the software is legit through signing.
         Integrity protection through MAC. New firmware installation should
-        include some kind TPM-involved sealing to ensure that the configuration
-        has not been tampered with.
+        include some kind of TPM-involved sealing to ensure that the configuration
+        has not been tampered with. Attestation.
 
         Questions: \\
         -- Which key to sign with? \\
@@ -120,7 +122,7 @@
 	which connects on one end to the PB and on the other end to the battery hatch (which means PB is a normally-closed circuit). This has the functionality that if 
 	the battery hatch is opened (which needs to be done in order to unscrew screws needed to access PCB and other internal components) 
 	the PB is no longer pressed down, and this sends an interrupt with a callback that signals 'tampering is present'. \\
-	Another part of tamper-sensor should be that if connection to power source is lost, this should notify (? service personel?). 
+	Another part of tamper-sensor should be that if connection to power source is lost, this should notify (? service personnel?). 
 	Could also mount camera on wall and make cables go straight in the wall, and a tamper switch to notice if camera has been pulled off wall.\\
 	Note: Discussion here probably belongs more in Architectural Overview part of report.}
       \item{Possible to patch hardware errors with software and ROM path
@@ -139,17 +141,19 @@
           \item{Production costs.}
         \end{itemize}
       }
-	Assumptions:
+	\textbf{Assumptions:}
      \begin{itemize}
-	\item{Mounted on outside of company of a tech company.}
-	\item{In Lund, Sweden, where it rains a lot and casing therefore needs to be waterproof and maintenance may have to be done more frequently.}
+	\assumption{LOCATION}{Mounting place}{Mounted on outside of building of a tech company.}
+	\assumption{CORRECT\_CONFIG}{Correct configuration}{It is assumed that SRTP is used and that authentication and encryption are enabled.}
+	\assumption{TIMELY\_MAINT}{Maintenance schedule followed}{It is assumed that maintenance personnel follows the maintenance schedule
+	and that no deterioration of product due to neglected maintenance occurs.}
      \end{itemize}
 
       \todo{0.5 page}
 
   \section{Architectural overview}
 
-    \comm{%
+    \comm{
       Short high-level architectural overview (guessing hardware?) that
       describes how the design is structured. Motivate all design-choices,
       don't go into to much detail, the level of the description is the
@@ -163,11 +167,13 @@
       perspective. The intended audience is a student that has completed the
       basic computer security course.
     }
+
+	For the illustration, probs smth like page 15 of \escape{https://www.commoncriteriaportal.org/files/ppfiles/pp0089b_pdf.pdf}
   \subsection{TOE}
-    \begin{itemize}
-	\threat{O.COMMS} {Protected Communications} {
+    \begin{checklist}
+	\objective{SECURECOMMS} {Protected Communications} {
 	Add stuff here please. Mention SRTP.}
-    \end{itemize}
+    \end{checklist}
 
     \todo{2-3 pages}
 
@@ -183,15 +189,15 @@
 	Note: Go all the way as teacher's pets and specify that object security should be used?}
     \threat{MISMANAGE}{Incompetent personnel} {
 	There is a risk that the persons managing and serving the camera do not have the skills required, which can result in password being leaked, physical components of camera damaged, camera not mounted on wall correctly etc.}
-    \threat{DISHONEST}{Dishonest repair personnel}{ %please help me find better name than DISHONEST...
+    \threat{DISHONESTY}{Dishonest repair personnel}{ %please help me find better name than DISHONEST...
 	The repair personnel may be dishonest and try to access the video files, the keys, may try to inject code or access internal memory of camera.}
     \threat{PERSISTENT}{Persisent presence}{
-	If the (remote) management system is flawed, an attacker could besides inserting executable foreign code access camera through the management interface at their convenience.}
+	If the (remote) management system is flawed an attacker could, besides inserting executable foreign code, access camera through the management interface at their convenience.}
 
     \item{Avoid bugs in the (remote) management that would allow someone to
       insert executable foreign code.}
     \item{Should not be possible to load unauthorized firmware.}
-    \item{Don't allow loading of SRTP keys for a incorrect receiver.}
+    \item{Don't allow loading of SRTP keys for an incorrect receiver.}
     \item{Include safeguards concerning removing flash memory and loading it
       with altered configurations or code.}
     \item{Deploy routines that circumvents dishonest repair personnel.}
