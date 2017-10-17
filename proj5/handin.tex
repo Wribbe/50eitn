@@ -188,31 +188,68 @@
 
   \section{Security evaluation}
 
-  \subsection{Threats}
-  \begin{itemize}[label={}]
-    \threat{PHYSICAL}{Physical Access} {
-	An attacker can physically access the camera. This can result in destruction of camera in pure vandalizing, removal of camera from premises opening up for other threats (T.X and T.Y),
-	covering camera with other physical object or smearing something on camera housing/lens rendering recorded video useless. }
-    \threat{NETWORK}{Network attack} {
-	Since the camera is outfitted with a 4G subsystem, attacks relevant for such a system are relevant here. \\
-	Note: Go all the way as teacher's pets and specify that object security should be used?}
-    \threat{MISMANAGE}{Incompetent personnel} {
-	There is a risk that the persons managing and servicing the camera do not have the skills required, which can result in password being leaked, physical components of camera damaged, camera not mounted on wall correctly etc.}
-    \threat{DISHONESTY}{Dishonest repair personnel}{ %please help me find better name than DISHONEST...
-	The repair personnel may be dishonest and try to access the video files, the keys, may try to inject code or access internal memory of camera.}
-    \threat{PERSISTENT}{Persistent presence}{
-	If the (remote) management system is flawed an attacker could, besides inserting executable foreign code, access camera through the management interface at their convenience.}
-    \threat{LOST\_ASSET}{Camera/key is lost}{An attacker either physically makes off with a camera or gets hold of a crypto key.}
+    \subsection{Assets}
 
-    \item{Avoid bugs in the (remote) management that would allow someone to
-      insert executable foreign code. This should be under T.NETWORK.}
-    \item{Should not be possible to load unauthorized firmware.}
-    \item{Don't allow loading of SRTP keys for an incorrect receiver.}
-    \item{Include safeguards concerning removing flash memory and loading it
-      with altered configurations or code.}
-    \item{Secure JTAG debug interface against misuse. Check article about JTAG interface attacking from first part of course.}
-    \item{From first part of course, attack where microprocessor is removed and is either probed or re-soldered (BGA) in order to access memory. Defense against this dark art? Check article again. Note: perhaps part of 'flash memory' entry above in this list. Or T.LOST\_ASSET.}
-  \end{itemize}
+    \subsection{Threats}
+      \begin{itemize}[label={}]
+        \threat{PHYSICAL}{Physical Access} {
+          An attacker can physically access the camera. This can result in
+          destruction of camera in pure vandalizing, removal of camera from
+          premises opening up for other threats (T.X and T.Y), covering camera
+          with other physical object or smearing something on camera
+          housing/lens rendering recorded video useless.
+        }
+        \threat{NETWORK}{Network attack} {
+          Since the camera is outfitted with a 4G subsystem, attacks relevant for
+          such a system are relevant here.
+          \\ Note: Go all the way as teacher's pets and specify that object
+          security should be used?
+        }
+        \threat{MISMANAGE}{Incompetent personnel} {
+          There is a risk that the persons managing and servicing the camera do
+          not have the skills required, which can result in password being
+          leaked, physical components of camera damaged, camera not mounted on
+          wall correctly etc.
+        }
+        \threat{DISHONESTY}{Dishonest repair personnel}{ %please help me find better name than DISHONEST...
+          The repair personnel may be dishonest and try to access the video
+          files, the keys, may try to inject code or access internal memory of
+          camera.
+        }
+        \threat{PERSISTENT}{Persistent presence}{
+          If the (remote) management system is flawed an attacker could,
+          besides inserting executable foreign code, access camera through the
+          management interface at their convenience.
+        }
+        \threat{LOST\_ASSET}{Camera/key is lost}{
+          An attacker either physically makes off with a camera or gets hold of
+          a crypto key.
+        }
+        \item{
+          Avoid bugs in the (remote) management that would allow someone to
+          insert executable foreign code. This should be under T.NETWORK.
+        }
+        \item{
+          Should not be possible to load unauthorized firmware.
+        }
+        \item{
+          Don't allow loading of SRTP keys for an incorrect receiver.
+        }
+        \item{
+          Include safeguards concerning removing flash memory and loading it
+          with altered configurations or code.
+        }
+        \item{
+          Secure JTAG debug interface against misuse. Check article about
+          JTAG interface attacking from first part of course.
+        }
+        \item{
+          From first part of course, attack where microprocessor is removed
+          and is either probed or re-soldered (BGA) in order to access memory.
+          Defense against this dark art? Check article again. Note: perhaps
+          part of 'flash memory' entry above in this list. Or T.LOST\_ASSET.
+        }
+      \end{itemize}
 
   \comm{%
     Short security evaluation of the design that explained the used security
