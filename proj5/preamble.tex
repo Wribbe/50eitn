@@ -1,0 +1,51 @@
+\usepackage{enumitem}
+\usepackage{parskip}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{enumitem}
+\usepackage[Q=yes]{examplep}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage[hidelinks]{hyperref}
+\usepackage{color}
+\usepackage{wasysym}
+\usepackage{listings}
+
+\newcommand{\command}[1]{\texttt{#1}}
+\newcommand{\e}[1]{\PVerb{#1}}
+\newcommand{\comm}[1]{{\leavevmode\color{gray}#1}}
+\newcommand{\todo}[1]{
+  \begin{center}
+    [\textcolor{red}{\textbf{\textit{#1}}}]
+  \end{center}
+}
+\newcommand{\threat}[3]{\item{\textbf{T.#1} \hfill \textbf{#2} \\ #3}}
+\newcommand{\objective}[3]{\item{\textbf{O.#1} \hfill \textbf{#2} \\ #3}}
+\newcommand{\assumption}[3]{\item{\textbf{A.#1} \hfill \textbf{#2} \\ #3}} %These could absolutely be done better, but these will do til we've decided on a format
+\newcommand{\escape}[1]{\PVerb{#1}}
+
+% Check list evnironment.
+\newenvironment{checklist}{%
+  \begin{list}{}{}%
+  \let\olditem\item
+  \renewcommand\item{\olditem -- \marginpar{$\Box$} }
+  \newcommand\checkeditem{\olditem -- \marginpar{$\CheckedBox$} }
+}{%
+  \end{list}
+}
+
+\lstdefinestyle{customc}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=C,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}

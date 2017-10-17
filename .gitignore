@@ -9,4 +9,5 @@ tmpcode
 *.fdb_latexmk
 *.synctex*
 handin.pdf
+frame.pdf
 **/input
