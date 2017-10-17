@@ -717,6 +717,23 @@ KNOX concept?
 
 **Taint analysis** - som magoperation med kontrastvätska
 
+**TOE**, working definition: "*think of TOE as the definition of the system from a security perspective telling what parts
+of the actual systems are considered in the security analysis.*"
+
+#### från slides_on_CC.pdf
+**TOE** (Target of Evaluation) the system submitted for
+evaluation.
+
+**ST** (Security Target) set of security requirements to be
+used as the basis of evaluation.
+
+**EAL** (Evaluation Assurance Level) the level of certification
+sought.
+
+**TSF** (TOE Security Functions) the set of all hardware,
+software, and firmware needed for the enforcement of
+the policy.
+
 # Quiz prep - IPCHOLM (Cloud, Homomorphic, DRM, SW SEC)
 
 ## Cloud
