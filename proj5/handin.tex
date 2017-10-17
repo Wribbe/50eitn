@@ -75,10 +75,28 @@
 
   \newpage
 
-  \section{Product description}
+  \section{Introduction}
 
-    \comm{Describe the product and point out which design requirements that have
-    been considered. (Which requirements? Software, hardware, both?)}
+    \comm{
+      Short high-level architectural overview (guessing hardware? Think both hardware and software) that
+      describes how the design is structured. Motivate all design-choices,
+      don't go into too much detail, the level of the description is the
+      important part. The design should be presented in such a way that it is
+      easy to understand. This section also includes a half page illustration
+      of the structure together with the Target Of Evaluation (TOE) and
+      Security Target (ST).
+
+      The main point is to exercise technical writing ability. Said description
+      should only include details that are important from a security
+      perspective. The intended audience is a student that has completed the
+      basic computer security course.
+    }
+
+    \subsection{TOE Overview}
+    \subsection{TOE Description}
+      \subsubsection{Introduction}
+      \subsubsection{Intended usage}
+      \subsubsection{Security features}
 
     \textbf{Design requirements:}
     \begin{checklist}
@@ -151,31 +169,14 @@
       }
 	\textbf{Assumptions:}
      \begin{itemize}
-	\assumption{LOCATION}{Mounting place}{The camera is designed to be mounted on outside of building of a tech company.}
-	\assumption{CORRECT\_CONFIG}{Correct configuration}{It is assumed that SRTP is used and that authentication and encryption in it are enabled.}
-	\assumption{TIMELY\_MAINT}{Maintenance schedule followed}{It is assumed that maintenance personnel follows the maintenance schedule
-	and that no deterioration of product due to neglected maintenance occurs.}
-	\assumption{QA}{Quality Assurance}{No more than 0.5\% of units are shipped with faulty components.}
+       \assumption{LOCATION}{Mounting place}{The camera is designed to be mounted on outside of building of a tech company.}
+       \assumption{CORRECT\_CONFIG}{Correct configuration}{It is assumed that SRTP is used and that authentication and encryption in it are enabled.}
+       \assumption{TIMELY\_MAINT}{Maintenance schedule followed}{It is assumed that maintenance personnel follows the maintenance schedule
+       and that no deterioration of product due to neglected maintenance occurs.}
+       \assumption{QA}{Quality Assurance}{No more than 0.5\% of units are shipped with faulty components.}
      \end{itemize}
 
       \todo{0.5 page}
-
-  \section{Architectural overview}
-
-    \comm{
-      Short high-level architectural overview (guessing hardware? Think both hardware and software) that
-      describes how the design is structured. Motivate all design-choices,
-      don't go into too much detail, the level of the description is the
-      important part. The design should be presented in such a way that it is
-      easy to understand. This section also includes a half page illustration
-      of the structure together with the Target Of Evaluation (TOE) and
-      Security Target (ST).
-
-      The main point is to exercise technical writing ability. Said description
-      should only include details that are important from a security
-      perspective. The intended audience is a student that has completed the
-      basic computer security course.
-    }
 
 	For the illustration, probs smth like page 15 of \escape{https://www.commoncriteriaportal.org/files/ppfiles/pp0089b_pdf.pdf}
   \subsection{...}
@@ -186,9 +187,22 @@
 
     \todo{2-3 pages}
 
-  \section{Security evaluation}
+  \comm{%
+    Short security evaluation of the design that explained the used security
+    measures and the motivation behind them. Should include a list of all
+    threats and security issues that are deemed applicable to the system,
+    together with any threats that were deemed a non-issue.
+
+    This section contains a table where the problems are listed on the y-axis
+    against the solutions on the x-axis where a 'X' marks with solution
+    protects against which threat.
+  }
+
+  \section{Security problem definition}
 
     \subsection{Assets}
+
+    \subsection{Threat agents}
 
     \subsection{Threats}
       \begin{itemize}[label={}]
@@ -251,16 +265,6 @@
         }
       \end{itemize}
 
-  \comm{%
-    Short security evaluation of the design that explained the used security
-    measures and the motivation behind them. Should include a list of all
-    threats and security issues that are deemed applicable to the system,
-    together with any threats that were deemed a non-issue.
-
-    This section contains a table where the problems are listed on the y-axis
-    against the solutions on the x-axis where a 'X' marks with solution
-    protects against which threat.
-  }
 
     \todo{2-3 pages + summary}
 
