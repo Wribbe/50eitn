@@ -90,7 +90,24 @@
 
     \subsection{Hardware security layer}
 
+      The hardware security layer of the platform consists of a ARM TrustZone
+      CPU, a Trusted Platform Module for managing software security related
+      artefacts and a static unique identifier created during the platform
+      production.
+
       \subsubsection{ARM TrustZone CPU}
+
+        The ARM TrustZone CPU provides hardware level separation of trusted and
+        untrusted region in the computational space. Using this feature in
+        combination with a trusted OS and trusted boot a Trusted Execution
+        Environment is created, which then can act as a host to any trusted
+        applications that will run on the platform.
+
+        \begin{figure}[!h]
+          \center
+          \includegraphics[width=0.5\textwidth]{input/arm_trust.jpg}
+          \caption{ARM TrustZone security separation.}
+        \end{figure}
 
       \subsubsection{Trusted Platform Module}
 
