@@ -148,7 +148,38 @@
 
     \subsection{Software security layer}
 
+      The Platform software security layer hinges mainly on the active usage of
+      the onboard Trusted Platform Module (TPM) for tasks such as encryption,
+      attestation and authentication. The CPU has complementary
+      security-features that, while not possible to use in the software layer
+      directly, enables a more trust-based boot and execution model with a
+      reduced attack-surface for commonly used exploit-types, which reduce the
+      impact of potential software-bugs.
+
       \subsubsection{User authentication}
+
+        It is imperative that the audio and video data produced by the
+        platform, together with any configuration and user information stored
+        on the device is only made available to trusted users of the system,
+        and out of reach to anyone gaining unauthorized access to the system.
+        To ensure that this is the case, the data mentioned above will be
+        encrypted together with using a username and password combination to
+        issue a challenge-response when access is requested.
+
+        The system will recognise three types of users; regular users,
+        maintenance users and a root user. The regular users will only have
+        access to their own data and configuration options related to the user
+        experience of using the platform. Maintenance users will have access to
+        additional configurations and diagnostic information related to the
+        upkeep and day-to-day operations of the platform. The root user will
+        have access to all configuration options and diagnostic data  available
+        on the platform together with the ability to create or remove any of
+        the other types of users from the system.
+
+        It is worth to point out that the root user will not have default
+        access to any of the local users encrypted data without knowing their
+        specific password.
+
       \subsubsection{Encrypted data streams}
       \subsubsection{Storage encryption}
       \subsubsection{Verified firmware}
