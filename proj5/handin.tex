@@ -118,8 +118,22 @@
         extracting operational information and remote configuration, this
         feature is of great interest.
 
-
       \subsubsection{Trusted Platform Module}
+
+        The Trusted Platform Module (TPM) is a dedicated hardware component
+        which main purpose is to provide a point-of-trust for handling security
+        related software components and artifacts such as keys used for
+        encryption, signing and identification. Beyond its storage
+        capabilities the TPM also provides other higher-level functionality,
+        such as verifying that the platform configuration and firmware has not
+        been changed unknowingly (attestation), or making sure that some information
+        is only available to the system at certain predefined states (sealing).
+
+        By using the functionality made available by the TPM the platform is
+        much better equipped to execute self-verification, storage and stream
+        encryption and firmware- and configuration-updates in a cryptographically
+        secure way.
+
 
       \subsubsection{Unique ID}
 
