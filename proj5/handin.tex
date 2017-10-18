@@ -50,6 +50,11 @@
         \includegraphics[width=\textwidth]{input/pcb_camera.png}
       \end{figure}
 
+      \begin{figure}[!h]
+        \center
+        \includegraphics[width=0.7\textwidth]{input/communication.pdf}
+      \end{figure}
+
       \subsubsection{Intended usage}
 
         The product is intended to be used as a perimeter security device for
@@ -75,44 +80,64 @@
            }
          \end{itemize}
 
-\subsection{Architectural Overview}
-	\textbf{External entities}
-	\begin{itemize}
-		\item User, connected to: '4G modem'
-		\begin{itemize}
-			\item TPM
-		\end{itemize}
-		\item Maintenance Person, connected to: \{'4G modem' for remote management, 'JTAG debug port' for close management\}
-		\begin{itemize}
-			\item TPM
-		\end{itemize}
-		\item Power supply, connected to: 'Battery'
-		\item Repair Person, connected to: all components of camera %state this, don't draw it..
-	\end{itemize}
-	\textbf{Changes to PCB picture}
-	\begin{itemize}
-		\item Change 'button/sensor1' to 'Tamper switch'
-		\item Remove 'button/sensor2'
-		\item Add 'Burnt-in Master Key', connected to: TPM(?) %R@S: where is this 'burnt in'?
-		\item Add text 'SRTP', connected to: 4G modem antenna
-		\item ? Add text 'Encryption of video data', connected to path between CPU and Flash memory ? % perhaps too detailed
-		%\item Add `Key Blobs (TPM)', in Flash
-	\end{itemize}
-	\textbf{TPM}
-	\begin{itemize} %perhaps not have keys at all
-		\item EK
-		\item SRK
-		\item AIK
-	\end{itemize}
+  \section{Security architecture -- overview}
 
-	\subsubsection{Life cycle of TOE}
-	\begin{itemize}
-		\item 'Production', connected to: 'User operation'
-		\item 'User operation', conn to: \{'Service/repair', 'Maintenance'\}
-		\item 'Maintenance', conn to: 'User operation'
-		\item 'Service/repair', conn to: \{'User operation', 'Decommission'\}
-		\item 'Decommission'
-	\end{itemize}
+    \begin{figure}[!h]
+      \center
+      \includegraphics[width=\textwidth]{input/security_layers.pdf}
+      \caption{Schematic representation of hardware and software security layers.}
+    \end{figure}
+
+    \subsection{Hardware security layer}
+
+      \subsubsection{ARM TrustZone CPU}
+
+      \subsubsection{Trusted Platform Module}
+
+    \subsection{Software security layer}
+
+      \subsubsection{Authenticated user}
+      \subsubsection{Encrypted data streams}
+      \subsubsection{Storage encryption}
+      \subsubsection{Verified firmware}
+      \subsubsection{Unique ID}
+
+    \begin{itemize}
+      \item User, connected to: '4G modem'
+      \begin{itemize}
+        \item TPM
+      \end{itemize}
+      \item Maintenance Person, connected to: \{'4G modem' for remote management, 'JTAG debug port' for close management\}
+      \begin{itemize}
+        \item TPM
+      \end{itemize}
+      \item Power supply, connected to: 'Battery'
+      \item Repair Person, connected to: all components of camera %state this, don't draw it..
+    \end{itemize}
+    \textbf{Changes to PCB picture}
+    \begin{itemize}
+      \item Change 'button/sensor1' to 'Tamper switch'
+      \item Remove 'button/sensor2'
+      \item Add 'Burnt-in Master Key', connected to: TPM(?) %R@S: where is this 'burnt in'?
+      \item Add text 'SRTP', connected to: 4G modem antenna
+      \item ? Add text 'Encryption of video data', connected to path between CPU and Flash memory ? % perhaps too detailed
+      %\item Add `Key Blobs (TPM)', in Flash
+    \end{itemize}
+    \textbf{TPM}
+    \begin{itemize} %perhaps not have keys at all
+      \item EK
+      \item SRK
+      \item AIK
+    \end{itemize}
+
+    \subsubsection{Life cycle of TOE}
+    \begin{itemize}
+      \item 'Production', connected to: 'User operation'
+      \item 'User operation', conn to: \{'Service/repair', 'Maintenance'\}
+      \item 'Maintenance', conn to: 'User operation'
+      \item 'Service/repair', conn to: \{'User operation', 'Decommission'\}
+      \item 'Decommission'
+    \end{itemize}
 
 	\subsubsection{Assets}
 
