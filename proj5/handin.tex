@@ -100,14 +100,23 @@
         The ARM TrustZone CPU provides hardware level separation of trusted and
         untrusted region in the computational space. Using this feature in
         combination with a trusted OS and trusted boot a Trusted Execution
-        Environment is created, which then can act as a host to any trusted
+        Environment is created which can then act as a host to any trusted
         applications that will run on the platform.
 
         \begin{figure}[!h]
           \center
+          % TODO: Make a draw.io copy of this picture.
           \includegraphics[width=0.5\textwidth]{input/arm_trust.jpg}
           \caption{ARM TrustZone security separation.}
         \end{figure}
+
+        The CPU also features W xor X-protection by enabling its Nx-bit.
+        Activating this feature reduces the attack-surface for code-injection
+        attempts by making user-space memory either executable or modifiable,
+        but not both. Since the platform includes management software for
+        extracting operational information and remote configuration, this
+        feature is of great interest.
+
 
       \subsubsection{Trusted Platform Module}
 
