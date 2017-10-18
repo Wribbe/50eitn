@@ -73,7 +73,7 @@
              defects or deteriorations outside of regular maintenance are
              reported as soon as they are detected.
            }
-         \end{itemize}	
+         \end{itemize}
 
 \subsection{Architectural Overview}
 	\textbf{External entities}
@@ -91,7 +91,7 @@
 	\end{itemize}
 	\textbf{Changes to PCB picture}
 	\begin{itemize}
-		\item Change 'button/sensor1' to 'Tamper switch' 
+		\item Change 'button/sensor1' to 'Tamper switch'
 		\item Remove 'button/sensor2'
 		\item Add 'Burnt-in Master Key', connected to: TPM(?) %R@S: where is this 'burnt in'?
 		\item Add text 'SRTP', connected to: 4G modem antenna
@@ -127,14 +127,36 @@
 
  \subsubsection{Security objectives for the TOE}
 	\begin{itemize}
-		\objective{TPM\_KEY\_STRG}{Storage of keys in camera}{The storage of internal keys of camera should be done in the TPM.}
-		\objective{TRUSTZONE\_NX}{Nx enabled in ARM CPU}{The ARM Trustzone CPU should have Nx bit enabled.}  % (W xor X-protection from project 4, to protect against code injection). Could perhaps add more on trustzone, from Lect6, security rings and running code in privileged mode etc. Could perhaps mitigate some threats here. Last slide of Lect6 says embedded cpus work differently though, and here we use an embedded system, I would say.
-		\objective{DECOMM}{Easy erasure of data}{When the TOE is decommissioned, it should be easy for the user to make stored user
-information and data stored unreadable (or wiped).}
-		\objective{ID}{Strong identity}{The camera should have a unique, cryptographically strong, identity that is programmed during camera manufacturing.}
-		\objective{NO\_TAMPER}{Detect tampering}{The TOE should have a tamper switch on backside of housing, in order to detect if pulled off of wall.}
-		\objective{PWR\_OUT}{Notify if lost power}{A notification should be sent if connection to power source is cut off.}
-		\objective{ATTEST}{Attestation used for remote}{When a Maintenance Person is to update firmware, attestation should be carried out with the help of the TPMs in MP's computer and the TOE.}
+		\objective{TPM\_KEY\_STRG}{Storage of keys in camera}{
+      The storage of internal keys of camera should be done in the TPM.
+    }
+		\objective{TRUSTZONE\_NX}{Nx enabled in ARM CPU}{
+      The ARM Trustzone CPU should have Nx bit enabled.
+    }
+    % (W xor X-protection from project 4, to protect against code injection).
+    % Could perhaps add more on trustzone, from Lect6, security rings and
+    % running code in privileged mode etc. Could perhaps mitigate some threats
+    % here. Last slide of Lect6 says embedded cpus work differently though, and
+    % here we use an embedded system, I would say.
+		\objective{DECOMM}{Easy erasure of data}{
+      When the TOE is decommissioned, it should be easy for the user to make
+      stored user information and data stored unreadable (or wiped).
+    }
+		\objective{ID}{Strong identity}{
+      The camera should have a unique, cryptographically strong, identity that
+      is programmed during camera manufacturing.
+    }
+		\objective{NO\_TAMPER}{Detect tampering}{
+      The TOE should have a tamper switch on backside of housing, in order to
+      detect if pulled off of wall.
+    }
+		\objective{PWR\_OUT}{Notify if lost power}{
+      A notification should be sent if connection to power source is cut off.
+    }
+		\objective{ATTEST}{Attestation used for remote}{
+      When a Maintenance Person is to update firmware, attestation should be
+      carried out with the help of the TPMs in MP's computer and the TOE.
+    }
 		 \objective{SECURE\_COMMS}{Secure communictions}{
              The TOE should have a correct configuration that
              enables a fully encrypted and authenticated SRTP stream to be used
@@ -145,14 +167,28 @@ information and data stored unreadable (or wiped).}
         % TODO: Determine the X in X-bt encrypted RSTP stream.
         % TODO: Add tamper protection.
         The product features secure video streaming capabilities through a
-        X-bit encrypted SRTP stream with fully encrypted data storage. 
+        X-bit encrypted SRTP stream with fully encrypted data storage.
+
+        % Split it into hardware/software?
+
+        Forwards and backwards protection by reapplying the key derivation
+        function for the SRTP connection.
 
   \subsubsection{Security Objectives for the Operational Environment}
 	\begin{itemize}
-		\objenv{NO\_ADVERSARIAL}{No adversarial personnel}{It is assumed that background checks on repair personnel are carried out.} % R: maybe not have this, but could mitigate T_ADVERSARIAL. Otherwise, an example of OpEnv-obj
+		\objenv{NO\_ADVERSARIAL}{No adversarial personnel}{
+      It is assumed that background checks on repair personnel are carried out.
+    } % R: maybe not have this, but could mitigate T_ADVERSARIAL. Otherwise, an
+      % example of OpEnv-obj
 	\end{itemize}
 
-  % TODO: Motsvarar detta ST? R: Nej, jag tror att i ST:n ingår threats och objectives för TOE:n. Flyttar därför upp. Edit: Bör göra det utifrån exempel jag sett, men i projektbeskrivningen står uttryckligen att threat-listan ska vara i andra delen. Flyttade därför ner den igen... Edit2: Wikipedia säger också att threats bör vara ovan.. https://en.wikipedia.org/wiki/Security_Target
+  % TODO: Motsvarar detta ST? R: Nej, jag tror att i ST:n ingår threats och
+  % objectives för TOE:n. Flyttar därför upp. Edit: Bör göra det utifrån
+  % exempel jag sett, men i projektbeskrivningen står uttryckligen att
+  % threat-listan ska vara i andra delen. Flyttade därför ner den igen...
+  % Edit2: Wikipedia säger också att threats bör vara ovan..
+  % https://en.wikipedia.org/wiki/Security_Target
+
   \section{Security problem definition}
 
     \subsection{Security solutions}
