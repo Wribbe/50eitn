@@ -52,8 +52,13 @@ table = [
         	Tamper detection means that an attacker which tries to access internal parts of camera have a higher probability 
         	of being detected. If the key derivation function is reapplied, it will be discovered that a key has changed.
         	"""),
-        ("t.flash_intg", "o.trustzone_nx o.enc_data o.id", 
+        ("t.flash_intg", "o.tpm_seal o.enc_data o.id",
         	"""
+                By using the TPMs seal functionality, vital system resources
+                can be tied to hashes of the correct configuration data on the
+                flash memory. Trying to run firmware that produces other hashes
+                will prompt the platform to stop and signal that something is
+                wrong.
         	"""),
         ("t.jtag_abuse", "o.trustzone_nx o.tpm_key_strg o.secure_comms", 
         	"""
@@ -63,12 +68,20 @@ table = [
        ]
 
 row_format = "{} & \\parbox{{4.0cm}}{{\\vspace{{3.5pt}} {} }} &\\parbox{{6cm}}{{\\vspace{{3.0pt}} {} }} \\\\"
-content = []
+content1 = []
+content2 = []
+
+content = content1
 for obj, mitigated, rationale in table:
     content.append(row_format.format(obj.upper().replace('_','\\_'),
         mitigated.upper().replace('_','\\_'), ' '.join([r.strip() for r in
             rationale.split()])))
     content.append("\\hline")
+    if "lost_asset" in obj:
+        content = content2
 
 with open(os.path.join('input','rationale.tex'), 'w') as fp:
-   fp.write('\n'.join(content)+'\n')
+   fp.write('\n'.join(content1)+'\n')
+
+with open(os.path.join('input','rationale2.tex'), 'w') as fp:
+   fp.write('\n'.join(content2)+'\n')

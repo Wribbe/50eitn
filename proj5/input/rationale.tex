@@ -11,13 +11,3 @@ T.PERSISTENT & \parbox{4.0cm}{\vspace{3.5pt} O.PWR\_OUT O.TWO\_WAY\_PROT } &\par
 \hline
 T.LOST\_ASSET & \parbox{4.0cm}{\vspace{3.5pt} O.NO\_TAMPER O.ENC\_DATA O.SECURE\_COMMS } &\parbox{6cm}{\vspace{3.0pt} The tamper detection will detect if camera is removed from wall and/or opened. The secure communications objective means user and video data are hard to steal. If an attacker removes flash memory the user data and video stored there are encrypted. } \\
 \hline
-T.MNG\_TEST & \parbox{4.0cm}{\vspace{3.5pt} O.TRUSTZONE\_NX O.DECOMM } &\parbox{6cm}{\vspace{3.0pt}  } \\
-\hline
-T.SIGNED\_FW & \parbox{4.0cm}{\vspace{3.5pt} O.TPM\_KEY\_STRG O.DECOMM O.NO\_TAMPER O.ID } &\parbox{6cm}{\vspace{3.0pt} Keys are stored in the camera's TPM so an attacker can not first have physical access to camera and get hold of keys and later perform remote code injection. Tamper detection will make it harder to undetected access camera's internal parts. } \\
-\hline
-T.SRTP\_RECV & \parbox{4.0cm}{\vspace{3.5pt} O.NO\_TAMPER O.TWO\_WAYS\_PROT } &\parbox{6cm}{\vspace{3.0pt} Tamper detection means that an attacker which tries to access internal parts of camera have a higher probability of being detected. If the key derivation function is reapplied, it will be discovered that a key has changed. } \\
-\hline
-T.FLASH\_INTG & \parbox{4.0cm}{\vspace{3.5pt} O.TRUSTZONE\_NX O.ENC\_DATA O.ID } &\parbox{6cm}{\vspace{3.0pt}  } \\
-\hline
-T.JTAG\_ABUSE & \parbox{4.0cm}{\vspace{3.5pt} O.TRUSTZONE\_NX O.TPM\_KEY\_STRG O.SECURE\_COMMS } &\parbox{6cm}{\vspace{3.0pt} Write xor execute protection means that even if an attacker can abuse JTAG interface, no executable harmful code can be loaded. An attacker also needs the keys that are stored in the TPM. } \\
-\hline
