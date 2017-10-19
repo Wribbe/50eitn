@@ -90,6 +90,9 @@
 		%TODO(?): What about user forgetting password? Handle through assumption 
 		%of user with perfect memory here, or through specifying a software
 		%'Forgot password?' functionality?
+		\assumption{NO\_ADVERSARIAL}{No adversarial personnel}{
+      	It is assumed that background checks on repair personnel are carried out.
+    		}
            }
          \end{itemize}
 
@@ -299,14 +302,14 @@
     }
 		\objective{ID}{Strong identity}{
       The camera should have a unique, cryptographically strong, identity that
-      is programmed during camera manufacturing.
+      is burned into the PCB during camera manufacturing.
     }
 		\objective{NO\_TAMPER}{Detect tampering}{
-      The TOE should have a tamper switch on backside of housing, in order to
-      detect if pulled off of wall.
+      The TOE should have two tamper switches: one on backside of housing in order to
+      detect if pulled off of wall, one inside housing behind battery hatch in order to detect if opened.
     }
 		\objective{PWR\_OUT}{Notify if lost power}{
-      A notification should be sent if connection to power source is cut off.
+      A notification should be sent to User and Maintenance Personnel if connection to power source is cut off.
     }
 		\objective{ATTEST}{Attestation used for remote}{
       When a Maintenance Person is to update firmware, attestation should be
@@ -317,24 +320,28 @@
              enables a fully encrypted and authenticated SRTP stream to be used
              for data transfer, and also use it.
            }
+		\objective{TWO\_WAYS\_PROT}{Two-ways protection}{
+		 Forwards and backwards protection by reapplying the key derivation
+		function for the SRTP connection.	
+    }
 	\end{itemize}
         % TODO: Expand with more security features.
         % TODO: Determine the X in X-bt encrypted RSTP stream.
-        The product features secure video streaming capabilities through a
-        X-bit encrypted SRTP stream with fully encrypted data storage.
+        %The product features secure video streaming capabilities through a
+        %X-bit encrypted SRTP stream with fully encrypted data storage.
 
         % Split it into hardware/software?
 
-        Forwards and backwards protection by reapplying the key derivation
-        function for the SRTP connection.
+%        Forwards and backwards protection by reapplying the key derivation
+%		function for the SRTP connection.
 
-  \subsubsection{Security Objectives for the Operational Environment}
-	\begin{itemize}
-		\objenv{NO\_ADVERSARIAL}{No adversarial personnel}{
-      It is assumed that background checks on repair personnel are carried out.
-    } % R: maybe not have this, but could mitigate T_ADVERSARIAL. Otherwise, an
+  %\subsubsection{Security Objectives for the Operational Environment}
+	%\begin{itemize}
+		%\objenv{NO\_ADVERSARIAL}{No adversarial personnel}{
+     % It is assumed that background checks on repair personnel are carried out.
+    %} % R: maybe not have this, but could mitigate T_ADVERSARIAL. Otherwise, an
       % example of OpEnv-obj
-	\end{itemize}
+	%\end{itemize}
 
   \section{Security problem definition}
 
