@@ -1,36 +1,29 @@
 
-\begin{tabular}{| r | c | c | c | c | c | c | c | c | c | c | c | c | c | c |}
- \cline{2-15}
- \multicolumn{1}{c|}{}  & \rotatebox{90}{P0.some-name} & \rotatebox{90}{P1.some-name} & \rotatebox{90}{P2.some-name} & \rotatebox{90}{P3.some-name} & \rotatebox{90}{P4.some-name} & \rotatebox{90}{P5.some-name} & \rotatebox{90}{P6.some-name} & \rotatebox{90}{P7.some-name} & \rotatebox{90}{P8.some-name} & \rotatebox{90}{P9.some-name} & \rotatebox{90}{P10.some-name} & \rotatebox{90}{P11.some-name} & \rotatebox{90}{P12.some-name} & \rotatebox{90}{P13.some-name} \\
+\begin{tabular}{| r | c | c | c | c | c | c | c | c | c |}
+ \cline{2-10}
+ \multicolumn{1}{c|}{}  & \rotatebox{90}{O.TPM\_KEY\_STRG} & \rotatebox{90}{O.TRUSTZONE\_NX} & \rotatebox{90}{O.DECOMM} & \rotatebox{90}{O.ID} & \rotatebox{90}{O.NO\_TAMPER} & \rotatebox{90}{O.PWR\_OUT} & \rotatebox{90}{O.ATTEST} & \rotatebox{90}{O.SECURE\_COMMS} & \rotatebox{90}{O.TWO\_WAY\_PROT} \\
 \hline
- \cline{2-15}
-T0.some-name &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\
+T.PHYSICAL & X & X & X &   &   &   &   &   &   \\
 \hline
-T1.some-name &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\
+T.NETWORK &   & X &   &   &   &   &   &   &   \\
 \hline
-T2.some-name &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\
+T.MISMANAGE &   &   &   & X & X &   &   &   &   \\
 \hline
-T3.some-name &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\
+T.ADVESERIAL &   &   &   &   &   & X & X &   &   \\
 \hline
-T4.some-name &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\
+T.PERSISTENT &   &   &   &   &   & X &   &   & X \\
 \hline
-T5.some-name &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\
+T.LOST\_ASSET &   &   &   &   & X &   &   & X &   \\
 \hline
-T6.some-name &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\
+T.MANAGEMENT\_TESTING &   & X & X &   &   &   &   &   &   \\
 \hline
-T7.some-name &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\
+T.SIGNED\_FIRMWARE & X & X & X & X & X &   &   &   &   \\
 \hline
-T8.some-name &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\
+T.SRTP\_RECV &   &   & X &   & X & X &   &   &   \\
 \hline
-T9.some-name &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\
+T.FLASHMEM\_INTEGRITY &   & X &   & X &   &   &   &   &   \\
 \hline
-T10.some-name &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\
-\hline
-T11.some-name &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\
-\hline
-T12.some-name &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\
-\hline
-T13.some-name &   &   &   &   &   &   &   &   &   &   &   &   &   &   \\
+T.JTAG\_ABUSE & X &   &   &   &   &   &   & X &   \\
 \hline
 \end{tabular}
 
