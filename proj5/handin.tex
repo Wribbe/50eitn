@@ -195,11 +195,13 @@
         In order to ensure that there is not sensitive data to access on
         unauthorized access, especially physical removal of storage, any
         non-trivial configuration data together with all diagnostic and
-        user-data is encrypted using 256-bit AES. The symmetric key will be a
-        combination of a salt, the username and the correct challenge-response
-        hash for the specific username and  password combination.
+        user-data is encrypted using 256-bit AES. The symmetric key will be
+        derived from the username and a hash of the specific challenge-response
+        result for the given username and password combination.
 
       \subsubsection{Verified firmware}
+
+
 
     \begin{itemize}
       \item User, connected to: '4G modem'
