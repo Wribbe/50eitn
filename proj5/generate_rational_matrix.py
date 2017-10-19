@@ -11,7 +11,8 @@ table = [
             """),
         ("t.network", "o.trustzone_nx o.secure_comms o.two_ways_prot",
         	"""
-        	Explain why
+        	A correctly configured SRTP protocol with forward and backward protection should provide protection for 4G attacks
+        	(e. g. false base stations) while still keeping the product at a lower price point.
         	"""),
         ("t.mismanage", "o.no_tamper \no.id a.no_adversarial",
         	"""
@@ -25,7 +26,9 @@ table = [
         	Attestation is carried out in order
         	to check that the right firmware is loaded and that relevant PCRs (Platform Configuration Registers) in the TPM have
         	the correct values (no changes made since last update). The Trustzone write xor execute functionality makes it harder
-        	to inject code. Lastly, here as well the assumption that background checks are carried out on personnel will in part
+        	to inject code. This can be circumvented with for example Return-Oriented Programming, but considering the application
+        	for this camera and that price should be accordingly fairly low, an advanced attack like this is not very probable.
+        	Lastly, here as well the assumption that background checks are carried out on personnel will in part
         	mitigate this threat.
         	"""),
         ("t.persistent", "o.pwr_out o.two_way_prot",
@@ -77,7 +80,7 @@ for obj, mitigated, rationale in table:
         mitigated.upper().replace('_','\\_'), ' '.join([r.strip() for r in
             rationale.split()])))
     content.append("\\hline")
-    if "lost_asset" in obj:
+    if "persistent" in obj:
         content = content2
 
 with open(os.path.join('input','rationale.tex'), 'w') as fp:

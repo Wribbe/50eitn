@@ -121,10 +121,10 @@
              The product is assumed to be mounted on the outer or inner walls of
              a building at a height that requires a small ladder to reach it.
            }
-           \assumption{TIMELY\_MAINT}{Maintenance schedule followed}{
-             It is assumed that the maintenance schedule is followed and that any
-             defects or deteriorations outside of regular maintenance are
-             reported as soon as they are detected.
+%           \assumption{TIMELY\_MAINT}{Maintenance schedule followed}{
+%             It is assumed that the maintenance schedule is followed and that any
+ %            defects or deteriorations outside of regular maintenance are
+  %           reported as soon as they are detected.
 		%TODO(?): What about user forgetting password? Handle through assumption
 		%of user with perfect memory here, or through specifying a software
 		%'Forgot password?' functionality?
@@ -165,7 +165,7 @@
           \caption{ARM TrustZone security separation.}
         \end{figure}
 
-        The CPU also features W xor X-protection by enabling its Nx-bit.
+        The CPU also features W $\oplus$ X-protection by enabling its Nx-bit.
         Activating this feature reduces the attack-surface for code-injection
         attempts by making user-space memory either executable or modifiable,
         but not both. Since the platform includes management software for
@@ -175,7 +175,7 @@
       \subsubsection{Trusted Platform Module}
 
         The Trusted Platform Module (TPM) is a dedicated hardware component
-        which main purpose is to provide a point-of-trust for handling security
+        whose main purpose is to provide a point-of-trust for handling security
         related software components and artifacts such as keys used for
         encryption, signing and identification. Beyond its storage
         capabilities the TPM also provides other higher-level functionality,
@@ -471,6 +471,8 @@
           %part of 'flash memory' entry above in this list. Or T.LOST\_ASSET.
         %}
       \end{itemize}
+
+	\newpage
 
       \subsubsection{Rationale}
 	%Here, could do tables as in https://www.commoncriteriaportal.org/files/epfiles/ST-FFHDD.pdf
