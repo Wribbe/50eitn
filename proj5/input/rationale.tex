@@ -5,11 +5,11 @@ T.NETWORK & \parbox{4.0cm}{\vspace{3.5pt} O.TRUSTZONE\_NX O.SECURE\_COMMS O.TWO\
 T.MISMANAGE & \parbox{4.0cm}{\vspace{3.5pt} O.NO\_TAMPER 
 O.ID A.NO\_ADVERSARIAL } &\parbox{6cm}{\vspace{3.0pt} Tamper detection will trigger if camera is not mounted correctly or case is not closed correctly when mounting or remounting. ID will help how? The background checks that are carried out on personnel are partly done to catchany potential criminal record but also to screen for persons that can perform well in their job. } \\
 \hline
-T.ADVERSARIAL & \parbox{4.0cm}{\vspace{3.5pt} O.PWR\_OUT O.ATTEST O.TRUSTZONE\_NX O.TWO\_WAYS\_PROT A.NO\_ADVERSARIAL } &\parbox{6cm}{\vspace{3.0pt} This is because. } \\
+T.ADVERSARIAL & \parbox{4.0cm}{\vspace{3.5pt} O.PWR\_OUT O.ATTEST O.TRUSTZONE\_NX O.TWO\_WAYS\_PROT A.NO\_ADVERSARIAL } &\parbox{6cm}{\vspace{3.0pt} Attestation is carried out in order to check that the right firmware is loaded and that relevant PCRs (Platform Configuration Registers) in the TPM have the correct values (no changes made since last update). The Trustzone write xor execute functionality makes it harder to inject code. Lastly, here as well the assumption that background checks are carried out on personnel will in part mitigate this threat. } \\
 \hline
-T.PERSISTENT & \parbox{4.0cm}{\vspace{3.5pt} O.PWR\_OUT O.TWO\_WAY\_PROT } &\parbox{6cm}{\vspace{3.0pt} I know this! } \\
+T.PERSISTENT & \parbox{4.0cm}{\vspace{3.5pt} O.PWR\_OUT O.TWO\_WAY\_PROT } &\parbox{6cm}{\vspace{3.0pt} The two-way protection makes it difficult to intercept SRTP communications. } \\
 \hline
-T.LOST\_ASSET & \parbox{4.0cm}{\vspace{3.5pt} O.NO\_TAMPER O.SECURE\_COMMS } &\parbox{6cm}{\vspace{3.0pt} Commies are good. } \\
+T.LOST\_ASSET & \parbox{4.0cm}{\vspace{3.5pt} O.NO\_TAMPER O.SECURE\_COMMS } &\parbox{6cm}{\vspace{3.0pt} The tamper detection will detect if camera is removed from wall and/or opened. The secure communications objective means user and video data is hard to steal. } \\
 \hline
 T.MNG\_TEST & \parbox{4.0cm}{\vspace{3.5pt} O.TRUSTZONE\_NX O.DECOMM } &\parbox{6cm}{\vspace{3.0pt} I changed my mind. Capitalism ftw! } \\
 \hline

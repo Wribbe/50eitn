@@ -10,9 +10,14 @@ table = [
         + " or case is not closed correctly when mounting or remounting. ID will help how?" \
         + " The background checks that are carried out on personnel are partly done to catch" \
         + "any potential criminal record but also to screen for persons that can perform well in their job."),
-        ("t.adversarial", "o.pwr_out o.attest o.trustzone_nx o.two_ways_prot a.no_adversarial", ""),
-        ("t.persistent", "o.pwr_out o.two_way_prot", "I know this!"),
-        ("t.lost_asset", "o.no_tamper o.secure_comms", "Commies are good."),
+        ("t.adversarial", "o.pwr_out o.attest o.trustzone_nx o.two_ways_prot a.no_adversarial", "Attestation is carried out in order" \
+        + " to check that the right firmware is loaded and that relevant PCRs (Platform Configuration Registers) in the TPM have" \
+        + " the correct values (no changes made since last update). The Trustzone write xor execute functionality makes it harder" \
+        + " to inject code. Lastly, here as well the assumption that background checks are carried out on personnel will in part" \
+        + " mitigate this threat."),
+        ("t.persistent", "o.pwr_out o.two_way_prot", "The two-way protection makes it difficult to intercept SRTP communications."),
+        ("t.lost_asset", "o.no_tamper o.secure_comms", "The tamper detection will detect if camera is removed from wall and/or"\
+        + " opened. The secure communications objective means user and video data are hard to steal."),
         ("t.mng_test", "o.trustzone_nx o.decomm", "I changed my mind. Capitalism ftw!"),
         ("t.signed_fw", "o.tpm_key_strg o.trustzone_nx o.decomm o.no_tamper o.id", "Lots of good things here."),
         ("t.srtp_recv", "o.decomm o.no_tamper o.pwr_out", "Security in real time? Sign me up!"),
