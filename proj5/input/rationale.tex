@@ -1,9 +1,9 @@
-T.PHYSICAL & \parbox{4.0cm}{\vspace{3.5pt} O.TPM\_KEY\_STRG O.TRUSTZONE\_NX O.DECOMM O.TAMPER A.LOCATION  } &\parbox{6cm}{\vspace{3.0pt}  The tamper detection notifies User and Maintenance Personnel if camera is taken down from wall and/or if someone is trying to open up camera, this will make the camera serve its purpose: detect intruders. The camera is also assumed to be positioned at above average human height on wall, thus minimising risk for casual vandalisation. } \\
+T.PHYSICAL & \parbox{4.0cm}{\vspace{3.5pt} O.TAMPER A.LOCATION  } &\parbox{6cm}{\vspace{3.0pt} Since the camera is assumed to be located at a position which is not reachable unassisted, unauthorized direct physical access to the unit should be rare. In the case of the camera being removed from its mounting position or opened, the tamper sensors will detect this and notify maintenance personnel. } \\
 \hline
 T.NETWORK & \parbox{4.0cm}{\vspace{3.5pt} O.TRUSTZONE\_NX O.SECURE\_COMMS O.TWO\_WAYS\_PROT } &\parbox{6cm}{\vspace{3.0pt} Explain why } \\
 \hline
 T.MISMANAGE & \parbox{4.0cm}{\vspace{3.5pt} O.NO\_TAMPER 
-O.ID A.NO\_ADVERSARIAL } &\parbox{6cm}{\vspace{3.0pt} Tamper detection will trigger if camera is not mounted correctly or case is not closed correctly when mounting or remounting. ID will help how? The background checks that are carried out on personnel are partly done to catchany potential criminal record but also to screen for persons that can perform well in their job. } \\
+O.ID A.NO\_ADVERSARIAL } &\parbox{6cm}{\vspace{3.0pt} Tamper detection will trigger if camera is not mounted correctly or case is not closed correctly when mounting or remounting. ID will help how? The background checks that are carried out on personnel are partly done to catch any potential criminal record but also to screen for persons that can perform well in their job. } \\
 \hline
 T.ADVERSARIAL & \parbox{4.0cm}{\vspace{3.5pt} O.PWR\_OUT O.ATTEST O.TRUSTZONE\_NX O.TWO\_WAYS\_PROT A.NO\_ADVERSARIAL } &\parbox{6cm}{\vspace{3.0pt} Attestation is carried out in order to check that the right firmware is loaded and that relevant PCRs (Platform Configuration Registers) in the TPM have the correct values (no changes made since last update). The Trustzone write xor execute functionality makes it harder to inject code. Lastly, here as well the assumption that background checks are carried out on personnel will in part mitigate this threat. } \\
 \hline
@@ -13,11 +13,11 @@ T.LOST\_ASSET & \parbox{4.0cm}{\vspace{3.5pt} O.NO\_TAMPER O.ENC\_DATA O.SECURE\
 \hline
 T.MNG\_TEST & \parbox{4.0cm}{\vspace{3.5pt} O.TRUSTZONE\_NX O.DECOMM } &\parbox{6cm}{\vspace{3.0pt}  } \\
 \hline
-T.SIGNED\_FW & \parbox{4.0cm}{\vspace{3.5pt} O.TPM\_KEY\_STRG O.TRUSTZONE\_NX O.DECOMM O.NO\_TAMPER O.ID } &\parbox{6cm}{\vspace{3.0pt}  } \\
+T.SIGNED\_FW & \parbox{4.0cm}{\vspace{3.5pt} O.TPM\_KEY\_STRG O.DECOMM O.NO\_TAMPER O.ID } &\parbox{6cm}{\vspace{3.0pt} Keys are stored in the camera's TPM so an attacker can not first have physical access to camera and get hold of keys and later perform remote code injection. Tamper detection will make it harder to undetected access camera's internal parts. } \\
 \hline
-T.SRTP\_RECV & \parbox{4.0cm}{\vspace{3.5pt} O.DECOMM O.NO\_TAMPER O.PWR\_OUT } &\parbox{6cm}{\vspace{3.0pt} Security in real time? Sign me up! } \\
+T.SRTP\_RECV & \parbox{4.0cm}{\vspace{3.5pt} O.NO\_TAMPER O.TWO\_WAYS\_PROT } &\parbox{6cm}{\vspace{3.0pt} Tamper detection means that an attacker which tries to access internal parts of camera have a higher probability of being detected. If the key derivation function is reapplied, it will be discovered that a key has changed. } \\
 \hline
 T.FLASH\_INTG & \parbox{4.0cm}{\vspace{3.5pt} O.TRUSTZONE\_NX O.ENC\_DATA O.ID } &\parbox{6cm}{\vspace{3.0pt}  } \\
 \hline
-T.JTAG\_ABUSE & \parbox{4.0cm}{\vspace{3.5pt} O.TPM\_KEY\_STRG O.SECURE\_COMMS } &\parbox{6cm}{\vspace{3.0pt} Oh, so KGB? } \\
+T.JTAG\_ABUSE & \parbox{4.0cm}{\vspace{3.5pt} O.TRUSTZONE\_NX O.TPM\_KEY\_STRG O.SECURE\_COMMS } &\parbox{6cm}{\vspace{3.0pt} Write xor execute protection means that even if an attacker can abuse JTAG interface, no executable harmful code can be loaded. An attacker also needs the keys that are stored in the TPM. } \\
 \hline

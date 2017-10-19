@@ -47,16 +47,18 @@ table = [
         	so an attacker can not first have physical access to camera and get hold of keys and later perform remote code injection.
         	Tamper detection will make it harder to undetected access camera's internal parts.
         	"""),
-        ("t.srtp_recv", "o.decomm o.no_tamper o.pwr_out", 
+        ("t.srtp_recv", "o.no_tamper o.two_ways_prot", 
         	"""
-        	Security in real time? Sign me up!
+        	Tamper detection means that an attacker which tries to access internal parts of camera have a higher probability 
+        	of being detected. If the key derivation function is reapplied, it will be discovered that a key has changed.
         	"""),
         ("t.flash_intg", "o.trustzone_nx o.enc_data o.id", 
         	"""
         	"""),
-        ("t.jtag_abuse", "o.tpm_key_strg o.secure_comms", 
+        ("t.jtag_abuse", "o.trustzone_nx o.tpm_key_strg o.secure_comms", 
         	"""
-        	Oh, so KGB?
+        	Write xor execute protection means that even if an attacker can abuse JTAG interface, no executable harmful code 
+        	can be loaded. An attacker also needs the keys that are stored in the TPM.
         	"""),
        ]
 
