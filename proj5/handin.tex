@@ -219,10 +219,10 @@
         the correct keys migrated, can verify that the firmware it is asked to
         load is trusted, or refuse otherwise. For the second step, the software
         configuration can be verified by using the TPMs sealing capabilities.
-        If the software and configuration does not match a pre-stored
-        hash-value, vital security-resources such as decryption and session keys
-        can be withheld, prompting the system to signal that something is
-        wrong.
+        If the current software and configuration does not generate a hash
+        value that matches a stored one, vital security-resources such as
+        decryption and session keys can be withheld, prompting the system to
+        signal that something is wrong.
 
     \begin{itemize}
       \item User, connected to: '4G modem'
