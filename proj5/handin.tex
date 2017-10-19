@@ -409,11 +409,12 @@
           An attacker could load SRTP keys for an incorrect receiver.
         }
         \threat{FLASHMEM\_INTEGRITY}{Flashing faulty code/config}{
-          Include safeguards concerning removing flash memory and loading it
-          with altered configurations or code.
+          %Include safeguards concerning removing flash memory and loading it
+          An attacker could remove flash memory and load it
+	    with altered configurations or code.
         }
         \threat{JTAG\_ABUSE}{Unauthorized access through JTAG}{
-          Secure JTAG debug interface against misuse. %Check article about JTAG interface attacking from first part of course.
+          The JTAG debug interface can be misused. %Check article about JTAG interface attacking from first part of course.
         }
 
         % TODO: Do we want this?
@@ -432,9 +433,31 @@
 
 	\begin{tabular}{| c | c | c |}
 	  \hline
-	  Objective & Mitigated by & Rationale \\
+	  \textbf{Objective} & \textbf{Mitigated by} & \textbf{Rationale} \\
 	  \hline
-	  T.PHYSICAL & O.TAMPER, A.LOCATION  & \parbox{6cm}{ The tamper detection notifies User and Maintenance Personnel if camera is taken down from wall and/or if someone is trying to open up camera, this will make the camera serve its purpose: detect intruders. The camera is also assumed to be positioned at above average human height on wall, thus minimising risk for casual vandalisation.} \\
+	  T.PHYSICAL & \parbox{2.5cm}{ O.TAMPER, A.LOCATION } & \parbox{6cm}{\vspace{3.0pt} The tamper detection notifies User and Maintenance Personnel if camera is taken down from wall and/or if someone is trying to open up camera, this will make the camera serve its purpose: detect intruders. The camera is also assumed to be positioned at above average human height on wall, thus minimising risk for casual vandalisation.} \\
+	\hline
+	  T.NETWORK & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
+	\hline
+	  T.MISMANAGE & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
+	\hline
+	  T.ADVERSARIAL & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
+	\hline
+	  T.PERSISTENT & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
+	\hline
+	  T.LOST\_ASSET & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
+	\hline
+	  T.MNG\_TEST & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
+	\hline
+	  T.SIGNED\_FW & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
+	\hline
+	  T.SRTP\_RECV & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
+	\hline
+	  T.FLASH\_INTGRTY & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
+	\hline
+	  T.JTAG\_ABUSE & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
+%	\hline
+%	  T. & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
 	  \hline
 	\end{tabular} 
 	\end{center}
