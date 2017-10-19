@@ -428,38 +428,43 @@
 
       \subsubsection{Rationale}
 	%Here, could do tables as in https://www.commoncriteriaportal.org/files/epfiles/ST-FFHDD.pdf
-	
+
 	\begin{center}
 
-	\begin{tabular}{| r | l | c |}
+%	\begin{tabular}{| r | l | c |}
+%	  \hline
+%	  \textbf{Objective} & \textbf{Mitigated by} & \textbf{Rationale} \\
+%	  \hline
+%	  T.PHYSICAL & \parbox{2.5cm}{ O.TPM\_KEY\_STRG O.TRUSTZONE\_NX O.DECOMM O.TAMPER A.LOCATION } & \parbox{6cm}{\vspace{3.0pt} The tamper detection notifies User and Maintenance Personnel if camera is taken down from wall and/or if someone is trying to open up camera, this will make the camera serve its purpose: detect intruders. The camera is also assumed to be positioned at above average human height on wall, thus minimising risk for casual vandalisation.} \\
+%	\hline
+%	  T.NETWORK & \parbox{4cm}{\vspace{3.0pt} O.TRUSTZONE\_NX O.SECURE.COMMS }  & \parbox{6cm}{\vspace{3.0pt}  } \\
+%	\hline
+%	  T.MISMANAGE & \parbox{2.5cm}{\vspace{3.0pt} O.ID O.NO\_TAMPER A.ADVERSARIAL } & \parbox{6cm}{\vspace{3.0pt} } \\
+%	\hline
+%	  T.ADVERSARIAL & \parbox{4cm}{\vspace{3.0pt} O.PWR\_OUT O.ATTEST A.ADVERSARIAL O.TRUSTZONE\_NX O.TWO\_WAYS\_PROT }  & \parbox{6cm}{\vspace{3.0pt} } \\
+%	\hline
+%	  T.PERSISTENT & \parbox{4cm}{\vspace{3.0pt} O.PWR\_OUT O.TWO\_WAY\_PROT } & \parbox{6cm}{\vspace{3.0pt} } \\
+%	\hline
+%	  T.LOST\_ASSET & \parbox{4cm}{\vspace{3.0pt} O.NO\_TAMPER O.SECURE\_COMMS }  & \parbox{6cm}{\vspace{3.0pt} } \\
+%	\hline
+%	  T.MNG\_TEST & \parbox{4cm}{\vspace{3.0pt} O.TRUSTZONE\_NX O.DECOMM } & \parbox{6cm}{\vspace{3.0pt} } \\
+%	\hline
+%	  T.SIGNED\_FW & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
+%	\hline
+%	  T.SRTP\_RECV & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
+%	\hline
+%	  T.FLASH\_INTGRTY & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
+%	\hline
+%	  T.JTAG\_ABUSE & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
+%	\hline
+%	  T. & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
+
+	\begin{tabular}{| l | c | c |}
 	  \hline
 	  \textbf{Objective} & \textbf{Mitigated by} & \textbf{Rationale} \\
 	  \hline
-	  T.PHYSICAL & \parbox{2.5cm}{ O.TPM\_KEY\_STRG O.TRUSTZONE\_NX O.DECOMM O.TAMPER A.LOCATION } & \parbox{6cm}{\vspace{3.0pt} The tamper detection notifies User and Maintenance Personnel if camera is taken down from wall and/or if someone is trying to open up camera, this will make the camera serve its purpose: detect intruders. The camera is also assumed to be positioned at above average human height on wall, thus minimising risk for casual vandalisation.} \\
-	\hline
-	  T.NETWORK & \parbox{4cm}{\vspace{3.0pt} O.TRUSTZONE\_NX O.SECURE.COMMS }  & \parbox{6cm}{\vspace{3.0pt}  } \\
-	\hline
-	  T.MISMANAGE & \parbox{2.5cm}{\vspace{3.0pt} O.ID O.NO\_TAMPER A.ADVERSARIAL } & \parbox{6cm}{\vspace{3.0pt} } \\
-	\hline
-	  T.ADVERSARIAL & \parbox{4cm}{\vspace{3.0pt} O.PWR\_OUT O.ATTEST A.ADVERSARIAL O.TRUSTZONE\_NX O.TWO\_WAYS\_PROT }  & \parbox{6cm}{\vspace{3.0pt} } \\
-	\hline
-	  T.PERSISTENT & \parbox{4cm}{\vspace{3.0pt} O.PWR\_OUT O.TWO\_WAY\_PROT } & \parbox{6cm}{\vspace{3.0pt} } \\
-	\hline
-	  T.LOST\_ASSET & \parbox{4cm}{\vspace{3.0pt} O.NO\_TAMPER O.SECURE\_COMMS }  & \parbox{6cm}{\vspace{3.0pt} } \\
-	\hline
-	  T.MNG\_TEST & \parbox{4cm}{\vspace{3.0pt} O.TRUSTZONE\_NX O.DECOMM } & \parbox{6cm}{\vspace{3.0pt} } \\
-	\hline
-	  T.SIGNED\_FW & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
-	\hline
-	  T.SRTP\_RECV & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
-	\hline
-	  T.FLASH\_INTGRTY & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
-	\hline
-	  T.JTAG\_ABUSE & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
-%	\hline
-%	  T. & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
-	  \hline
-	\end{tabular} 
+    \input{input/rationale.tex}
+	\end{tabular}
 	\end{center}
 
       \subsubsection{Coverage}
