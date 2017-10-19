@@ -20,6 +20,7 @@ objectives = ["\\rotatebox{{90}}{{O.{}}}".format(name.upper()).replace('_','\\_'
                 "ATTEST",
                 "SECURE_COMMS",
                 "TWO_WAY_PROT",
+                "ENC_DATA"
             ]
         ]
 assumptions = ["\\rotatebox{{90}}{{A.{}}}".format(name.upper()).replace('_','\\_')
@@ -48,16 +49,16 @@ threats = ["T.{}".format(name.upper()).replace('_','\\_') for name in
 
 
 markings = [set(l) for l in [
-          [0,1,2,9],
+          [0,1,2,10],
           [1,7,8],
-          [3,4,11],
-          [5,6,11],
+          [3,4,12],
+          [5,6,12],
           [5,8],
           [4,7],
           [1,2],
           [0,1,2,3,4],
           [2,4,5],
-          [1,3],
+          [1,3,9],
           [0,7],
         ]
       ]

@@ -18,10 +18,10 @@ table = [
         ("t.persistent", "o.pwr_out o.two_way_prot", "The two-way protection makes it difficult to intercept SRTP communications."),
         ("t.lost_asset", "o.no_tamper o.secure_comms", "The tamper detection will detect if camera is removed from wall and/or"\
         + " opened. The secure communications objective means user and video data are hard to steal."),
-        ("t.mng_test", "o.trustzone_nx o.decomm", "I changed my mind. Capitalism ftw!"),
-        ("t.signed_fw", "o.tpm_key_strg o.trustzone_nx o.decomm o.no_tamper o.id", "Lots of good things here."),
+        ("t.mng_test", "o.trustzone_nx o.decomm", ""),
+        ("t.signed_fw", "o.tpm_key_strg o.trustzone_nx o.decomm o.no_tamper o.id", ""),
         ("t.srtp_recv", "o.decomm o.no_tamper o.pwr_out", "Security in real time? Sign me up!"),
-        ("t.flash_intg", "o.trustzone_nx o.id", "Adobe flash <3"),
+        ("t.flash_intg", "o.trustzone_nx o.enc_data o.id", ""),
         ("t.jtag_abuse", "o.tpm_key_strg o.secure_comms", "Oh, so KGB?"),
        ]
 

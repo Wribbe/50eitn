@@ -325,7 +325,8 @@
 		\objective{TWO\_WAYS\_PROT}{Two-ways protection}{
 		 Forwards and backwards protection by reapplying the key derivation
 		function for the SRTP connection.
-    }
+    	}
+		\objective{ENC\_DATA}{Encryption for user data}{ User data and video stored on flash memory should be encrypted.}
 	\end{itemize}
         % TODO: Expand with more security features.
         % TODO: Determine the X in X-bt encrypted RSTP stream.
@@ -402,7 +403,7 @@
           If bugs exist in the (remote) management system, that would allow an attacker to
           insert executable foreign code.
         }
-        \threat{SIGNED\_FIRMWARE}{Running unauthorized firmware}{
+        \threat{SIGNED\_FW}{Running unauthorized firmware}{
           An attacker could load unauthorized firmware.
         }
         \threat{SRTP\_RECV}{Loading non-matching SRTP keys}{
