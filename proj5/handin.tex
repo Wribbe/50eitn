@@ -85,10 +85,10 @@
         wide market, some sacrifices are made in order to keep the production
         costs down and restrict necessary maintenance.
 
-        Since the product is wireless, and will co-exist among other wireless
+        Since the product is wireless and will co-exist among other wireless
         devices the main security focus lies on verifying users and access
         together with protecting the content and integrity of data transmitted
-        and received by the device. Secondary the software running on the
+        and received by the device. Secondly, the software running on the
         device should be verified as trusted by not allowing any arbitrary code
         to execute on the platform. And lastly, the product should have some
         basic physical protection and tamper detection.
@@ -460,52 +460,13 @@
 	    with altered configurations or code.
         }
         \threat{JTAG\_ABUSE}{Unauthorized access through JTAG}{
-          The JTAG debug interface can be misused. %Check article about JTAG interface attacking from first part of course.
+          The JTAG debug interface can be misused. 
         }
 
-        % TODO: Do we want this?
-        %\threat{DESOLDER}{Dismantling/modifying physical components}{
-          %From first part of course, attack where microprocessor is removed
-          %and is either probed or re-soldered (BGA) in order to access memory.
-          %Defense against this dark art? Check article again. Note: perhaps
-          %part of 'flash memory' entry above in this list. Or T.LOST\_ASSET.
-        %}
       \end{itemize}
 
-	\newpage
-
+\begin{minipage}{\textwidth}
       \subsubsection{Rationale}
-	%Here, could do tables as in https://www.commoncriteriaportal.org/files/epfiles/ST-FFHDD.pdf
-
-%	\begin{center}
-
-%	\begin{tabular}{| r | l | c |}
-%	  \hline
-%	  \textbf{Objective} & \textbf{Mitigated by} & \textbf{Rationale} \\
-%	  \hline
-%	  T.PHYSICAL & \parbox{2.5cm}{ O.TPM\_KEY\_STRG O.TRUSTZONE\_NX O.DECOMM O.TAMPER A.LOCATION } & \parbox{6cm}{\vspace{3.0pt} The tamper detection notifies User and Maintenance Personnel if camera is taken down from wall and/or if someone is trying to open up camera, this will make the camera serve its purpose: detect intruders. The camera is also assumed to be positioned at above average human height on wall, thus minimising risk for casual vandalisation.} \\
-%	\hline
-%	  T.NETWORK & \parbox{4cm}{\vspace{3.0pt} O.TRUSTZONE\_NX O.SECURE.COMMS }  & \parbox{6cm}{\vspace{3.0pt}  } \\
-%	\hline
-%	  T.MISMANAGE & \parbox{2.5cm}{\vspace{3.0pt} O.ID O.NO\_TAMPER A.ADVERSARIAL } & \parbox{6cm}{\vspace{3.0pt} } \\
-%	\hline
-%	  T.ADVERSARIAL & \parbox{4cm}{\vspace{3.0pt} O.PWR\_OUT O.ATTEST A.ADVERSARIAL O.TRUSTZONE\_NX O.TWO\_WAYS\_PROT }  & \parbox{6cm}{\vspace{3.0pt} } \\
-%	\hline
-%	  T.PERSISTENT & \parbox{4cm}{\vspace{3.0pt} O.PWR\_OUT O.TWO\_WAY\_PROT } & \parbox{6cm}{\vspace{3.0pt} } \\
-%	\hline
-%	  T.LOST\_ASSET & \parbox{4cm}{\vspace{3.0pt} O.NO\_TAMPER O.SECURE\_COMMS }  & \parbox{6cm}{\vspace{3.0pt} } \\
-%	\hline
-%	  T.MNG\_TEST & \parbox{4cm}{\vspace{3.0pt} O.TRUSTZONE\_NX O.DECOMM } & \parbox{6cm}{\vspace{3.0pt} } \\
-%	\hline
-%	  T.SIGNED\_FW & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
-%	\hline
-%	  T.SRTP\_RECV & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
-%	\hline
-%	  T.FLASH\_INTGRTY & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
-%	\hline
-%	  T.JTAG\_ABUSE & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
-%	\hline
-%	  T. & O.  & \parbox{6cm}{\vspace{3.0pt} } \\
 
 	\begin{center}
     \begin{tabular}{| l | l | c |}
@@ -515,6 +476,7 @@
       \input{input/rationale.tex}
     \end{tabular}
 	\end{center}
+\end{minipage}
 
 	\begin{center}
     \begin{tabular}{| l | l | c |}
