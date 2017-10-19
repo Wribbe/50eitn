@@ -87,6 +87,9 @@
              It is assumed that the maintenance schedule is followed and that any
              defects or deteriorations outside of regular maintenance are
              reported as soon as they are detected.
+		%TODO(?): What about user forgetting password? Handle through assumption 
+		%of user with perfect memory here, or through specifying a software
+		%'Forgot password?' functionality?
            }
          \end{itemize}
 
@@ -103,7 +106,7 @@
       The hardware security layer of the platform consists of an ARM TrustZone
       CPU, a Trusted Platform Module for managing software security related
       artefacts, a static unique identifier created during the platform
-      production and tamper protection to detect unauthorized attempts to
+      production and tamper detection to detect unauthorized attempts to
       access the hardware of the platform.
 
       \subsubsection{ARM TrustZone CPU}
@@ -150,7 +153,7 @@
         into it at production, ensuring that over 18 billion potential products
         can be uniquely identifiable.
 
-      \subsubsection{Tamper protection}
+      \subsubsection{Tamper detection}
 
         The camera housing is equipped with two tamper-switches; one that
         will detect if the camera is attached to a wall or not, and another
@@ -290,11 +293,6 @@
 		\objective{TRUSTZONE\_NX}{Nx enabled in ARM CPU}{
       The ARM Trustzone CPU should have Nx bit enabled.
     }
-    % (W xor X-protection from project 4, to protect against code injection).
-    % Could perhaps add more on trustzone, from Lect6, security rings and
-    % running code in privileged mode etc. Could perhaps mitigate some threats
-    % here. Last slide of Lect6 says embedded cpus work differently though, and
-    % here we use an embedded system, I would say.
 		\objective{DECOMM}{Easy erasure of data}{
       When the TOE is decommissioned, it should be easy for the user to make
       stored user information and data stored unreadable (or wiped).
@@ -322,7 +320,6 @@
 	\end{itemize}
         % TODO: Expand with more security features.
         % TODO: Determine the X in X-bt encrypted RSTP stream.
-        % TODO: Add tamper protection.
         The product features secure video streaming capabilities through a
         X-bit encrypted SRTP stream with fully encrypted data storage.
 
@@ -338,13 +335,6 @@
     } % R: maybe not have this, but could mitigate T_ADVERSARIAL. Otherwise, an
       % example of OpEnv-obj
 	\end{itemize}
-
-  % TODO: Motsvarar detta ST? R: Nej, jag tror att i ST:n ingår threats och
-  % objectives för TOE:n. Flyttar därför upp. Edit: Bör göra det utifrån
-  % exempel jag sett, men i projektbeskrivningen står uttryckligen att
-  % threat-listan ska vara i andra delen. Flyttade därför ner den igen...
-  % Edit2: Wikipedia säger också att threats bör vara ovan..
-  % https://en.wikipedia.org/wiki/Security_Target
 
   \section{Security problem definition}
 
@@ -385,7 +375,7 @@
           leaked, physical components of camera damaged, camera not mounted on
           wall correctly etc.
         }
-        \threat{ADVERSARIAL}{Adversarial repair personnel}{ %better? R: very fancy
+        \threat{ADVERSARIAL}{Adversarial repair personnel}{ 
           The repair personnel may be dishonest and try to access the video
           files, the keys, may try to inject code or access internal memory of
           camera.
