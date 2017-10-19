@@ -368,7 +368,8 @@
         \threat{PHYSICAL}{Physical Access} {
           An attacker can physically access the camera. This can result in
           destruction of camera in pure vandalizing, removal of camera from
-          premises opening up for other threats (T.FLASHMEM\_INTEGRITY and T.LOST\_ASSET), covering camera
+          premises opening up for other threats (T.FLASHMEM\_INTEGRITY and \\
+	    T.LOST\_ASSET), covering camera
           with other physical object or smearing something on camera
           housing/lens rendering recorded video useless.
         }
@@ -423,16 +424,17 @@
 
       \subsubsection{Rationale}
 	%Here, could do tables as in https://www.commoncriteriaportal.org/files/epfiles/ST-FFHDD.pdf
-		
+	
+	\begin{center}
+
 	\begin{tabular}{| c | c | c |}
-	  %\cline{2-15}
 	  \hline
-	    %\cline{2-15}
 	  Objective & Mitigated by & Rationale \\
 	  \hline
-	  T.PHYSICAL & T.TAMPER & Because. \\
+	  T.PHYSICAL & O.TAMPER, A.LOCATION  & blabla \\ %\multicolumn{2}{p{4cm}|}{\raggedright The tamper detection notifies User and Maintenance Personnel if camera is taken down from wall and/or if someone is trying to open up camera, this will make the camera serve its purpose: detect intruders. The camera is also assumed to be positioned at above average human height on wall, thus minimising risk for casual vandalisation.} \\
 	  \hline
 	\end{tabular} 
+	\end{center}
 
       \subsubsection{Coverage}
         \input{input/security_table.tex}
