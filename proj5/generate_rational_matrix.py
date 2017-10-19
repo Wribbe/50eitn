@@ -4,7 +4,7 @@ table = [
         ("t.physical", "o.tpm_key_strg o.trustzone_nx o.decomm o.tamper a.location ", " The tamper detection" \
         + " notifies User and Maintenance Personnel if camera is taken down from wall and/or if someone is trying" \
         + " to open up camera, this will make the camera serve its purpose: detect intruders. The camera is also" \
-        + " assumed to be positioned at above average human height on wall, thus minimising risk for casual vandalisation."),
+        + " assumed to be positioned at above average human height on wall, thus minimising risk for casual vandalism."),
         ("t.network", "o.trustzone_nx o.secure_comms o.two_ways_prot", "Explain why"),
         ("t.mismanage", "o.no_tamper \no.id a.no_adversarial", "Tamper detection will trigger if camera is not mounted correctly" \
         + " or case is not closed correctly when mounting or remounting. ID will help how?" \
@@ -29,7 +29,8 @@ row_format = "{} & \\parbox{{4.0cm}}{{\\vspace{{3.5pt}} {} }} &\\parbox{{6cm}}{{
 content = []
 for obj, mitigated, rationale in table:
     content.append(row_format.format(obj.upper().replace('_','\\_'),
-        mitigated.upper().replace('_','\\_'), rationale))
+        mitigated.upper().replace('_','\\_'), ' '.join([r.strip() for r in
+            rationale.split()]))
     content.append("\\hline")
 
 with open(os.path.join('input','rationale.tex'), 'w') as fp:
