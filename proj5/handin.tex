@@ -196,12 +196,33 @@
         unauthorized access, especially physical removal of storage, any
         non-trivial configuration data together with all diagnostic and
         user-data is encrypted using 256-bit AES. The symmetric key will be
-        derived from the username and a hash of the specific challenge-response
-        result for the given username and password combination.
+        derived from the combination of a TPM storage key together with the
+        username and a hash of the specific challenge-response result for the
+        given username and password combination.
+        %TODO: Unsure if we should involve the TPM storage key, user has to
+        %have a TPM to decrypt any transmitted blobs. Maybe unnecessary since
+        %it transmits through SRTP?
 
       \subsubsection{Verified firmware}
 
+        In order to ensure that the platform can be seen as trusted, it has to
+        be able to ensure that it is running verified firmware. This is
+        accomplished in two steps; first the platform should not be able to run
+        any arbitrary code, only code that has been specifically verified to be
+        trusted. Secondly, the platform should be able to detect any
+        non-sanctioned modifications to its software configuration and report
+        that these have happened and either run with reduced capabilities or
+        not at all.
 
+        Both of these steps are accomplished via the usage of the onboard TPM.
+        By using another TPM to sign the firmware, the the platform TPM, with
+        the correct keys migrated, can verify that the firmware it is asked to
+        load is trusted, or refuse otherwise. For the second step, the software
+        configuration can be verified by using the TPMs sealing capabilities.
+        If the software and configuration does not match a pre-stored
+        hash-value, vital security-resources such as decryption or session keys
+        can be withheld, prompting the system to signal that something is
+        wrong.
 
     \begin{itemize}
       \item User, connected to: '4G modem'
