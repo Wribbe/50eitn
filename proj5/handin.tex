@@ -181,7 +181,24 @@
         specific password.
 
       \subsubsection{Encrypted data streams}
+
+        Since the main transmission of data and general communication with the
+        platform occurs wirelessly through the use of a 4G modem, the stream
+        needs to be encrypted and verifiable in order to not be readable or
+        modifiable in transit. This is achieved by utilizing the Secure
+        Real-time Transport Protocol (SRTP), which provides authentication,
+        integrity and reply protection, for both data transfer and
+        communication to and from the platform.
+
       \subsubsection{Storage encryption}
+
+        In order to ensure that there is not sensitive data to access on
+        unauthorized access, especially physical removal of storage, any
+        non-trivial configuration data together with all diagnostic and
+        user-data is encrypted using 256-bit AES. The symmetric key will be a
+        combination of a salt, the username and the correct challenge-response
+        hash for the specific username and  password combination.
+
       \subsubsection{Verified firmware}
 
     \begin{itemize}
