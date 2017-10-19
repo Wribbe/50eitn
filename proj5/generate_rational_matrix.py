@@ -1,10 +1,14 @@
 import os
 
 table = [
-        ("t.physical", "o.tpm_key_strg o.trustzone_nx o.decomm o.tamper a.location ", " The tamper detection" \
-        + " notifies User and Maintenance Personnel if camera is taken down from wall and/or if someone is trying" \
-        + " to open up camera, this will make the camera serve its purpose: detect intruders. The camera is also" \
-        + " assumed to be positioned at above average human height on wall, thus minimising risk for casual vandalism."),
+        ("t.physical", "o.tamper a.location ",
+            """
+            Since the camera is assumed to be located at a position which is
+            not reachable unassisted, unauthorized direct physical access to the unit should
+            be rare. In the case of the camera being removed from its mounting
+            position or opened, the tamper sensors will detect this and notify
+            maintenance personnel.
+            """),
         ("t.network", "o.trustzone_nx o.secure_comms o.two_ways_prot", "Explain why"),
         ("t.mismanage", "o.no_tamper \no.id a.no_adversarial", "Tamper detection will trigger if camera is not mounted correctly" \
         + " or case is not closed correctly when mounting or remounting. ID will help how?" \
