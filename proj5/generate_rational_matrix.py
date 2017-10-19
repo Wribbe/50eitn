@@ -54,11 +54,11 @@ table = [
         	"""),
         ("t.flash_intg", "o.tpm_seal o.enc_data o.id",
         	"""
-                By using the TPMs seal functionality, vital system resources
+                By using the TPMs seal functionality vital system resources
                 can be tied to hashes of the correct configuration data on the
-                flash memory. Trying to run firmware that produces other hashes
-                will prompt the platform to stop and signal that something is
-                wrong.
+                flash memory. Trying to run configuration or firmware that
+                produces other hashes will prompt the platform to stop and
+                signal that something is wrong.
         	"""),
         ("t.jtag_abuse", "o.trustzone_nx o.tpm_key_strg o.secure_comms", 
         	"""
