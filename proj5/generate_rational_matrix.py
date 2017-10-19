@@ -16,8 +16,9 @@ table = [
         + " to inject code. Lastly, here as well the assumption that background checks are carried out on personnel will in part" \
         + " mitigate this threat."),
         ("t.persistent", "o.pwr_out o.two_way_prot", "The two-way protection makes it difficult to intercept SRTP communications."),
-        ("t.lost_asset", "o.no_tamper o.secure_comms", "The tamper detection will detect if camera is removed from wall and/or"\
-        + " opened. The secure communications objective means user and video data are hard to steal."),
+        ("t.lost_asset", "o.no_tamper o.enc_data o.secure_comms", "The tamper detection will detect if camera is removed from wall and/or"\
+        + " opened. The secure communications objective means user and video data are hard to steal. If an attacker removes flash"\
+        + " memory the user data and video stored there are encrypted."),
         ("t.mng_test", "o.trustzone_nx o.decomm", ""),
         ("t.signed_fw", "o.tpm_key_strg o.trustzone_nx o.decomm o.no_tamper o.id", ""),
         ("t.srtp_recv", "o.decomm o.no_tamper o.pwr_out", "Security in real time? Sign me up!"),
