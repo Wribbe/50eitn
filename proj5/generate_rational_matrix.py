@@ -1,7 +1,7 @@
 import os
 
 table = [
-        ("t.physical", "o.tamper o.pwr_out a.location ",
+        ("t.physical", "o.no_tamper o.pwr_out a.location ",
             """
             Since the camera is assumed to be located at a position which is
             not reachable unassisted, unauthorized direct physical access to the unit should
@@ -41,9 +41,10 @@ table = [
         	opened. The secure communications objective means user and video data are hard to steal in-transit. 
         	If an attacker removes flash memory the user data and video stored there are encrypted.
         	"""),
-        ("t.mng_test", "o.trustzone_nx",
+        ("t.mng_test", " o.trustzone_nx ",
         	"""
-
+        	Even if there is a bug in the management system, if an attacker tries to insert foreign code the code would 
+        	not directly be executable, because of the Nx bit.
         	"""),
         ("t.signed_fw", "o.tpm_key_strg o.no_tamper o.id",
         	"""

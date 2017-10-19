@@ -1,6 +1,6 @@
 T.LOST\_ASSET & \parbox{4.0cm}{\vspace{3.5pt} O.NO\_TAMPER O.ENC\_DATA O.SECURE\_COMMS } &\parbox{6cm}{\vspace{3.0pt} The tamper detection will detect if camera is removed from wall and/or opened. The secure communications objective means user and video data are hard to steal in-transit. If an attacker removes flash memory the user data and video stored there are encrypted. } \\
 \hline
-T.MNG\_TEST & \parbox{4.0cm}{\vspace{3.5pt} O.TRUSTZONE\_NX } &\parbox{6cm}{\vspace{3.0pt}  } \\
+T.MNG\_TEST & \parbox{4.0cm}{\vspace{3.5pt}  O.TRUSTZONE\_NX  } &\parbox{6cm}{\vspace{3.0pt} Even if there is a bug in the management system, if an attacker tries to insert foreign code the code would not directly be executable, because of the Nx bit. } \\
 \hline
 T.SIGNED\_FW & \parbox{4.0cm}{\vspace{3.5pt} O.TPM\_KEY\_STRG O.NO\_TAMPER O.ID } &\parbox{6cm}{\vspace{3.0pt} Keys are stored in the camera's TPM so an attacker can not first have physical access to camera and get hold of keys and later perform remote code injection. Tamper detection will make it harder to undetected access camera's internal parts. } \\
 \hline
