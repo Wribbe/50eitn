@@ -69,7 +69,7 @@ def make_table_row(item_list):
     item_list += "\\hline"
     return item_list
 
-option_tabular = ("| r "+"| c "*len(obj_assumpt))+'|'
+option_tabular = ("| l "+"| c "*len(obj_assumpt))+'|'
 heading = make_table_row([' ']+obj_assumpt)
 
 content_rows = []
