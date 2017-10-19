@@ -241,33 +241,33 @@
         decryption and session keys can be withheld, prompting the system to
         signal that something is wrong.
 
-    \begin{itemize}
-      \item User, connected to: '4G modem'
-      \begin{itemize}
-        \item TPM
-      \end{itemize}
-      \item Maintenance Person, connected to: \{'4G modem' for remote management, 'JTAG debug port' for close management\}
-      \begin{itemize}
-        \item TPM
-      \end{itemize}
-      \item Power supply, connected to: 'Battery'
-      \item Repair Person, connected to: all components of camera %state this, don't draw it..
-    \end{itemize}
-    \textbf{Changes to PCB picture}
-    \begin{itemize}
-      \item Change 'button/sensor1' to 'Tamper switch'
-      \item Remove 'button/sensor2'
-      \item Add 'Burnt-in Master Key', connected to: TPM(?) %R@S: where is this 'burnt in'?
-      \item Add text 'SRTP', connected to: 4G modem antenna
-      \item ? Add text 'Encryption of video data', connected to path between CPU and Flash memory ? % perhaps too detailed
-      %\item Add `Key Blobs (TPM)', in Flash
-    \end{itemize}
-    \textbf{TPM}
-    \begin{itemize} %perhaps not have keys at all
-      \item EK
-      \item SRK
-      \item AIK
-    \end{itemize}
+%    \begin{itemize}
+%      \item User, connected to: '4G modem'
+%      \begin{itemize}
+%        \item TPM
+%      \end{itemize}
+%      \item Maintenance Person, connected to: \{'4G modem' for remote management, 'JTAG debug port' for close management\}
+%      \begin{itemize}
+%        \item TPM
+%      \end{itemize}
+%      \item Power supply, connected to: 'Battery'
+%      \item Repair Person, connected to: all components of camera %state this, don't draw it..
+%    \end{itemize}
+%    \textbf{Changes to PCB picture}
+%    \begin{itemize}
+%      \item Change 'button/sensor1' to 'Tamper switch'
+%      \item Remove 'button/sensor2'
+%      \item Add 'Burnt-in Master Key', connected to: TPM(?) %R@S: where is this 'burnt in'?
+%      \item Add text 'SRTP', connected to: 4G modem antenna
+%      \item ? Add text 'Encryption of video data', connected to path between CPU and Flash memory ? % perhaps too detailed
+%      %\item Add `Key Blobs (TPM)', in Flash
+%    \end{itemize}
+%    \textbf{TPM}
+%    \begin{itemize} %perhaps not have keys at all
+%      \item EK
+%      \item SRK
+%      \item AIK
+%    \end{itemize}
 
     \subsubsection{Life cycle of TOE}
       \begin{figure}[!h]
