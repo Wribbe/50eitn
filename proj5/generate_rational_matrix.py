@@ -30,7 +30,7 @@ content = []
 for obj, mitigated, rationale in table:
     content.append(row_format.format(obj.upper().replace('_','\\_'),
         mitigated.upper().replace('_','\\_'), ' '.join([r.strip() for r in
-            rationale.split()]))
+            rationale.split()])))
     content.append("\\hline")
 
 with open(os.path.join('input','rationale.tex'), 'w') as fp:
