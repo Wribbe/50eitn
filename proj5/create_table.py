@@ -9,8 +9,8 @@ if not os.path.isdir(DIR_OUTPUT):
     os.mkdir(DIR_OUTPUT)
 
 
-problems = ["\\rotatebox{{90}}{{P{}.some-name}}".format(i) for i in range(14)]
-solutions = ["S{}.some-name".format(i) for i in range(14)]
+obj_assumpt = ["\\rotatebox{{90}}{{P{}.some-name}}".format(i) for i in range(14)]
+threats = ["T{}.some-name".format(i) for i in range(14)]
 
 base_table = """
 \\begin{{tabular}}{{{0}}}
@@ -28,10 +28,10 @@ def make_table_row(item_list):
     item_list += "\\hline"
     return item_list
 
-option_tabular = ("| r "+"| c "*len(problems))+'|'
-heading = make_table_row([' ']+problems)
+option_tabular = ("| r "+"| c "*len(obj_assumpt))+'|'
+heading = make_table_row([' ']+obj_assumpt)
 content = '\n'.join(["{} & ".format(name)+\
-        make_table_row(' '*len(problems)) for name in solutions])
+        make_table_row(' '*len(obj_assumpt)) for name in threats])
 
 with open(PATH_OUTPUT, 'w') as fp:
     fp.write(base_table.format(option_tabular, 2, 15, heading, content))
