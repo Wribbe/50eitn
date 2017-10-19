@@ -307,12 +307,12 @@
 %    \end{itemize}
 
     \subsubsection{Life cycle of TOE}
-	The TOE follows a fairly standard life-cycle, as far as electronic products go. 
+	The TOE follows a fairly standard life-cycle, as far as electronic products go.
 	Its first state is in production. This is normally followed by user operation,
 	which changes when maintenance need to be carried out or errors occur.
 	This prompts a Maintenance Person to attend to the unit, and the unit is either
 	serviced by Maintenance Person or sent to reparation by Repair Person.
-	If Repair Person deems the unit to be unfit for further usage the unit 
+	If Repair Person deems the unit to be unfit for further usage the unit
 	will be decommisioned.
       \begin{figure}[!h]
         \center
@@ -393,8 +393,6 @@
 
   \section{Security problem definition}
 
-    \subsection{Security solutions}
-
       %Short security evaluation of the design that explained the used security
       %measures and the motivation behind them. Should include a list of all
       %threats and security issues that are deemed applicable to the system,
@@ -404,7 +402,7 @@
       %against the solutions on the x-axis where a 'X' marks with solution
       %protects against which threat.
 
-     \subsubsection{Threat agents}
+     \subsection{Threat agents}
 
       The following attack vectors are deemed relevant for the product:
       physical attacks in order to disable and dismantle product by
@@ -412,12 +410,12 @@
       assets, ill-intentioned maintenance personnel and analyzing data in
       traffic or by unauthorized network access.
 
-    \subsubsection{Threats}
+    \subsection{Threats}
       \begin{itemize}[label={}]
         \threat{PHYSICAL}{Physical Access} {
           An attacker can physically access the camera. This can result in
           destruction of camera in pure vandalisation, removal of camera from
-          premises opening up for other threats (T.FLASH\_INTG and 
+          premises opening up for other threats (T.FLASH\_INTG and
 	    T.LOST\_ASSET), covering camera
           with other physical object or smearing something on camera
           housing/lens rendering recorded video useless.
@@ -460,13 +458,13 @@
 	    with altered configurations or code.
         }
         \threat{JTAG\_ABUSE}{Unauthorized access through JTAG}{
-          The JTAG debug interface can be misused. 
+          The JTAG debug interface can be misused.
         }
 
       \end{itemize}
 
 \begin{minipage}{\textwidth}
-      \subsubsection{Rationale}
+      \subsection{Rationale}
 
 	\begin{center}
     \begin{tabular}{| l | l | c |}
@@ -487,7 +485,7 @@
     \end{tabular}
 	\end{center}
 
-      \subsubsection{Coverage}
+      \subsection{Coverage}
         \input{input/security_table.tex}
 
   \section{Peer reviews}
