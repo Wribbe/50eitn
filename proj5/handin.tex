@@ -78,7 +78,41 @@
 
       \subsubsection{Considered design requirements}
 
-        % TODO: Write about all the requirements from the introduction.
+        \textbf{Security in relation to production and maintenance:}
+
+        As stated, the goal of the product is to act as a useful perimeter
+        device for usage by companies and private owners. Since it targets a
+        wide market, some sacrifices are made in order to keep the production
+        costs down and restrict necessary maintenance.
+
+        As the product is wireless, and will co-exist among other wireless
+        devices the main security focus lies on verifying users and access
+        together with protecting the content and integrity of data transmitted
+        and received by the device. Secondary the software running on the
+        device should be verified as trusted by not allowing any arbitrary code
+        to execute on the platform. And lastly, the product should have some
+        basic physical protection and tamper detection.
+
+        While these considerations makes the product unfit for use in projects
+        with higher physical security demands, it keeps the cost of production,
+        maintenance and installation within the expected bounds of the targeted
+        market segment.
+
+        \textbf{Security in relation to software structure and development:}
+
+        The software stack for the product contains several abstraction layers
+        in order to make it possible to patch erroneous software and hardware
+        by redirecting e.g. function calls in order to correct faulty
+        execution. While this enables a more flexible maintenance cycle and
+        faster turn-around-times on patches, the same functionality could also
+        be used to initiate Return Oriented Programming attacks on the
+        software.
+
+        While this type of attacks is mitigated to a degree by the ARM
+        TrustZone architecture and a Trusted Execution Environment, the
+        flexible nature of the software stack, while driving down costs and
+        decreasing time-to-market for features and bug-fixes, makes it unfit
+        for environments with higher security requirements.
 
       \subsubsection{Security assumptions}
 
