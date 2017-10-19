@@ -1,29 +1,29 @@
 
-\begin{tabular}{| l | c | c | c | c | c | c | c | c | c |}
- \cline{2-10}
- \multicolumn{1}{c|}{}  & \rotatebox{90}{O.TPM\_KEY\_STRG} & \rotatebox{90}{O.TRUSTZONE\_NX} & \rotatebox{90}{O.DECOMM} & \rotatebox{90}{O.ID} & \rotatebox{90}{O.NO\_TAMPER} & \rotatebox{90}{O.PWR\_OUT} & \rotatebox{90}{O.ATTEST} & \rotatebox{90}{O.SECURE\_COMMS} & \rotatebox{90}{O.TWO\_WAY\_PROT} \\
+\begin{tabular}{| l | c | c | c | c | c | c | c | c | c | c | c | c |}
+ \cline{2-13}
+ \multicolumn{1}{c|}{}  & \rotatebox{90}{O.TPM\_KEY\_STRG} & \rotatebox{90}{O.TRUSTZONE\_NX} & \rotatebox{90}{O.DECOMM} & \rotatebox{90}{O.ID} & \rotatebox{90}{O.NO\_TAMPER} & \rotatebox{90}{O.PWR\_OUT} & \rotatebox{90}{O.ATTEST} & \rotatebox{90}{O.SECURE\_COMMS} & \rotatebox{90}{O.TWO\_WAY\_PROT} & \rotatebox{90}{A.LOCATION} & \rotatebox{90}{A.TIMELY\_MAINT} & \rotatebox{90}{A.NO\_ADVERSARIAL} \\
 \hline
-T.PHYSICAL & X & X & X &   &   &   &   &   &   \\
+T.PHYSICAL & X & X & X &   &   &   &   &   &   & X &   &   \\
 \hline
-T.NETWORK &   & X &   &   &   &   &   &   &   \\
+T.NETWORK &   & X &   &   &   &   &   & X & X &   &   &   \\
 \hline
-T.MISMANAGE &   &   &   & X & X &   &   &   &   \\
+T.MISMANAGE &   &   &   & X & X &   &   &   &   &   &   & X \\
 \hline
-T.ADVERSARIAL &   &   &   &   &   & X & X &   &   \\
+T.ADVERSARIAL &   &   &   &   &   & X & X &   &   &   &   & X \\
 \hline
-T.PERSISTENT &   &   &   &   &   & X &   &   & X \\
+T.PERSISTENT &   &   &   &   &   & X &   &   & X &   &   &   \\
 \hline
-T.LOST\_ASSET &   &   &   &   & X &   &   & X &   \\
+T.LOST\_ASSET &   &   &   &   & X &   &   & X &   &   &   &   \\
 \hline
-T.MANAGEMENT\_TESTING &   & X & X &   &   &   &   &   &   \\
+T.MNG\_TEST &   & X & X &   &   &   &   &   &   &   &   &   \\
 \hline
-T.SIGNED\_FIRMWARE & X & X & X & X & X &   &   &   &   \\
+T.SIGNED\_FW & X & X & X & X & X &   &   &   &   &   &   &   \\
 \hline
-T.SRTP\_RECV &   &   & X &   & X & X &   &   &   \\
+T.SRTP\_RECV &   &   & X &   & X & X &   &   &   &   &   &   \\
 \hline
-T.FLASHMEM\_INTEGRITY &   & X &   & X &   &   &   &   &   \\
+T.FLASH\_INTG &   & X &   & X &   &   &   &   &   &   &   &   \\
 \hline
-T.JTAG\_ABUSE & X &   &   &   &   &   &   & X &   \\
+T.JTAG\_ABUSE & X &   &   &   &   &   &   & X &   &   &   &   \\
 \hline
 \end{tabular}
 

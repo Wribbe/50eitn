@@ -9,7 +9,7 @@ if not os.path.isdir(DIR_OUTPUT):
     os.mkdir(DIR_OUTPUT)
 
 
-obj_assumpt = ["\\rotatebox{{90}}{{O.{}}}".format(name.upper()).replace('_','\\_')
+objectives = ["\\rotatebox{{90}}{{O.{}}}".format(name.upper()).replace('_','\\_')
         for name in [
                 "TPM_KEY_STRG",
                 "TRUSTZONE_NX",
@@ -22,6 +22,14 @@ obj_assumpt = ["\\rotatebox{{90}}{{O.{}}}".format(name.upper()).replace('_','\\_
                 "TWO_WAY_PROT",
             ]
         ]
+assumptions = ["\\rotatebox{{90}}{{A.{}}}".format(name.upper()).replace('_','\\_')
+        for name in [
+                "LOCATION",
+                "TIMELY_MAINT",
+                "NO_ADVERSARIAL",
+            ]
+        ]
+obj_assumpt = objectives + assumptions
 threats = ["T.{}".format(name.upper()).replace('_','\\_') for name in
         [
             "physical",
@@ -30,20 +38,20 @@ threats = ["T.{}".format(name.upper()).replace('_','\\_') for name in
             "adversarial",
             "persistent",
             "lost_asset",
-            "management_testing",
-            "signed_firmware",
+            "mng_test",
+            "signed_fw",
             "srtp_recv",
-            "flashmem_integrity",
+            "flash_intg",
             "jtag_abuse",
         ]
       ]
 
 
 markings = [set(l) for l in [
-          [0,1,2],
-          [1],
-          [3,4],
-          [5,6],
+          [0,1,2,9],
+          [1,7,8],
+          [3,4,11],
+          [5,6,11],
           [5,8],
           [4,7],
           [1,2],
