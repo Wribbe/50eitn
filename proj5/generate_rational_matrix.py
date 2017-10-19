@@ -9,7 +9,10 @@ table = [
             position or opened, the tamper sensors will detect this and notify
             maintenance personnel.
             """),
-        ("t.network", "o.trustzone_nx o.secure_comms o.two_ways_prot", "Explain why"),
+        ("t.network", "o.trustzone_nx o.secure_comms o.two_ways_prot", 
+        	"""
+        	Explain why
+        	"""),
         ("t.mismanage", "o.no_tamper \no.id a.no_adversarial", 
         	"""
         	Tamper detection will trigger if camera is not mounted correctly
@@ -35,11 +38,26 @@ table = [
         	opened. The secure communications objective means user and video data are hard to steal. If an attacker removes flash
         	memory the user data and video stored there are encrypted.
         	"""),
-        ("t.mng_test", "o.trustzone_nx o.decomm", ""),
-        ("t.signed_fw", "o.tpm_key_strg o.trustzone_nx o.decomm o.no_tamper o.id", ""),
-        ("t.srtp_recv", "o.decomm o.no_tamper o.pwr_out", "Security in real time? Sign me up!"),
-        ("t.flash_intg", "o.trustzone_nx o.enc_data o.id", ""),
-        ("t.jtag_abuse", "o.tpm_key_strg o.secure_comms", "Oh, so KGB?"),
+        ("t.mng_test", "o.trustzone_nx o.decomm", 
+        	"""
+        	"""),
+        ("t.signed_fw", "o.tpm_key_strg o.decomm o.no_tamper o.id", 
+        	"""
+        	Keys are stored in the camera's TPM
+        	so an attacker can not first have physical access to camera and get hold of keys and later perform remote code injection.
+        	Tamper detection will make it harder to undetected access camera's internal parts.
+        	"""),
+        ("t.srtp_recv", "o.decomm o.no_tamper o.pwr_out", 
+        	"""
+        	Security in real time? Sign me up!
+        	"""),
+        ("t.flash_intg", "o.trustzone_nx o.enc_data o.id", 
+        	"""
+        	"""),
+        ("t.jtag_abuse", "o.tpm_key_strg o.secure_comms", 
+        	"""
+        	Oh, so KGB?
+        	"""),
        ]
 
 row_format = "{} & \\parbox{{4.0cm}}{{\\vspace{{3.5pt}} {} }} &\\parbox{{6cm}}{{\\vspace{{3.0pt}} {} }} \\\\"
