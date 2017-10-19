@@ -27,7 +27,7 @@ threats = ["T.{}".format(name.upper()).replace('_','\\_') for name in
             "physical",
             "network",
             "mismanage",
-            "adveserial",
+            "adversarial",
             "persistent",
             "lost_asset",
             "management_testing",
