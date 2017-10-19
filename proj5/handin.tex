@@ -317,6 +317,10 @@
       When a Maintenance Person is to update firmware, attestation should be
       carried out with the help of the TPMs in MP's computer and the TOE.
     }
+		\objective{TPM\_SEAL}{Bind secrets to system states}{
+      By using the on-board TPM, security related artifacts can be withheld if
+      the platform configuration differs from what is should be.
+    }
 		 \objective{SECURE\_COMMS}{Secure communictions}{
              The TOE should have a correct configuration that
              enables a fully encrypted and authenticated SRTP stream to be used
