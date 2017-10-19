@@ -1,12 +1,12 @@
-T.LOST\_ASSET & \parbox{4.0cm}{\vspace{3.5pt} O.NO\_TAMPER O.ENC\_DATA O.SECURE\_COMMS } &\parbox{6cm}{\vspace{3.0pt} The tamper detection will detect if camera is removed from wall and/or opened. The secure communications objective means user and video data are hard to steal. If an attacker removes flash memory the user data and video stored there are encrypted. } \\
+T.LOST\_ASSET & \parbox{4.0cm}{\vspace{3.5pt} O.NO\_TAMPER O.ENC\_DATA O.SECURE\_COMMS } &\parbox{6cm}{\vspace{3.0pt} The tamper detection will detect if camera is removed from wall and/or opened. The secure communications objective means user and video data are hard to steal in-transit. If an attacker removes flash memory the user data and video stored there are encrypted. } \\
 \hline
-T.MNG\_TEST & \parbox{4.0cm}{\vspace{3.5pt} O.TRUSTZONE\_NX O.DECOMM } &\parbox{6cm}{\vspace{3.0pt}  } \\
+T.MNG\_TEST & \parbox{4.0cm}{\vspace{3.5pt} O.TRUSTZONE\_NX } &\parbox{6cm}{\vspace{3.0pt}  } \\
 \hline
-T.SIGNED\_FW & \parbox{4.0cm}{\vspace{3.5pt} O.TPM\_KEY\_STRG O.DECOMM O.NO\_TAMPER O.ID } &\parbox{6cm}{\vspace{3.0pt} Keys are stored in the camera's TPM so an attacker can not first have physical access to camera and get hold of keys and later perform remote code injection. Tamper detection will make it harder to undetected access camera's internal parts. } \\
+T.SIGNED\_FW & \parbox{4.0cm}{\vspace{3.5pt} O.TPM\_KEY\_STRG O.NO\_TAMPER O.ID } &\parbox{6cm}{\vspace{3.0pt} Keys are stored in the camera's TPM so an attacker can not first have physical access to camera and get hold of keys and later perform remote code injection. Tamper detection will make it harder to undetected access camera's internal parts. } \\
 \hline
 T.SRTP\_RECV & \parbox{4.0cm}{\vspace{3.5pt} O.NO\_TAMPER O.TWO\_WAYS\_PROT } &\parbox{6cm}{\vspace{3.0pt} Tamper detection means that an attacker which tries to access internal parts of camera have a higher probability of being detected. If the key derivation function is reapplied, it will be discovered that a key has changed. } \\
 \hline
-T.FLASH\_INTG & \parbox{4.0cm}{\vspace{3.5pt} O.TPM\_SEAL O.ENC\_DATA O.ID } &\parbox{6cm}{\vspace{3.0pt} By using the TPMs seal functionality vital system resources can be tied to hashes of the correct configuration data on the flash memory. Trying to run configuration or firmware that produces other hashes will prompt the platform to stop and signal that something is wrong. } \\
+T.FLASH\_INTG & \parbox{4.0cm}{\vspace{3.5pt} O.TPM\_SEAL O.ENC\_DATA } &\parbox{6cm}{\vspace{3.0pt} By using the TPMs seal functionality vital system resources can be tied to hashes of the correct configuration data on the flash memory. Trying to run configuration or firmware that produces other hashes will prompt the platform to stop and signal that something is wrong. } \\
 \hline
-T.JTAG\_ABUSE & \parbox{4.0cm}{\vspace{3.5pt} O.TRUSTZONE\_NX O.TPM\_KEY\_STRG O.SECURE\_COMMS } &\parbox{6cm}{\vspace{3.0pt} Write xor execute protection means that even if an attacker can abuse JTAG interface, no executable harmful code can be loaded. An attacker also needs the keys that are stored in the TPM. } \\
+T.JTAG\_ABUSE & \parbox{4.0cm}{\vspace{3.5pt} O.TRUSTZONE\_NX A.NO\_ADVERSARIAL } &\parbox{6cm}{\vspace{3.0pt} Write xor execute protection means that even if an attacker can abuse JTAG interface, no executable harmful code can be loaded. The assumption of background checks on personnel holds here too. } \\
 \hline
