@@ -2,7 +2,7 @@ T.LOST\_ASSET & \parbox{4.0cm}{\vspace{3.5pt} O.NO\_TAMPER O.ENC\_DATA O.SECURE\
 \hline
 T.MNG\_TEST & \parbox{4.0cm}{\vspace{3.5pt}  O.TRUSTZONE\_NX  } &\parbox{6cm}{\vspace{3.0pt} Even if there is a bug in the management system, if an attacker tries to insert foreign code the code would not directly be executable, because of the Nx bit. } \\
 \hline
-T.SIGNED\_FW & \parbox{4.0cm}{\vspace{3.5pt} O.TPM\_KEY\_STRG O.NO\_TAMPER O.ID } &\parbox{6cm}{\vspace{3.0pt} Keys are stored in the camera's TPM so an attacker can not first have physical access to camera and get hold of keys and later perform remote code injection. Tamper detection will make it harder to undetected access camera's internal parts. } \\
+T.SIGNED\_FW & \parbox{4.0cm}{\vspace{3.5pt} O.TPM\_KEY\_STRG O.NO\_TAMPER  } &\parbox{6cm}{\vspace{3.0pt} Keys are stored in the camera's TPM so an attacker can not first have physical access to camera and get hold of keys and later perform remote code injection. Tamper detection will make it harder to undetected access camera's internal parts. } \\
 \hline
 T.SRTP\_RECV & \parbox{4.0cm}{\vspace{3.5pt} O.NO\_TAMPER O.TWO\_WAYS\_PROT } &\parbox{6cm}{\vspace{3.0pt} Tamper detection means that an attacker which tries to access internal parts of camera have a higher probability of being detected. If the key derivation function is reapplied, it will be discovered that a key has changed. } \\
 \hline

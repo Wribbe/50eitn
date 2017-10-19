@@ -14,10 +14,10 @@ table = [
         	A correctly configured SRTP protocol with forward and backward protection should provide protection for 4G attacks
         	(e. g. false base stations) while still keeping the product at a lower price point.
         	"""),
-        ("t.mismanage", "o.no_tamper o.tpm_seal o.id a.no_adversarial",
+        ("t.mismanage", "o.no_tamper o.tpm_seal a.no_adversarial",
         	"""
         	Tamper detection will trigger if camera is not mounted correctly
-        	or case is not closed correctly when mounting or remounting. ID will help how?
+        	or case is not closed correctly when mounting or remounting. 
         	The background checks that are carried out on personnel are partly done to catch
         	any potential criminal record but also to screen for persons that can perform well in their job.
         	"""),
@@ -46,7 +46,7 @@ table = [
         	Even if there is a bug in the management system, if an attacker tries to insert foreign code the code would 
         	not directly be executable, because of the Nx bit.
         	"""),
-        ("t.signed_fw", "o.tpm_key_strg o.no_tamper o.id",
+        ("t.signed_fw", "o.tpm_key_strg o.no_tamper ",
         	"""
         	Keys are stored in the camera's TPM
         	so an attacker can not first have physical access to camera and get hold of keys and later perform remote code injection.
