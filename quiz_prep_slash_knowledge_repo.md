@@ -347,7 +347,7 @@ In last project: use idea of trusted computing to shield camera from all kinds o
 * Attestation
     * Attestation is the process of verifying the accuracy of information and the characteristics of the TPM chip current state.
 * Integrity (Measurement and Reporting)
-    - Integrity measurement is the process of obtaining metrics of the platform characteristics and storing the information digest in a protected locations (registers) in the TPM chip. Integrity reporting is to attest the integrity measurements that are recorded in these locations.
+    - Integrity measurement is the process of obtaining metrics of the platform characteristics and storing the information digest in protected locations (registers) in the TPM chip. Integrity reporting is to attest the integrity measurements that are recorded in these locations.
 * *etc.*
 ### How is the TPM integrated in a traditional PC/Server system?
 As a microchip, attached to the PC's/server's motherboard. Part of the boot mechanism.

@@ -40,7 +40,7 @@
     %perspective. The intended audience is a student that has completed the
     %basic computer security course.
 
-    \subsection{TOE Description}
+    \subsection{Target of Evaluation (TOE) Description}
 
       This document describes the design and implementation of a secure network
       camera platform for video surveillance and monitoring.
@@ -85,7 +85,7 @@
 
     \subsection{Hardware security layer}
 
-      The hardware security layer of the platform consists of a ARM TrustZone
+      The hardware security layer of the platform consists of an ARM TrustZone
       CPU, a Trusted Platform Module for managing software security related
       artefacts, a static unique identifier created during the platform
       production and tamper protection to detect unauthorized attempts to
@@ -131,7 +131,7 @@
 
       \subsubsection{Unique ID}
 
-        Each camera platform pcb will have a unique 64-bit signature burned
+        Each camera platform PCB will have a unique 64-bit signature burned
         into it at production, ensuring that over 18 billion potential products
         can be uniquely identifiable.
 
@@ -143,7 +143,7 @@
 
     \subsection{Software security layer}
 
-      The Platform software security layer hinges mainly on the active usage of
+      The platform software security layer hinges mainly on the active usage of
       the onboard Trusted Platform Module (TPM) for tasks such as encryption,
       attestation and authentication. The CPU has complementary
       security-features that, while not possible to use in the software layer
@@ -210,12 +210,12 @@
         not at all.
 
         Both of these steps are accomplished via the usage of the onboard TPM.
-        By using another TPM to sign the firmware, the the platform TPM, with
+        By using another TPM to sign the firmware, the platform TPM, with
         the correct keys migrated, can verify that the firmware it is asked to
         load is trusted, or refuse otherwise. For the second step, the software
-        configuration can be verified by using the TPMs sealing capabilities.
+        configuration can be verified by using the TPM's sealing capabilities.
         If the current software and configuration does not generate a hash
-        value that matches a stored one, vital security-resources such as
+        value that matches a stored one, vital security resources such as
         decryption and session keys can be withheld, prompting the system to
         signal that something is wrong.
 
