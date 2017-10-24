@@ -16,8 +16,8 @@ row_format = "\\parbox{{6cm}}{{\\vspace{{3.0pt}} {} }} & {} & {} \\\\"
 content = []
 
 content = content
-for desc, maxp, deduction in table:
-    content.append(row_format.format(desc, maxp, deduction))
+for desc, maxp, award in table:
+    content.append(row_format.format(desc, maxp, award))
     content.append("\\hline")
 
 content.append("\\hline")

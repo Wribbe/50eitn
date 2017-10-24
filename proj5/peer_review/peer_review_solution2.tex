@@ -6,12 +6,32 @@
 	\section{Peer review by adsec03}
 	 \begin{tabular}{| l | c | c |}
         \hline
-        \textbf{Description} & \textbf{Max points} & \textbf{Deduction} \\
+        \textbf{Description} & \textbf{Max points} & \textbf{Awarded} \\
         \hline
         \hline
         \input{../input/peer2.tex}
     \end{tabular}
     
+    % Too much text will cap results, too little undefined but bad?
+    % 7*0.75=5.25 NOK, consequences unclear
+    % 7*1.25=8.75 OK
+    % 7*1.40=9.8 NOK, will cap grade to grade 6
+
     \subsection{Deduction motivations}
-    		[Insert motivations here]
+      Here, only requirements that were not deemed fulfilled are mentioned, as to save space.
+      
+    	\begin{itemize}
+    		\item{\textbf{A} Missing group name and names of group members, otherwise a good front page. Everything else present.}
+    		\item{\textbf{B} A very short and general description of customer base. Product use with its environment and people using it
+    			is hardly specified, the one thing about this is in one assumption, A.WATCH.}
+    		\item{\textbf{C} -}
+    		\item{\textbf{D1} TPM is specified to use functions that require key storage, but no mention of the need to handle secret/auth values, minus 1 point.}
+    		\item{\textbf{D2} TOE is not mentioned but its content is reflected in the report, minus 1 point.}
+    		\item{\textbf{E1} - }
+    		\item{\textbf{E2} It could be argued here that TPM is not necessary when looking at Table 1, since the only threat it mitigates is one that 
+    			has two other counter-measures, minus 1 point. The objetive O.Sanitize is not mentioned in architectural overview, minus 1 point. 
+    			For both of these two deductions only one point is deducted instead of the specified two, since these are relatively small mistakes in comparison to the many things that are right.}
+    	\end{itemize}
+    	
+    	The length of the report's text, $\sim$ 6 pages, are inside the specified limits (7 pages * 0.75 = 5.25 pages $<$ 6 pages).
 \end{document}
