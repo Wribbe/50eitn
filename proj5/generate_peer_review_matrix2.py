@@ -9,7 +9,7 @@ table = [
         ("D2 TOE and ST", "5", "4"),
         ("\\textbf{E Security evaluation of design + summary}", "", ""),
         ("E1 General", "5", "5"),
-        ("E2 Evaluation", "4", "2"),
+        ("E2 Evaluation", "4", "3"),
        ]
 
 row_format = "\\parbox{{6cm}}{{\\vspace{{3.0pt}} {} }} & {} & {} \\\\"
@@ -21,7 +21,7 @@ for desc, maxp, award in table:
     content.append("\\hline")
 
 content.append("\\hline")
-content.append(row_format.format("Total:", "26", "22"))
+content.append(row_format.format("Total:", "26", "23"))
 content.append("\\hline")
 content.append(row_format.format("Score:", "8", "7"))
 content.append("\\hline")
