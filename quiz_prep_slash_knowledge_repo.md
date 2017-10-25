@@ -553,10 +553,25 @@ Hopper-Blum authentication, send challenge "a couple of hundred times"
 # Quiz prep Trusted Computing
 ## Trusted Computing:
 ### What is TEE and REE. Why is a TEE usually smaller than a REE?
-Trusted Execution Environment(?)
+**Trusted Execution Environment (TEE)** is a secure area of the main processor. It guarantees code and data loaded inside to be protected with respect to confidentiality and integrity. The 'trusted world'.
+
+**Rich Execution Environment (REE)** is the User-facing OS, the 'untrusted world'.
+
+(Note: 'world' term usage is perhaps restricted to ARM TrustZones.)
+
+The TEE is smaller in order to reduce attack surface.
 ### Trusted execution in a TEE is obtained by two crucial capabilities/functions?
+(Unclear of what's wanted here.)
+
+Hardware separation
+Attestation
+Isolated execution?
+
 ### What is TCB and what are the two important components of a TCB of a mobile?
 Trusted Computing Base. 
+
+?
+
 ### What is the role of the TCB?
 "'RoT' of OS"
 ### To build a secure storage solution one needs at least in a mobile to have what ? (think security here)
@@ -575,6 +590,7 @@ Trusted Computing Base.
 ### Isolation by abstraction: virtualization and (later) containers.
 See slide 83 (also article about Docker security! Interesting)
 ### By able to describe differences between the execution environment alternative on Slide19/Lect5.
+What? Only TPM PCRs here. No slide19 in none of the prescribed lectures have anything logical to this question.
 ### Virtualization: what is type 1 and type 2 virtualization. What is Full/pure and impure/para virtualization?
 **Type 1:** Runs on 'bare metal', **Type 2:** Runs on host.
 
