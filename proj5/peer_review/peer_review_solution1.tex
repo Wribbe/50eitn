@@ -1,34 +1,65 @@
 \documentclass{article}
-
 \usepackage[utf8]{inputenc}
+\usepackage{fullpage}
 
 \begin{document}
-	\section{Peer review by adsec03}
+	\section{Peer review -- adsec03}
 	 \begin{tabular}{| l | c | c |}
         \hline
-        \textbf{Description} & \textbf{Max points} & \textbf{Deduction} \\
+        \textbf{Description} & \textbf{Max possible} & \textbf{Awarded} \\
         \hline
         \hline
         \input{../input/peer1.tex}
     \end{tabular}
-    
+
     % Too much text will cap results, too little undefined but bad?
     % 7*0.75=5.25 NOK, consequences unclear
     % 7*1.25=8.75 OK
     % 7*1.40=9.8 NOK, will cap grade to grade 6
-    
+
     \subsection{Deduction motivations}
-      Here, only requirements that were not deemed fulfilled are mentioned, as to save space.
-      
+      \noindent
+      \textit{\textbf{General note:} The amount of whitespace used in this
+      report in order to try to stretch it over the requirement (which it
+      doesn't?) is really pushing it. Don't really know how this should be
+      handled since the grading only says that; under 4.5 pages (lower-bound)
+      or under 5.25 pages (higher-bound) is ''not OK'', is that failing the whole
+      report or something else?} \\
+
+      \noindent
+      Section only lists motivations for deductions to save space.
+
     	\begin{itemize}
-    		\item{\textbf{A} }
-    		\item{\textbf{B} }
-    		\item{\textbf{C} }
-    		\item{\textbf{D1} }
-    		\item{\textbf{D2} }
-    		\item{\textbf{E1} }
-    		\item{\textbf{E2} }
+    		\item{\textbf{A}
+          Really thin on information, but technically has all
+          sections except summary (-1). Not clear how second assumption relates
+          to security.
+        }
+    		\item{\textbf{B}
+          Vague environment description (-1). Missing requirements stated in project
+          document (-1).}
+        \item{\textbf{C} ''out-of-hands-reach'' assumption not referenced in
+          security evaluation (-1). Authentication specified without
+          assumption/specification (-1).
+        }
+    		\item{\textbf{D1}
+          No life-cykel management (-1). No TPM secret/auth values mentioned
+          (-1).
+        }
+    		\item{\textbf{D2}
+          Unclear what ''send the information to the user securely'' entails
+          (-1). TOE is a laundry-list of components without descriptions of
+          relevant security impact (-2). ST is only a list of statements, no
+          descriptions or reasoning (-1).
+        }
+    		\item{\textbf{E1}
+          No descriptions of the evaluation/threats except names in table (-2).
+          Summary missing
+          (-2). Final result/rational unclear (-1).
+        }
+    		\item{\textbf{E2}
+          Not covering all the stated threats (-2). SECURE BOOT not described
+          in architecture (-2).
+        }
     	\end{itemize}
-	
-	The length of the report's text, $\sim$ X pages, are [not] inside the specified limits (7 pages * 0.75 = 5.25 pages $<>$  X pages).
 \end{document}
