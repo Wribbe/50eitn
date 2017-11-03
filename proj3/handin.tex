@@ -268,8 +268,12 @@
     \command{loadkey -hp 9B84E1AD -ik B.key -pwdp superhemligt\_A}
 
     \command{New Key Handle = C410EC05}
+   
+    \textit{Note here that C is specified to be a non migratable key.
+    However, a migratable key cannot have a non migratable child.
+    Thus, C must be migratable.}
 
-    C -- A non migratable sign key, parent: B
+    C -- A migratable sign key, parent: B
 
     \command{createkey -v -kt s/m -pwdk superhemligt\_C -pwdp superhemligt\_B
     -pwdm superhemligt\_m -ok C -hp C410EC05}
@@ -287,6 +291,7 @@
     \command{createkey -v -kt s -pwdk superhemligt\_F -pwdp superhemligt\_A -ok F -hp 9B84E1AD}
 
     G -- A migratable sign key, parent A.
+
     \command{createkey -v -kt s/m -pwdk superhemligt\_G -pwdp superhemligt\_A -pwdm superhemligt\_m -ok G -hp 9B84E1AD}
 
 \section{Assignment 4: Key Migration}
@@ -294,7 +299,9 @@
 \begin{enumerate}
     \item {Is it possible for a migratable key to be the parent of a non-migratable key?} 
 	\begin{itemize}
-	    \item {Yes, but then the non-migratable key becomes a migratable key.}
+        \item {No. When migrating a key, all its children needs to follow
+        (much like grafting of real trees, one cannot remove the middle part
+        of a branch and leave the end hanging in the air).}
 	\end{itemize}
  
     \item {Which command is the first to be executed when performing a key migration?} 
@@ -311,12 +318,14 @@ So: unwrapped blobs cannot be used without owner authorization, wrapped without.
 
     \item {Which TPM command loads the migrated keys into the TPM?}
 	\begin{itemize}
-	    \item {TPM\_LoadKey}
+	    \item {TPM\_LoadKey2}
 	\end{itemize}
 
     \item {Is it the TPM or the TSS that handles the transfer of the migration blob? }
 	\begin{itemize}
-	    \item {The TPM.}
+	    \item {The TSS. Since the TPM only handles conversion of input and output
+data, the transfer of the resulting/necessary data is handled by the software
+stack (TSS).}
 	\end{itemize}
 \end{enumerate}
 
