@@ -223,9 +223,7 @@
       is that, and why does it exist?
     }\\
     \A{
-      The EK should not be used directly due to the reasoning in Q1 and
-      instead be used to create keys that can't be migrated (and thus can be
-      trusted), which are then used directly in place of EK when possible.
+      Legacy keys. These exist in TPM 1.2 only in order to preserve compatibility.
     }
 
     \subsubsection{The key hierarchy}
@@ -262,7 +260,7 @@
 
     output: New Key Handle = 9B84E1AD
 
-    B -- Migratable stroage key, parent: A
+    B -- Migratable storage key, parent: A
 
     \command{createkey -kt e/m -pwdk superhemligt\_B -pwdp superhemligt\_A
     -pwdm \\ superhemligt\_m -ok B -hp 9B84E1AD}

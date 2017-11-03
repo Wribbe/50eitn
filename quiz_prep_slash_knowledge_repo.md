@@ -760,12 +760,40 @@ aaS = as a Service
 * **PaaS** = Platform aaS (ex Microsoft Azure)
 * **IaaS** = Infrastructure aaS (ex Amazon AC2) 
 ### What is OpenStack?
+OpenStack is a cloud computing operating system that consists of
+compute pools, storage solutions, and networking. Open-source IaaS.
+
 ### What are Trusted compute pools in Openstack?
-### What means multiple tenancy?
+"OpenStack Compute (Nova) is a cloud computing fabric controller, which is the main part of an IaaS system. It is designed to manage and automate pools of computer resources and can work with widely available virtualization technologies, as well as bare metal and high-performance computing (HPC) configurations." - Wiki
+
+Guess nothing special, other than 'ordinary' computing pools?
+
+### **What means multiple tenancy?**
+That on one IaaS several users are hosted.
+
+"Multi-tenancy is an architecture in which a single instance
+of a software application serves multiple customers. Each
+customer is called a tenant."
+
 ### What is keystone and Nova in OpenStack?
+"OpenStack Compute (**Nova**) is a cloud computing fabric controller, which is the main part of an IaaS system. It is designed to manage and automate pools of computer resources and can work with widely available virtualization technologies, as well as bare metal and high-performance computing (HPC) configurations."
+
+"OpenStack Identity (**Keystone**) provides a central directory of users mapped to the OpenStack services they can access. It acts as a common authentication system across the cloud operating system and can integrate with existing backend directory services like LDAP. It supports multiple forms of authentication including standard username and password credentials, token-based systems and AWS-style (i.e. Amazon Web Services) logins. Additionally, the catalog provides a queryable list of all of the services deployed in an OpenStack cloud in a single registry. Users and third-party tools can programmatically determine which resources they can access."
+
 ### Difference between public and private cloud.
+Owning the physical infrastructure for the cloud or not.
+
 ### List 3 risks with Cloud computing?
+Vulnerabilities in the backup system (privilege escalation)
+Reliance on hypervisor separation (only shield between different customers VMs)
+Mistakes made by technicians and admins
 ### Transparency issues for tenants with cloud computing?
+Lack of transparency in the processing of
+information
+* Geographic location of the storage
+* May not take part of the supplier's processes, if necessary. reviews and audits
+* May not know who will treat our organization's information
+
 ### Secure Virtual Machine launch Slide 67/Lect 9- See also paper Secure VM launch
 ### Understand process in Slide 67/Lect 9 of using bind keys, role of TTP, and TPM.
 ## DRM
@@ -790,7 +818,11 @@ aaS = as a Service
 ### Theoretical result on obfuscation:
 ## Software security – code design
 ### What is an attack tree?
+A graph/tree showing different attacks, where parents are more general and children more specific attacks/threats.
+
 ### What does least privilege mean?
+A user should only have just enough privileges to carry out the task they're supposed to carry out, all privileges over that can be abused.
+
 ### Describe 4 ways/secure practices to secure code: Slide 44/Lect10?
 ### What aspects are considered in a threat model?
 ## Software security – code analysis and processes
