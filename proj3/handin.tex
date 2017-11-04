@@ -271,7 +271,7 @@
     \command{loadkey -hp D5701362 -ik B.key -pwdp pass}
 
     output: New Key Handle = 2101949B
-   
+
     \textit{Note here that C is specified to be a non migratable key.
     However, a migratable key cannot have a non migratable child.
     Thus, C must be migratable.}
@@ -319,14 +319,14 @@
 \section{Assignment 4: Key Migration}
 \subsection{Questions}
 \begin{enumerate}
-    \item {Is it possible for a migratable key to be the parent of a non-migratable key?} 
+    \item {Is it possible for a migratable key to be the parent of a non-migratable key?}
 	\begin{itemize}
         \item {No. When migrating a key, all its children needs to follow
         (much like grafting of real trees, one cannot remove the middle part
         of a branch and leave the end hanging in the air).}
 	\end{itemize}
- 
-    \item {Which command is the first to be executed when performing a key migration?} 
+
+    \item {Which command is the first to be executed when performing a key migration?}
 	\begin{itemize}
 	    \item {TPM\_AuthorizeMigrationKey  $\rightarrow$  TPM\_CreateMigrationBlob  (i. e., authorize migration key command)}
 	\end{itemize}
@@ -389,7 +389,7 @@ tpmbios \\
 
 (TSS\#1) export TPM\_SERVER\_NAME=10.0.2.14 \\
 export TCSD\_TCP\_DEVICE\_HOSTNAME=10.0.2.14 \\
-    
+
 migrate -hp D5701362 -pwdp pass -pwdo pass -im tpm2\_mig.key -pwdk pass -pwdm pass -ok migBlob -ik B.key\\
 Wrote migration blob and associated data to file.
 
@@ -436,7 +436,7 @@ New Key Handle = 2B4C72AF
 \end{quote}
 
 As can be seen above, migrating keys C, D and E into TPM2 worked.
-Since all three keys are migratable (C was changed to migratable 
+Since all three keys are migratable (C was changed to migratable
 in order to be able to created, see above) it is as it should be.
 
 \subsection{Questions}
@@ -447,8 +447,8 @@ in order to be able to created, see above) it is as it should be.
 	\end{itemize}
     \item {What is the rewrap option of the migrate command used for? }
 	\begin{itemize}
-        \item {To directly transfer a key to another TPM. The re-wrap flag tells the TPM 
-        to re-wrap (decrypt->encrypt) the key with a new parent, which enables that parent 
+        \item {To directly transfer a key to another TPM. The re-wrap flag tells the TPM
+        to re-wrap (decrypt->encrypt) the key with a new parent, which enables that parent
         to load the key as a normal encrypted element}
 	\end{itemize}
 \end{enumerate}
@@ -477,7 +477,7 @@ in order to be able to created, see above) it is as it should be.
 \end{enumerate}
 
 \subsection{SHA-1 calculation and PCR extending using the TPM emulator}
-Following commands and their printouts are the result of hashing the 
+Following commands and their printouts are the result of hashing the
 \texttt{tpmbios} file and extending that result to PCR 11 of TPM2.
 \begin{quote}
 sha -if /home/tss/tpm/tpm4720/libtpm/utils/tpmbios -ix 11\\
@@ -504,8 +504,8 @@ Current value of PCR 11: dba8c73876627a1e4439627b64c96c8f9c8d404a
         Sealing uses binding: binds data with a non-migratable key, and embeds PCR
          values into
         the output. This can be used to in a later stage make certain a TPM is in
-         the same state as when the 
-        data was sealed (by checking the values of the same PCRs that were used 
+         the same state as when the
+        data was sealed (by checking the values of the same PCRs that were used
         in the sealing).}
     \end{itemize}
     \item {Can a key used for data sealing be migrated to another TPM?}
