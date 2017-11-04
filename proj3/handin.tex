@@ -494,18 +494,34 @@ Current value of PCR 11: dba8c73876627a1e4439627b64c96c8f9c8d404a
 \begin{enumerate}
     \item {Why is TSS\_Bind a TSS command, and not a TPM command?}
     \begin{itemize}
-        \item {}
+        \item {Because binding is done outside of the TPM. Binding is encrypting
+        data using the public key of a bind key and this is, as per
+        asymmetric encryption principles, doable from anywhere.
     \end{itemize}
     \item {Give some differences between Data binding and Data sealing.}
     \begin{itemize}
-        \item {}
+        \item {As stated in above answer, binding uses the public part of a key.
+        Sealing uses binding: binds data with a non-migratable key, and embeds PCR
+         values into
+        the output. This can be used to in a later stage make certain a TPM is in
+         the same state as when the 
+        data was sealed (by checking the values of the same PCRs that were used 
+        in the sealing).}
     \end{itemize}
     \item {Can a key used for data sealing be migrated to another TPM?}
     \begin{itemize}
-        \item {}
+        \item {No. The requirement on using a non-migratable key prevents this.}
     \end{itemize}
 \end{enumerate}
 \subsection{Data binding using the TPM emulator}
+\begin{quote}
+createkey -kt bm -ok bindMig -hp D5701362 -pwdp pass -pwdk pass -pwdm pass \\
+touch textToBind.txt\\
+listkeys -v >> textToBind.txt \\
+bindfile -ik bindMig.pem -if textToBind.txt -of bindTextOutput \\
+Error 'Error from OpenSSL library' from TSS\_Bind
+\end{quote}
+
 \subsection{Data sealing using the TPM emulator}
 \section{Assignment 7: TPM Authentication}
 \subsection{Questions}
