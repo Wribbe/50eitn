@@ -312,7 +312,7 @@
 
     \command{createkey -kt sm -pwdk pass -pwdp pass -pwdm pass -ok G -hp D5701362}
 
-    \command{loadkey -hp 2101949B -ik C.key -pwdp pass}
+    \command{loadkey -hp D5701362 -ik G.key -pwdp pass}
 
     output: New Key Handle = DFE08D64
 
@@ -434,6 +434,11 @@ loadmigrationblob -hp 2E92949F -if migBlobE -pwdp pass \\
 Successfully loaded key into TPM.\\
 New Key Handle = 2B4C72AF
 \end{quote}
+
+As can be seen above, migrating keys C, D and E into TPM2 worked.
+Since all three keys are migratable (C was changed to migratable 
+in order to be able to created, see above) it is as it should be.
+
 \subsection{Questions}
 \begin{enumerate}
     \item {There are other ways to migrate keys. When do you use a key of type TPM\_KEY\_USAGE = TPM\_Migrate? }
@@ -442,7 +447,9 @@ New Key Handle = 2B4C72AF
 	\end{itemize}
     \item {What is the rewrap option of the migrate command used for? }
 	\begin{itemize}
-	    \item {To directly transfer a key to another TPM.}
+        \item {To directly transfer a key to another TPM. The re-wrap flag tells the TPM 
+        to re-wrap (decrypt->encrypt) the key with a new parent, which enables that parent 
+        to load the key as a normal encrypted element}
 	\end{itemize}
 \end{enumerate}
 
@@ -457,6 +464,19 @@ New Key Handle = 2B4C72AF
 
 \section{Assignment 5: Extending values to PCRs}
 \subsection{Questions}
+\begin{enumerate}
+    \item {Describe one TPM command that can be used to extend a SHA-1 digest to a PCR.}
+    \begin{itemize}
+        \item {\texttt{TPM\_SHA1CompleteExtend}. “This capability terminates a pending SHA-1 calculation
+        and EXTENDS the result into a Platform Configuration Register using
+        a SHA-1 hash process.” (TPM-part3 p.160).}
+    \end{itemize}
+    \item {Describe which TPM command that can be used to read a PCR value.}
+    \begin{itemize}
+        \item {\texttt{TPM\_PCRRead}. “The \texttt{TPM\_PCRRead} operation provides non cryptographic reporting
+        of the contents of a named PCR.” (TPM-part3 p.162)}
+    \end{itemize}
+\end{enumerate}
 \subsection{SHA-1 calculation and PCR extending using the TPM emulator}
 \section{Assignment 6: File encryption}
 \subsection{Questions}
