@@ -524,8 +524,93 @@ Error 'Error from OpenSSL library' from TSS\_Bind
 
 \subsection{Data sealing using the TPM emulator}
 \section{Assignment 7: TPM Authentication}
-\subsection{Questions}
-\subsection{Authentication exercises}
+
+  \subsection{Questions}
+
+    Question: Could the verifyfile command be done by another TPM? \\
+    Answer: Yes, it only uses the public part of the key to verify the signature.
+
+    Question: Which TPM command is used to decrypt the file? \\
+    Answer: TPM\_UnBind is used to decrypt files.
+
+    Question: Can sealing be used in decryption based authentication instead of
+    verifyfile? \\
+    Answer: Not really, the PCR-values will not match from one TPM to another, so only
+    the original TPM can do the unsealing.
+
+  \subsection{Authentication exercises}
+
+    Given two parties, P1 and P2, P1 can authenticate itself to P2 using either
+    signing or encryption. Using signing, P2 can send a file that P1 signs with
+    the private part of their asymmetric key-pair, and then P2 can use the
+    public part to verify the signature of the file it sent.
+
+    Using encryption, P2 can encrypt a message-file with the public part of the
+    key belonging to P1, and then send the file to P1. If P1 then sends back
+    the original unencrypted message,they prove that they possess the private
+    part of the key-pair that enables decryption.
+
+    \subsubsection{Authentication through signing}
+
+      In this case TPM1 will authenticate itself to TPM2 through signing.
+      First, TMP1 will need a signing-key.
+
+\begin{verbatim}
+createkey -hp 40000000 -pwdp sss -ok 3_7_2_sign_key -kt s
+loadkey -hp 40000000 -ik 3_7_2_sign_key.key -pwdp sss
+New Key Handle = E8CA7920
+\end{verbatim}
+
+      The key can then be used to sign a file, producing a signature.
+
+\begin{verbatim}
+signfile -hk E8CA7920 -if 3_7_3_file_sign.txt \
+  -os 3_7_3_file_sign.signature
+\end{verbatim}
+
+      Then, given the original file, the *.signature file and the public part of
+      the key used (the *.pem file), TPM2 can verify that the signature comes from
+      TPM1 through the verifyfile command.
+
+\begin{verbatim}
+verifyfile -is 3_7_3_file_sign.signature -if 3_7_3_file_sign.txt \
+  -ik 3_7_2_sign_key.pem
+\end{verbatim}
+
+      Which yields an error if the signature could not be verified.
+
+    \subsubsection{Authentication through encryption}
+
+      This process also needs a key, this time it's a binding key created by
+      TPM1.
+
+\begin{verbatim}
+createkey -hp 40000000 -pwdp sss -ok 3_7_2_bind_key -kt b
+loadkey -hp 40000000 -ik 3_7_2_bind_key.key -pwdp sss
+New Key Handle = 64BCA797
+\end{verbatim}
+
+      Now the public part of the key can be shared with TPM2, which it uses it
+      to bind a file.
+
+\begin{verbatim}
+cat 3_7_3_file_bound.txt
+STRING IN BOUND FILE!
+bindfile -ik 3_7_2_bind_key.pem -if 3_7_3_file_bound.txt \
+  -of 3_7_3_file_bound.bound
+\end{verbatim}
+
+      Which produces the encrypted file \texttt{3\_7\_3\_file\_bound.bound}
+      that is then made available to TPM1. TPM1 can then decrypt the file and
+      return the contained message to TPM2 in order to prove that it is TPM1.
+
+\begin{verbatim}
+unbindfile -hk 64BCA797 -if 3_7_3_file_bound.bound \
+  -of 3_7_3_file_bound.unbound
+cat 3_7_3_file_bound.unbound
+STRING IN BOUND FILE!
+\end{verbatim}
+
 \section{Assignment 8: Attestation}
 
   Attestation is a functionality that enables a platform to provide proof that
@@ -621,9 +706,6 @@ Hash: ddf57aca61f940ea08dfd30884ad0fea78e76159
 New value of PCR: 49735514f4860c4a330f5869a5e4a3a9d8ed8069
 unsealfile -hk C41AD035 -if trusted.seal -of trusted.unseal
 Error PCR mismatch from TPM_Unseal
-\end{verbatim}
-
-\begin{verbatim}
 \end{verbatim}
 
 \section{Assignment 9: Your first TPM application}
