@@ -15,8 +15,6 @@ std_out="assignment8_stdout.txt"
 
 printf "" > $std_out # Clear file.
 
-handle_SRK=40000000
-
 rm -f "$output.key"
 rm -f "$output.pem"
 

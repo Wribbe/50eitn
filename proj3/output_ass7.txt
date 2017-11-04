@@ -1,0 +1,218 @@
+
+######################################################
+#### 3.7.2 TPM Authentication -- Questions.
+######################################################
+
+    Question:
+        Could the verifyfile command be done by another TPM?
+    Answer:
+        Yes, it only uses the public part of the key to verify the signature.
+
+    Question:
+        Which TPM command is used to decrypt the file?
+    Answer:
+        TPM_UnBind is used to decrypt files.
+
+    Question:
+        Can sealing be used in decryption based authentication instead of verifyfile?
+    Answer:
+        Not really, the PCR-values will not match from one TPM to another, so only
+        the original TPM can do the unsealing.
+
+
+######################################################
+#### 3.7.3 TPM Authentication -- First pass on TSS.
+######################################################
+
+
+### Preparing files for signing and binding. ###
+
+### Create file for binding. ###
+
+>>>>
+Running command:
+    cat 3_7_3_file_bound.txt
+Got output:
+    STRING IN BOUND FILE!
+<<<<
+
+
+### Prepare file to sign. ###
+
+>>>>
+Running command:
+    cat 3_7_3_file_sign.txt
+Got output:
+    THIS IS THE STRING IN THE SIGN FILE!
+<<<<
+
+
+### Creating a signing key. ###
+
+>>>>
+Running command:
+    createkey -hp 40000000 -pwdp sss -ok 3_7_2_sign_key -kt s
+Got output:
+
+<<<<
+
+
+### Load created key. ###
+
+>>>>
+Running command:
+    loadkey -hp 40000000 -ik 3_7_2_sign_key.key -pwdp sss
+Got output:
+    New Key Handle = E8CA7920
+<<<<
+
+Got key handle: E8CA7920
+
+### Sign the file. ###
+
+>>>>
+Running command:
+    signfile -hk E8CA7920 -if 3_7_3_file_sign.txt -os 3_7_3_file_sign.signature
+Got output:
+
+<<<<
+
+
+### Store the signing key-file in the shared folder. ###
+
+>>>>
+Running command:
+    sudo cp 3_7_2_sign_key.pem shared
+Got output:
+
+<<<<
+
+
+### Store the original file in  the shared folder. ###
+
+>>>>
+Running command:
+    sudo cp 3_7_3_file_sign.txt shared
+Got output:
+
+<<<<
+
+
+### Store the sign file in the shared folder. ###
+
+>>>>
+Running command:
+    sudo cp 3_7_3_file_sign.signature shared
+Got output:
+
+<<<<
+
+
+### Create the binding key. ###
+
+>>>>
+Running command:
+    createkey -hp 40000000 -pwdp sss -ok 3_7_2_bind_key -kt b
+Got output:
+
+<<<<
+
+
+### Load created bind key. ###
+
+>>>>
+Running command:
+    loadkey -hp 40000000 -ik 3_7_2_bind_key.key -pwdp sss
+Got output:
+    New Key Handle = 64BCA797
+<<<<
+
+Got key handle: 64BCA797
+
+### Store key-handle for bind key. ###
+
+>>>>
+Running command:
+    cat 3_7_2_sign_key_stored_handle.txt
+Got output:
+    64BCA797
+<<<<
+
+
+### Store public part of binding key in shared folder. ###
+
+>>>>
+Running command:
+    sudo cp 3_7_2_bind_key.pem shared
+Got output:
+
+<<<<
+
+
+### Store original binding file in shared folder. ###
+
+>>>>
+Running command:
+    sudo cp 3_7_3_file_bound.txt shared
+Got output:
+
+<<<<
+
+
+######################################################
+#### 3.7.3 TPM Authentication -- pass on TPM2.
+######################################################
+
+
+### Verify signature from TPM1, (No output == Verified..) ###
+
+>>>>
+Running command:
+    verifyfile -v -is shared/3_7_3_file_sign.signature -if shared/3_7_3_file_sign.txt -ik shared/3_7_2_sign_key.pem
+Got output:
+
+<<<<
+
+
+### Bind file from shared. ###
+
+>>>>
+Running command:
+    bindfile -ik shared/3_7_2_bind_key.pem -if shared/3_7_3_file_bound.txt -of 3_7_3_file_bound.bound
+Got output:
+
+<<<<
+
+
+### Store the bound file in shared. ###
+
+>>>>
+Running command:
+    sudo cp 3_7_3_file_bound.bound shared
+Got output:
+
+<<<<
+
+
+######################################################
+#### 3.7.3 TPM Authentication -- Second pass on TSS.
+######################################################
+
+
+### Decrypt bound file. ###
+
+>>>>
+Running command:
+    unbindfile -hk 64BCA797 -if shared/3_7_3_file_bound.bound -of 3_7_3_file_bound.unbound
+Got output:
+    
+<<<<
+
+
+>>>>
+Running command:
+    cat 3_7_3_file_bound.unbound
+Got output:
+    STRING IN BOUND FILE!
+<<<<
+
