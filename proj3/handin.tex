@@ -137,15 +137,14 @@
       \begin{quote}
         ...\\
         TPM\_RSAGenerateKeyPair: length of n,p,q,d = 256/128/128/256\\
-        TPM\_Key\_GenerateRSA: Public key n 9d c7 a2 12\\
+        TPM\_Key\_GenerateRSA: Public key n f7 f8 17 68\\
         TPM\_Key\_GenerateRSA: Exponent length 3\\
-        01 00 01\\
-        TPM\_Key\_GenerateRSA: Private prime p cc f1 86 7b\\
-        TPM\_Key\_GenerateRSA: Private prime q c5 16 32 ff\\
-        TPM\_Key\_GenerateRSA: Private key d 8d 80 b5 01\\
+        01 00 01 \\
+        TPM\_Key\_GenerateRSA: Private prime p fd d4 19 9d\\
+        TPM\_Key\_GenerateRSA: Private prime q fa 17 28 ad\\
+        TPM\_Key\_GenerateRSA: Private key d e4 c5 57 5a\\
         ...\\
-        TPM\_SymmetricKeyData\_SetKeys:\\
-        TPM\_SymmetricKeyData\_SetKeys: userKey 48 67 2f 01\\
+        TPM\_SymmetricKeyData\_SetKeys: userKey f3 de c2 b9\\
         ...
       \end{quote}
 
@@ -159,38 +158,40 @@
       The next step is to take ownership of the simulated TPM. This is done by
       running the following command in the TSS command window:
 
-      \command{takeown -pwdo superhemligt\_o -pwds superhemligt\_s}
+      \command{takeown -pwdo pass -pwds pass}
 
-      where \textit{superhemligt\_o} is the owner password and
-      \textit{superhemligt\_s} is the storage root key password.
+      where both the owner password and
+      the storage root key password are \textit{pass}.
 
       After the ownership is established, the public SRK key can be dumped using
       the following command:
 
       \command{ownerreadinternalpub -hk 40000000 -of srk.pub -pwdo
-      superhemligt\_o}
+      pass}
 
       Which dumps the public key to the file \textit{srk.pub} and prints:
 
       \begin{quote}
         \texttt{TPM\_IO\_Write: length 335\\
-        \ \ \  BF E7 8E C3 A4 2E 0D D4 00 DE \\
-     C7 0F 97 EC D8 C2 55 92 E0 8A 59 1B 92 F8 27 60 \\
-     69 58 6A 2A 69 08 67 6A 9D 05 CF 92 70 B7 FF B1 \\ 
-     95 47 26 BC 1E D6 86 4F 5A 24 72 CA CE AE 6A 32 \\ 
-     F7 11 53 88 25 42 45 CC D0 41 B5 98 B4 F3 67 D4  \\
-     01 1B CE B1 3D B6 85 E8 1C 52 E9 71 2A 34 9E 09  \\
-     ED D9 75 32 34 E2 00 E6 68 3D 61 7F C8 CA E9 27  \\
-     0B 56 04 3B 5A 06 F0 CC 5D EA 07 BC 00 19 D7 A3 \\ 
-     00 D8 DF 7F BC D7 59 E1 11 2F C8 53 C2 FD DA 8C \\ 
-     66 38 38 11 D4 8E 84 9E 02 65 C0 EA FB EB 39 08  \\
-     AC 56 74 FF 3C 16 51 45 C1 49 34 64 6B F8 E1 63  \\
-     D0 C0 0D 18 7E 64 E2 E5 18 8D AC 3E 02 89 10 33  \\
-     A6 6A 20 9B D6 CB 87 D5 39 DB 53 4C BC F4 B6 C6 \\ 
-     8D 6F 57 37 AD E6 B9 4E 40 4A 78 7B C5 7F BE CC \\ 
-     BD 30 2E 0E 4E 4F 74 50 34 B9 9F B1 CF 8D B8 E5  \\
-     5A E6 4C 47 AB 3C 16 0B AB 55 9B C8 BB 23 1C 5E \\ 
-     3E 2C 27 DB 12 B7
+        ...\\
+        \ \ \ CD ED 0E 0A 19 80 B9 5A A6 F8 \\
+    1E 30 D2 4E 03 6E 28 55 48 94 2A 1A 15 66 C7 9B \\
+    CD DE FD 01 38 FC EA 42 CE 2B CC 1D 15 0D 2F 73 \\
+    83 0A 5E 35 D9 53 64 3D 7C E6 BF 6E 39 91 A7 B1 \\
+    21 12 46 11 CC 35 D2 2B C2 3B FE 6E 98 C7 9A 28 \\
+    DA 05 A0 B3 D2 AB 4A F5 DB 2F B0 55 63 93 62 3E \\
+    0B 53 88 E4 44 CF 73 8C 05 CF 48 07 4B 15 B1 89 \\
+    25 B8 FD 3D 07 C3 2A 81 64 6D C8 29 DD CF A9 05 \\
+    C7 9E D9 01 50 96 7C 08 E0 5D 29 D0 26 49 D8 90 \\
+    7C B7 C3 A2 14 2E F9 00 F8 C7 C0 8A DD EE 43 EC \\
+    FB ED 08 4F D9 D4 85 1A AB 5D 75 1B D7 FC D9 FB \\
+    72 BD F4 8D 55 C7 53 F9 1B 2F AE 84 A7 1A 4E 1A \\
+    5B A5 39 7E D7 4F 92 5C ED 27 55 AC 9B 2D A5 2E \\
+    40 44 0D CE BD 22 FE 22 B7 DE 3E 59 F1 40 E5 CA \\
+    33 FB 0B EC 9D E9 09 99 C3 FA DF 1E 22 42 7B A4 \\
+    5E D9 93 09 4C 8C E8 B6 6B F9 92 3E E5 4E 6C 91 \\
+    7E 8B F9 FE 62 E1 \\
+    ...
        }
       \end{quote}
 
@@ -249,25 +250,27 @@
 
     H -- Identity key, parent: SRK
 
-    \command{identity -la H -pwdk superhemligt\_H -pwds superhemligt\_s -v12 -ok H -pwdo superhemligt\_o -v}
+    \command{identity -la H -pwdk pass -pwds pass -v12 -ok H -pwdo pass -la idH -v}
+
+    \command{loadkey -hp 40000000 -ik H.key -pwdp pass}
+
+    output: New Key Handle = C4D5B9E3
 
     A -- Non migratable storage key, parent: SRK.
 
-    \command{createkey -kt e -pwdk superhemligt\_A -pwdp superhemligt\_s -ok A
-    -hp 40000000}
+    \command{createkey -kt e -pwdk pass -pwdp pass -ok A -hp 40000000}
 
-    \command{loadkey -hp 40000000 -ik A.key -pwdp superhemligt\_s}
+    \command{loadkey -hp 40000000 -ik A.key -pwdp pass}
 
-    output: New Key Handle = 9B84E1AD
+    output: New Key Handle = D5701362
 
     B -- Migratable storage key, parent: A
 
-    \command{createkey -kt e/m -pwdk superhemligt\_B -pwdp superhemligt\_A
-    -pwdm \\ superhemligt\_m -ok B -hp 9B84E1AD}
+    \command{createkey -kt em -pwdk pass -pwdp pass -pwdm pass -ok B -hp D5701362}
 
-    \command{loadkey -hp 9B84E1AD -ik B.key -pwdp superhemligt\_A}
+    \command{loadkey -hp D5701362 -ik B.key -pwdp pass}
 
-    \command{New Key Handle = C410EC05}
+    output: New Key Handle = 2101949B
    
     \textit{Note here that C is specified to be a non migratable key.
     However, a migratable key cannot have a non migratable child.
@@ -275,24 +278,43 @@
 
     C -- A migratable sign key, parent: B
 
-    \command{createkey -v -kt s/m -pwdk superhemligt\_C -pwdp superhemligt\_B
-    -pwdm superhemligt\_m -ok C -hp C410EC05}
+    \command{createkey -v -kt sm -pwdk pass -pwdp pass -pwdm pass -ok C -hp 2101949B}
+
+    \command{loadkey -hp 2101949B -ik C.key -pwdp pass}
+
+    output: New Key Handle = 398116CC
 
     D -- A migratable sign key, parent: B
 
-    \command{createkey -v -kt s/m -pwdk superhemligt\_D -pwdp superhemligt\_B -pwdm superhemligt\_m -ok D -hp C410EC05}
+    \command{createkey -kt sm -pwdk pass -pwdp pass -pwdm pass -ok D -hp 2101949B}
+
+    \command{loadkey -hp 2101949B -ik D.key -pwdp pass}
+
+    output: New Key Handle = 45130233
 
     E -- A migratable bind key, parent B.
 
-    \command{createkey -v -kt b/m -pwdk superhemligt\_E -pwdp superhemligt\_B -pwdm superhemligt\_m -ok E -hp C410EC05}
+    \command{createkey -kt bm -pwdk pass -pwdp pass -pwdm pass -ok E -hp 2101949B}
+
+    \command{loadkey -hp 2101949B -ik E.key -pwdp pass}
+
+    output: New Key Handle = 6C66DD3A
 
     F -- A non migratable sign key, parent A.
 
-    \command{createkey -v -kt s -pwdk superhemligt\_F -pwdp superhemligt\_A -ok F -hp 9B84E1AD}
+    \command{createkey -kt s -pwdk pass -pwdp pass -ok F -hp D5701362}
+
+    \command{loadkey -hp D5701362 -ik F.key -pwdp pass}
+
+    output: New Key Handle = 8D3D52C8
 
     G -- A migratable sign key, parent A.
 
-    \command{createkey -v -kt s/m -pwdk superhemligt\_G -pwdp superhemligt\_A -pwdm superhemligt\_m -ok G -hp 9B84E1AD}
+    \command{createkey -kt sm -pwdk pass -pwdp pass -pwdm pass -ok G -hp D5701362}
+
+    \command{loadkey -hp 2101949B -ik C.key -pwdp pass}
+
+    output: New Key Handle = DFE08D64
 
 \section{Assignment 4: Key Migration}
 \subsection{Questions}
@@ -343,24 +365,14 @@ tpmbios \\
 (in other terminal window, TSS\#2) sudo -E /usr/local/sbin/tcsd -e -f \\
 
 createek \\
-takeown -pwdo tpm2\_o -pwds tpm2\_s \\
+takeown -pwdo pass -pwds pass\\
 
-tpm2\_sk: SRK, migratable storage key \\
-createkey \textbackslash \\
-    -kt e \textbackslash \\
-    -pwdp tpm2\_s \textbackslash \\
-    -pwdk tpm2\_sk \textbackslash \\
-    -pwdm tpm\_m \textbackslash \\
-    -ok tpm2\_sk \textbackslash \\
-    -hp 40000000 \\
+tpm2\_mig: SRK, migratable storage key \\
+createkey -kt em -pwdp pass -pwdk pass -pwdm pass -ok tpm2\_mig -hp 40000000\\
+loadkey -hp 40000000 -ik tpm2\_mig.key -pwdp pass\\
+New Key Handle =  2E92949F\\
 
-loadkey \textbackslash \\
-    -hp 40000000 \textbackslash \\
-    -ik tpm2\_sk.key \textbackslash \\
-    -pwdp tpm2\_s \\
-New Key Handle = 12AACB57 \\
-
-cp tpm2\_sk.key ../TPM1/tpm2\_sk.key \\
+cp tpm2\_mig.key ../TPM1/tpm2\_mig.key \\
 cd ../TPM1
 \end{quote}
 
@@ -378,9 +390,50 @@ tpmbios \\
 (TSS\#1) export TPM\_SERVER\_NAME=10.0.2.14 \\
 export TCSD\_TCP\_DEVICE\_HOSTNAME=10.0.2.14 \\
     
-migrate -hp 9B84E1AD -pwdp superhemligt\_A -pwdo superhemligt\_o -im tpm2\_sk.key -pwdk tpm2\_sk -pwdm superhemligt\_m -ik B.key -ok migrationblob.bin
+migrate -hp D5701362 -pwdp pass -pwdo pass -im tpm2\_mig.key -pwdk pass -pwdm pass -ok migBlob -ik B.key\\
+Wrote migration blob and associated data to file.
+
+cp migBlob ../TPM2/
+
+\end{quote}
+TPM2 (changed analogous to above):
+
+\begin{quote}
+loadmigrationblob -hp 2E92949F -if migBlob -pwdp pass \\
+Successfully loaded key into TPM.\\
+New Key Handle = BB2DD42A\\
 \end{quote}
 
+Load key C, D and E into TPM2:\\
+TPM1:
+\begin{quote}
+migrate -hp 2101949B -pwdp pass -pwdo pass -im tpm2\_mig.key -pwdk pass -pwdm pass -ok migBlobC -ik C.key\\
+Wrote migration blob and associated data to file.\\
+cp migBlobC ../TPM2/
+
+migrate -hp 2101949B -pwdp pass -pwdo pass -im tpm2\_mig.key -pwdk pass -pwdm pass -ok migBlobD -ik D.key\\
+Wrote migration blob and associated data to file.\\
+cp migBlobD ../TPM2/
+
+migrate -hp 2101949B -pwdp pass -pwdo pass -im tpm2\_mig.key -pwdk pass -pwdm pass -ok migBlobE -ik E.key\\
+Wrote migration blob and associated data to file.\\
+cp migBlobE ../TPM2/
+
+\end{quote}
+TPM2:
+\begin{quote}
+loadmigrationblob -hp 2E92949F -if migBlobC -pwdp pass \\
+Successfully loaded key into TPM.\\
+New Key Handle = 65162BE4
+
+loadmigrationblob -hp 2E92949F -if migBlobD -pwdp pass \\
+Successfully loaded key into TPM.\\
+New Key Handle = 044C3BF8
+
+loadmigrationblob -hp 2E92949F -if migBlobE -pwdp pass \\
+Successfully loaded key into TPM.\\
+New Key Handle = 2B4C72AF
+\end{quote}
 \subsection{Questions}
 \begin{enumerate}
     \item {There are other ways to migrate keys. When do you use a key of type TPM\_KEY\_USAGE = TPM\_Migrate? }
