@@ -453,14 +453,12 @@ in order to be able to created, see above) it is as it should be.
 	\end{itemize}
 \end{enumerate}
 
-
 %\begin{enumerate}
     %\item {}
 	%\begin{itemize}
 	    %\item {}
 	%\end{itemize}
 %\end{enumerate}
-
 
 \section{Assignment 5: Extending values to PCRs}
 \subsection{Questions}
@@ -477,9 +475,36 @@ in order to be able to created, see above) it is as it should be.
         of the contents of a named PCR.” (TPM-part3 p.162)}
     \end{itemize}
 \end{enumerate}
+
 \subsection{SHA-1 calculation and PCR extending using the TPM emulator}
+Following commands and their printouts are the result of hashing the 
+\texttt{tpmbios} file and extending that result to PCR 11 of TPM2.
+\begin{quote}
+sha -if /home/tss/tpm/tpm4720/libtpm/utils/tpmbios -ix 11\\
+SHA1 hash for file '/home/tss/tpm/tpm4720/libtpm/utils/tpmbios': \\
+Hash: 55ac0462404445623f38fdae9adf87d487125874\\
+New value of PCR: dba8c73876627a1e4439627b64c96c8f9c8d404a
+
+pcrread -ix 11 -v \\
+Current value of PCR 11: dba8c73876627a1e4439627b64c96c8f9c8d404a
+\end{quote}
+
 \section{Assignment 6: File encryption}
 \subsection{Questions}
+\begin{enumerate}
+    \item {Why is TSS\_Bind a TSS command, and not a TPM command?}
+    \begin{itemize}
+        \item {}
+    \end{itemize}
+    \item {Give some differences between Data binding and Data sealing.}
+    \begin{itemize}
+        \item {}
+    \end{itemize}
+    \item {Can a key used for data sealing be migrated to another TPM?}
+    \begin{itemize}
+        \item {}
+    \end{itemize}
+\end{enumerate}
 \subsection{Data binding using the TPM emulator}
 \subsection{Data sealing using the TPM emulator}
 \section{Assignment 7: TPM Authentication}
