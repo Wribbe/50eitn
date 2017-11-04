@@ -511,8 +511,105 @@ Current value of PCR 11: dba8c73876627a1e4439627b64c96c8f9c8d404a
 \subsection{Questions}
 \subsection{Authentication exercises}
 \section{Assignment 8: Attestation}
-\subsection{Signature based attestation}
-\subsection{Decryption-based attestation}
+
+  Attestation is a functionality that enables a platform to provide proof that
+  the software it is running is correct and trusted. This proof, which can be
+  based on signing or encryption can then be sent to an outside observer for
+  verification.
+
+  \subsection{Signature based attestation}
+
+    A attestation identity key (AIK) is needed in order to preform any signing.
+    Which is created with the following command:
+\begin{verbatim}
+identity -pwdo ooo -la assignment8 -pwds sss -pwdk kkk \
+  -ok assignment_8_aik
+\end{verbatim}
+
+    Then the key needs to be loaded into the TPM:
+
+\begin{verbatim}
+loadkey -hp 40000000 -ik assignment_8_aik.key -pwdp sss
+New Key Handle = 1F605F33
+\end{verbatim}
+
+    The digest of the binary file 'tmpbios' is then used to populate PCR
+    register 11:
+
+\begin{verbatim}
+sha -if /home/tss/tpm/tpm4720/libtpm/utils/tpmbios -ix 11
+SHA1 hash for file '/home/tss/tpm/tpm4720/libtpm/utils/tpmbios':
+Hash: 55ac0462404445623f38fdae9adf87d487125874
+New value of PCR: 21f2d0f812f2492bb376df8fdb62bbeeec86cd81
+\end{verbatim}
+
+    Which then can be used to run the quote command to verify the AIK.
+
+\begin{verbatim}
+/home/tss/tpm/tpm4720/libtpm/utils/quote -v -hk 1F605F33 \
+  -bm 21f2d0f812f2492bb376df8fdb62bbeeec86cd81 -pwdk kkk
+TPM_Send: GetCapability
+TPM_TransmitSocket: To TPM [GetCapability] length=22
+[ ... ]
+Verification against AIK succeeded
+\end{verbatim}
+
+  \subsection{Decryption-based attestation}
+
+    To start, PCR register 12 is extended with the contents of a trusted text
+    file.
+
+\begin{verbatim}
+cat trusted.txt
+THIS IS A TRUSTED FILE!
+sha -if trusted.txt -ix 12
+SHA1 hash for file 'trusted.txt':
+Hash: 8903498ee0749edc141f0655d3b0e3c3239c28b4
+New value of PCR: 64995d0f268a5a2788e3567459e205718d057f2d
+\end{verbatim}
+
+    Then the new PCR value is used to create and load  a new attestation key.
+
+\begin{verbatim}
+createkey -hp 40000000 -kt e -pwdp sss -ok attestation_encryption_key \
+  -ix 12 64995d0f268a5a2788e3567459e205718d057f2d
+loadkey -hp 40000000 -ik attestation_encryption_key.key -pwdp sss
+New Key Handle = C41AD035
+\end{verbatim}
+
+    With the new key enabled in the TPM, it's possible to seal the trusted
+    file, which binds it to the PCR digest.
+
+\begin{verbatim}
+sealfile -hk C41AD035 -if trusted.txt -of trusted.seal
+\end{verbatim}
+
+    This yields the encrypted file trusted.seal, which can be unsealed since
+    the PCR value in 12 is the same as when it was sealed.
+
+\begin{verbatim}
+unsealfile -hk C41AD035 -if trusted.seal -of trusted.unseal
+cat trusted.unseal
+THIS IS A TRUSTED FILE!
+\end{verbatim}
+
+    However, if the PCR value in register 12 does not match, the unsealing of
+    the file will fail.
+
+\begin{verbatim}
+cat trusted.txt
+THIS IS NO LONGER A TRUSTED FILE!
+sha -if trusted.txt -ix 12
+SHA1 hash for file 'trusted.txt':
+Hash: ddf57aca61f940ea08dfd30884ad0fea78e76159
+New value of PCR: 49735514f4860c4a330f5869a5e4a3a9d8ed8069
+unsealfile -hk C41AD035 -if trusted.seal -of trusted.unseal
+Error PCR mismatch from TPM_Unseal
+\end{verbatim}
+
+\begin{verbatim}
+\end{verbatim}
+
 \section{Assignment 9: Your first TPM application}
 
 The sample.c code was modified to produce the final tpm-program which can be
