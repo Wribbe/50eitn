@@ -1,0 +1,404 @@
+
+######################################################
+#### 3.8.1 Signature based attestation.
+######################################################
+
+
+### Create AIK for attestation. ###
+
+>>>>
+Running command:
+    identity -pwdo ooo -la assignment8 -pwds sss -pwdk kkk -ok assignment_8_aik
+Got output:
+    
+<<<<
+
+
+### Load key into TPM. ###
+
+>>>>
+Running command:
+    loadkey -hp 40000000 -ik assignment_8_aik.key -pwdp sss
+Got output:
+    New Key Handle = 1F605F33
+<<<<
+
+Got key handle: 1F605F33
+
+### Create new PCR value @ register 11. ###
+
+>>>>
+Running command:
+    sha -if /home/tss/tpm/tpm4720/libtpm/utils/tpmbios -ix 11
+Got output:
+    SHA1 hash for file '/home/tss/tpm/tpm4720/libtpm/utils/tpmbios': 
+    Hash: 55ac0462404445623f38fdae9adf87d487125874
+    New value of PCR: 21f2d0f812f2492bb376df8fdb62bbeeec86cd81
+<<<<
+
+New PCR value: 21f2d0f812f2492bb376df8fdb62bbeeec86cd81
+
+### Quote the new PCR value. ###
+
+>>>>
+Running command:
+    /home/tss/tpm/tpm4720/libtpm/utils/quote -v -hk 1F605F33 -bm 21f2d0f812f2492bb376df8fdb62bbeeec86cd81 -pwdk kkk
+Got output:
+    TPM_Send: GetCapability
+    TPM_TransmitSocket: To TPM [GetCapability] length=22
+    00 C1 00 00 00 16 00 00 00 65 00 00 00 05 00 00 
+    00 04 00 00 01 01 
+    TPM_ReceiveSocket: From TPM length=18
+    00 C4 00 00 00 12 00 00 00 00 00 00 00 04 00 00 
+    00 18 
+    TPM_Send: GetCapability
+    TPM_TransmitSocket: To TPM [GetCapability] length=22
+    00 C1 00 00 00 16 00 00 00 65 00 00 00 05 00 00 
+    00 04 00 00 01 10 
+    TPM_ReceiveSocket: From TPM length=18
+    00 C4 00 00 00 12 00 00 00 00 00 00 00 04 00 00 
+    00 03 
+    TPM_Send: GetCapability
+    TPM_TransmitSocket: To TPM [GetCapability] length=22
+    00 C1 00 00 00 16 00 00 00 65 00 00 00 07 00 00 
+    00 04 00 00 00 01 
+    TPM_ReceiveSocket: From TPM length=28
+    00 C4 00 00 00 1C 00 00 00 00 00 00 00 0E 00 03 
+    1F 60 5F 33 B4 FF 9C 48 99 6B 0B 80 
+    TPM_Send: SaveContext
+    TPM_TransmitSocket: To TPM [SaveContext] length=34
+    00 C1 00 00 00 22 00 00 00 B8 B4 FF 9C 48 00 00 
+    00 01 DD 65 C1 B4 B3 E6 6E 76 55 23 87 3B D2 9C 
+    F5 D6 
+    TPM_ReceiveSocket: From TPM length=664
+    00 C4 00 00 02 98 00 00 00 00 00 00 02 8A 00 01 
+    00 00 00 01 B4 FF 9C 48 DD 65 C1 B4 B3 E6 6E 76 
+    55 23 87 3B D2 9C F5 D6 00 00 00 00 3D 86 72 79 
+    2F 5A E9 35 33 20 51 2B 05 DB 30 B5 6F A9 E9 43 
+    00 00 00 00 00 00 02 50 10 27 AF C3 94 BF 5D 76 
+    65 E8 AB 05 96 0F CA 3A F0 FD DB 2E B7 9B 34 38 
+    6E 73 D2 16 11 E0 05 1D 47 D4 76 F0 48 E9 C5 A4 
+    8C 29 54 3A 69 9B 4A 15 14 B9 18 38 56 FA E0 72 
+    69 A6 60 8E 7C EB 9B EA 1C 54 4E 0F AB E4 C2 E2 
+    31 13 B8 28 12 65 7D 3A 95 09 EA 05 FF 0B 9C 62 
+    67 F3 72 CA 45 38 68 3C 9E 24 92 00 A7 3C 23 D7 
+    D1 72 79 0B 67 CA 28 D3 81 34 3B CD 29 1E 52 38 
+    9D 30 2D 63 C8 B4 05 22 E6 5E 82 52 8F 21 EA BB 
+    FE 23 87 98 2B 8E E2 CD DC FD 9B 98 D8 F0 0F 62 
+    C6 AE 99 4A B1 03 1E 0E 82 64 C3 F0 2F 44 2A 0D 
+    C7 2A 9B 26 52 6A B7 DB A7 8A 7C 46 5D 16 71 1F 
+    58 C3 B4 81 12 C6 A8 A8 32 83 80 B9 2A 3F 37 ED 
+    DA B0 0B F4 91 BF 15 1B 56 78 E5 47 E8 BE 97 60 
+    DA BB 9B DE B4 AC 61 EF C4 E1 77 64 AF 9E 91 7A 
+    6E ED 5C BC 49 EC 2C B0 F1 72 6F C8 53 AE 3E 42 
+    C6 8C EC 2B 20 91 91 99 52 BC 08 17 5D 24 3A 39 
+    AC FD A8 D9 5C D3 F6 1C 1F 27 EE F9 5F E3 1B 37 
+    3B 0B C8 DD C8 ED 24 DD 1C 48 8C EE 9E 0A 4D 75 
+    07 FA 66 E6 10 D0 0E 8D FB 4A 69 C9 3D 8D 27 5E 
+    18 B6 44 26 42 C1 FE 66 0D 98 6E EE B0 E9 62 4A 
+    1F 38 B7 11 04 C3 E3 1C 0E EC 52 3D F9 13 78 4B 
+    5A D8 80 3A E1 1E 30 1E 32 7B 95 36 FC 99 0F F0 
+    B5 D4 5F 61 96 F5 AD D5 33 FD E6 CE A5 BE 11 F2 
+    DD 8E F3 FA B8 8B D7 BE C4 81 69 B9 86 5D 2B 77 
+    27 33 CE 71 94 AF F8 B2 E6 18 02 9C 12 14 2F 0A 
+    E5 1B 95 5D 93 09 F4 80 4A F7 1D 7B A9 EC 5B 1B 
+    28 38 94 AF 1A 7F F6 CA 69 F0 E4 FF 68 E2 7F 41 
+    9C FF 9F 1D 58 52 A3 10 FA 59 AA A7 34 3E 9B 9A 
+    C7 70 52 F0 1E 01 CA 60 F6 3A F1 FD DE 52 03 48 
+    89 D1 41 7C AD E3 EC D2 D7 CE 3C C6 89 5B D6 C4 
+    D7 DF DC 5D CA B7 E7 D8 AA 3B F7 0A 81 FF FD 87 
+    7C BE 30 2B A4 B3 AC DD CD B3 6A 12 0C 47 99 AB 
+    46 BB F4 13 F3 A9 12 5F F7 85 BC EE FA 46 B5 C3 
+    44 64 71 B7 D7 C8 9E 30 78 C3 2E B9 2B B9 80 2C 
+    67 D4 3B 45 91 9B DA 42 C6 39 20 F0 E0 65 1D 57 
+    A4 5A 3D 7D A1 94 76 D4 72 21 EA 55 36 E6 88 1F 
+    06 E3 E5 F9 84 3C 56 B9 
+    TPM_Send: EvictKey
+    TPM_TransmitSocket: To TPM [EvictKey] length=14
+    00 C1 00 00 00 0E 00 00 00 22 B4 FF 9C 48 
+    TPM_ReceiveSocket: From TPM length=10
+    00 C4 00 00 00 0A 00 00 00 00 
+    TPM_Send: GetCapability
+    TPM_TransmitSocket: To TPM [GetCapability] length=22
+    00 C1 00 00 00 16 00 00 00 65 00 00 00 05 00 00 
+    00 04 00 00 01 10 
+    TPM_ReceiveSocket: From TPM length=18
+    00 C4 00 00 00 12 00 00 00 00 00 00 00 04 00 00 
+    00 03 
+    TPM_Send: GetCapability
+    TPM_TransmitSocket: To TPM [GetCapability] length=22
+    00 C1 00 00 00 16 00 00 00 65 00 00 00 07 00 00 
+    00 04 00 00 00 01 
+    TPM_ReceiveSocket: From TPM length=24
+    00 C4 00 00 00 18 00 00 00 00 00 00 00 0A 00 02 
+    1F 60 5F 33 99 6B 0B 80 
+    TPM_Send: OSAP
+    TPM_TransmitSocket: To TPM [OSAP] length=36
+    00 C1 00 00 00 24 00 00 00 0B 00 01 1F 60 5F 33 
+    54 D8 83 B3 D2 E9 CB 2F 48 85 E1 BA 12 A8 7F F7 
+    72 7C 87 45 
+    TPM_ReceiveSocket: From TPM length=54
+    00 C4 00 00 00 36 00 00 00 00 CD CE 6C 67 A4 08 
+    27 8F 16 51 A0 30 D6 3C 12 64 3E 1F 0B E3 A1 04 
+    FE C7 04 C9 86 34 33 C8 F7 55 5B 2B 29 CF 88 42 
+    E7 06 BF EA 02 89 
+    TPM_Send: Quote
+    TPM_TransmitSocket: To TPM [Quote] length=84
+    00 C2 00 00 00 54 00 00 00 16 1F 60 5F 33 51 50 
+    D2 10 4C 8C D9 74 B2 7F AD 3F 25 EC 4E 80 98 BB 
+    7B BE 00 03 FF FF FF CD CE 6C 67 A7 F6 90 16 17 
+    1D A6 53 74 87 76 D2 B9 A2 31 D9 E8 24 40 49 00 
+    63 4D 07 B1 F6 3B D2 29 75 58 D2 EF 72 29 1F 65 
+    1D 42 20 A4 
+    TPM_ReceiveSocket: From TPM length=800
+    00 C5 00 00 03 20 00 00 00 00 00 03 FF FF FF 00 
+    00 01 E0 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 21 
+    F2 D0 F8 12 F2 49 2B B3 76 DF 8F DB 62 BB EE EC 
+    86 CD 81 0D 0B 6A 7E 73 CD 2B 71 48 E3 9F 93 C9 
+    D8 F7 C7 53 4E E3 3D 00 00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    00 00 00 00 00 00 00 FF FF FF FF FF FF FF FF FF 
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF 
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF 
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF 
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF 
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF 
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF 
+    FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF 00 
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    00 00 00 00 00 01 00 6F 2B BC 8A 20 00 2C 79 EC 
+    CA 5B 54 48 2E EA FA EE C6 04 EA 0F 50 9B 50 38 
+    80 43 67 A9 E4 5E 95 61 37 F4 64 97 3D 65 9A 1E 
+    DD 41 37 86 55 E1 27 DF 1A 5A F9 58 DD EF 7C AD 
+    3F 47 FA F6 A5 31 89 29 6A 75 A4 A9 9A F9 81 6A 
+    CB A4 A1 1C 90 67 A5 3C 69 70 04 E7 63 43 F2 3B 
+    D0 2F B1 0E 03 D1 01 C6 CC F5 61 35 0D AB 0B AC 
+    F0 3B F1 53 E4 E6 50 65 D2 1D DF 90 B7 FE 5B 93 
+    42 C4 CA 6B 1F 50 ED 97 10 3E 69 90 95 D1 1B 98 
+    B6 01 E5 FC BB A1 8E 90 C7 80 3F 68 AC 43 2A 7C 
+    E5 B3 F5 7B 60 CD 3C C5 FF 65 22 34 CC 39 CC 5B 
+    65 AE F8 31 DB DB 7C 8B CD F1 8A BD 6A 3A FE 4A 
+    68 9A B8 85 3D B6 9C E5 6B B2 E3 5D 46 FE FA 6A 
+    46 C3 B4 15 43 1D 2E AE CD 43 D9 30 04 1B 33 C1 
+    19 A7 12 13 EE ED 6B E9 9F A4 52 2A DC 1A 97 59 
+    E5 84 CA 8C 69 CB CF 7B BF 70 F9 48 FA 44 0D 5A 
+    EA 22 6C 91 94 27 CE 52 68 5F 67 04 CF AF 0F 82 
+    28 D4 01 53 BF 9B 1F 6B 73 B7 5A 00 56 22 C9 75 
+    26 77 B9 59 B5 77 0B A9 95 1B E5 28 9D 23 40 F1 
+    TPM_Send: Terminate Handle
+    TPM_TransmitSocket: To TPM [Terminate Handle] length=14
+    00 C1 00 00 00 0E 00 00 00 96 CD CE 6C 67 
+    TPM_ReceiveSocket: From TPM length=10
+    00 C4 00 00 00 0A 00 00 00 22 
+    TPM_Send: GetCapability
+    TPM_TransmitSocket: To TPM [GetCapability] length=22
+    00 C1 00 00 00 16 00 00 00 65 00 00 00 05 00 00 
+    00 04 00 00 01 10 
+    TPM_ReceiveSocket: From TPM length=18
+    00 C4 00 00 00 12 00 00 00 00 00 00 00 04 00 00 
+    00 03 
+    TPM_Send: GetCapability
+    TPM_TransmitSocket: To TPM [GetCapability] length=22
+    00 C1 00 00 00 16 00 00 00 65 00 00 00 07 00 00 
+    00 04 00 00 00 01 
+    TPM_ReceiveSocket: From TPM length=24
+    00 C4 00 00 00 18 00 00 00 00 00 00 00 0A 00 02 
+    1F 60 5F 33 99 6B 0B 80 
+    TPM_Send: GetCapability
+    TPM_TransmitSocket: To TPM [GetCapability] length=22
+    00 C1 00 00 00 16 00 00 00 65 00 00 00 05 00 00 
+    00 04 00 00 01 10 
+    TPM_ReceiveSocket: From TPM length=18
+    00 C4 00 00 00 12 00 00 00 00 00 00 00 04 00 00 
+    00 03 
+    TPM_Send: GetCapability
+    TPM_TransmitSocket: To TPM [GetCapability] length=22
+    00 C1 00 00 00 16 00 00 00 65 00 00 00 07 00 00 
+    00 04 00 00 00 01 
+    TPM_ReceiveSocket: From TPM length=24
+    00 C4 00 00 00 18 00 00 00 00 00 00 00 0A 00 02 
+    1F 60 5F 33 99 6B 0B 80 
+    TPM_Send: OIAP
+    TPM_TransmitSocket: To TPM [OIAP] length=10
+    00 C1 00 00 00 0A 00 00 00 0A 
+    TPM_ReceiveSocket: From TPM length=34
+    00 C4 00 00 00 22 00 00 00 00 5E 04 C3 53 A6 AC 
+    C9 8E BB 45 F3 6C 11 96 85 A9 79 81 3D 8A 8A 4B 
+    46 5D 
+    TPM_Send: GetPubKey - AUTH1
+    TPM_TransmitSocket: To TPM [GetPubKey - AUTH1] length=59
+    00 C2 00 00 00 3B 00 00 00 21 1F 60 5F 33 5E 04 
+    C3 53 85 39 2D 7F A0 A3 C5 1F 85 34 6E 2F A0 AB 
+    0F D4 15 7F C4 69 00 4D 03 AC 5B 3D 17 35 67 4B 
+    3C EA B6 2F AE 72 08 95 A2 95 2A 
+    TPM_ReceiveSocket: From TPM length=335
+    00 C5 00 00 01 4F 00 00 00 00 00 00 00 01 00 01 
+    00 02 00 00 00 0C 00 00 08 00 00 00 00 02 00 00 
+    00 00 00 00 01 00 A2 69 DD 8D 57 32 64 F4 3D 75 
+    3A 6D 57 7C 23 EE 1C 5D 79 1F 4F 74 7F 35 D0 41 
+    9E E0 01 ED C8 4C 43 9C 52 57 3F 4A 47 25 01 62 
+    FE 2C 47 36 B4 D8 55 D6 BA 2E 01 A4 7C 66 48 B8 
+    A1 54 A0 FA CF 69 11 5C DB D1 13 76 AF C5 9C B0 
+    A2 7E 9D 66 0F FA 17 8D A5 80 54 1F AF E0 A8 C9 
+    5D A3 22 1B C0 AF F1 DF AB C6 09 7F 01 F7 E7 0B 
+    1C 13 F7 9F 81 23 5B 1A 17 34 59 D2 1C 60 FE 80 
+    04 16 14 26 D1 54 63 BF 02 4F 04 6C 6D 26 71 C9 
+    62 DA EF 4E 17 39 C0 4E 6C 5A E7 06 44 39 73 FA 
+    24 42 82 09 69 66 C9 E0 26 36 64 3F 81 62 9B 46 
+    7A 52 81 14 42 05 DD AD 51 F9 37 E5 42 92 1E 4F 
+    61 3E 75 6E 18 19 44 CF 3C DE 56 36 84 C7 D9 FE 
+    E7 67 49 83 27 91 78 EA C1 ED 8F FA 86 52 6C 7F 
+    BB A3 5F 5B FF 09 98 52 B2 D0 6E 6E 56 89 43 38 
+    80 5A 50 73 CD 16 80 83 1D 31 F2 82 30 80 DA 62 
+    A0 3C 95 D6 13 91 B9 36 2D 46 0D C6 FB A4 CE 5E 
+    50 7C 7A D4 77 E2 5B AC E1 83 00 81 CE 43 29 C9 
+    6E CE 66 5D FE C3 3F BA 0B EA 6A 3B B5 AB 93 
+    TPM_Send: Terminate Handle
+    TPM_TransmitSocket: To TPM [Terminate Handle] length=14
+    00 C1 00 00 00 0E 00 00 00 96 5E 04 C3 53 
+    TPM_ReceiveSocket: From TPM length=10
+    00 C4 00 00 00 0A 00 00 00 22 
+    TPM_Send: GetCapability
+    TPM_TransmitSocket: To TPM [GetCapability] length=18
+    00 C1 00 00 00 12 00 00 00 65 00 00 00 06 00 00 
+    00 00 
+    TPM_ReceiveSocket: From TPM length=18
+    00 C4 00 00 00 12 00 00 00 00 00 00 00 04 01 01 
+    00 00 
+    Verification against AIK succeeded
+<<<<
+
+
+######################################################
+#### 3.8.2 Decryption based attestation.
+######################################################
+
+
+### Create a file that will be encrypted. ###
+
+>>>>
+Running command:
+    cat trusted.txt
+Got output:
+    THIS IS A TRUSTED FILE!
+<<<<
+
+
+### Update and get PCR value. ###
+
+>>>>
+Running command:
+    sha -if trusted.txt -ix 12
+Got output:
+    SHA1 hash for file 'trusted.txt': 
+    Hash: 8903498ee0749edc141f0655d3b0e3c3239c28b4
+    New value of PCR: 64995d0f268a5a2788e3567459e205718d057f2d
+<<<<
+
+New PCR value: 64995d0f268a5a2788e3567459e205718d057f2d
+
+### Create new key for performing the sealing/unsealing. ###
+
+>>>>
+Running command:
+    createkey -hp 40000000 -kt e -pwdp sss -ok attestation_encryption_key -ix 12 64995d0f268a5a2788e3567459e205718d057f2d
+Got output:
+    
+<<<<
+
+
+### Load the created key. ###
+
+>>>>
+Running command:
+    loadkey -hp 40000000 -ik attestation_encryption_key.key -pwdp sss
+Got output:
+    New Key Handle = C41AD035
+<<<<
+
+Got key handle: C41AD035
+
+### Seal and unseal the trusted file. ###
+
+>>>>
+Running command:
+    sealfile -hk C41AD035 -if trusted.txt -of trusted.seal
+Got output:
+    
+<<<<
+
+
+>>>>
+Running command:
+    unsealfile -hk C41AD035 -if trusted.seal -of trusted.unseal
+Got output:
+    
+<<<<
+
+
+### Check file contents. ###
+
+>>>>
+Running command:
+    cat trusted.txt
+Got output:
+    THIS IS A TRUSTED FILE!
+<<<<
+
+
+>>>>
+Running command:
+    cat trusted.unseal
+Got output:
+    THIS IS A TRUSTED FILE!
+<<<<
+
+
+### Tamper with the trusted file. ###
+
+>>>>
+Running command:
+    cat trusted.txt
+Got output:
+    THIS IS NO LONGER A TRUSTED FILE!
+<<<<
+
+
+### Update the PCR value. ###
+
+>>>>
+Running command:
+    sha -if trusted.txt -ix 12
+Got output:
+    SHA1 hash for file 'trusted.txt': 
+    Hash: ddf57aca61f940ea08dfd30884ad0fea78e76159
+    New value of PCR: 49735514f4860c4a330f5869a5e4a3a9d8ed8069
+<<<<
+
+New PCR value: 49735514f4860c4a330f5869a5e4a3a9d8ed8069
+
+### Try to unseal the sealed file again. ###
+
+>>>>
+Running command:
+    unsealfile -hk C41AD035 -if trusted.seal -of trusted.unseal
+Got output:
+    Error PCR mismatch from TPM_Unseal
+<<<<
+
