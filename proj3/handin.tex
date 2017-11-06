@@ -367,7 +367,7 @@ tpmbios \\
 createek \\
 takeown -pwdo pass -pwds pass\\
 
-tpm2\_mig: SRK, migratable storage key \\
+tpm2\_mig: migratable storage key \\
 createkey -kt em -pwdp pass -pwdk pass -pwdm pass -ok tpm2\_mig -hp 40000000\\
 loadkey -hp 40000000 -ik tpm2\_mig.key -pwdp pass\\
 New Key Handle =  2E92949F\\
@@ -389,6 +389,8 @@ tpmbios \\
 
 (TSS\#1) export TPM\_SERVER\_NAME=10.0.2.14 \\
 export TCSD\_TCP\_DEVICE\_HOSTNAME=10.0.2.14 \\
+
+NOTE: LOAD tpm2\_mig INTO TPM1!!
 
 migrate -hp D5701362 -pwdp pass -pwdo pass -im tpm2\_mig.key -pwdk pass -pwdm pass -ok migBlob -ik B.key\\
 Wrote migration blob and associated data to file.
@@ -453,13 +455,6 @@ in order to be able to created, see above) it is as it should be.
 	\end{itemize}
 \end{enumerate}
 
-%\begin{enumerate}
-    %\item {}
-	%\begin{itemize}
-	    %\item {}
-	%\end{itemize}
-%\end{enumerate}
-
 \section{Assignment 5: Extending values to PCRs}
 \subsection{Questions}
 \begin{enumerate}
@@ -515,11 +510,16 @@ Current value of PCR 11: dba8c73876627a1e4439627b64c96c8f9c8d404a
 \end{enumerate}
 \subsection{Data binding using the TPM emulator}
 \begin{quote}
-createkey -kt bm -ok bindMig -hp D5701362 -pwdp pass -pwdk pass -pwdm pass \\
-touch textToBind.txt\\
-listkeys -v >> textToBind.txt \\
-bindfile -ik bindMig.pem -if textToBind.txt -of bindTextOutput \\
-Error 'Error from OpenSSL library' from TSS\_Bind
+createkey -kt bm -ok 6\_key\_binding\_migratable -hp 40000000 \textbackslash \\
+-pwdp pass -pwdm pass -pwdk pass \\
+loadkey -hp 40000000 -ik 6\_key\_binding\_migratable.key -pwdp pass \\
+New Key Handle = B3189040 \\
+echo 'CONTENT OF BOUND FILE' > ass6\_bound.txt \\
+bindfile -ik 6\_key\_binding\_migratable.pem -if ass6\_bound.txt \textbackslash \\
+-of ass6\_bound.bound \\
+unbindfile -hk B3189040 -if ass6\_bound.bound -of ass6\_bound.unbound \\
+
+
 \end{quote}
 
 \subsection{Data sealing using the TPM emulator}
@@ -590,7 +590,7 @@ loadkey -hp 40000000 -ik 3_7_2_bind_key.key -pwdp sss
 New Key Handle = 64BCA797
 \end{verbatim}
 
-      Now the public part of the key can be shared with TPM2, which it uses it
+      Now the public part of the key can be shared with TPM2, which it uses 
       to bind a file.
 
 \begin{verbatim}
@@ -620,7 +620,7 @@ STRING IN BOUND FILE!
 
   \subsection{Signature based attestation}
 
-    A attestation identity key (AIK) is needed in order to preform any signing.
+    A attestation identity key (AIK) is needed in order to perform any signing.
     Which is created with the following command:
 \begin{verbatim}
 identity -pwdo ooo -la assignment8 -pwds sss -pwdk kkk \
@@ -707,6 +707,8 @@ New value of PCR: 49735514f4860c4a330f5869a5e4a3a9d8ed8069
 unsealfile -hk C41AD035 -if trusted.seal -of trusted.unseal
 Error PCR mismatch from TPM_Unseal
 \end{verbatim}
+
+Finally, clear ownership of TPMs: \command{forceclear}.
 
 \section{Assignment 9: Your first TPM application}
 
