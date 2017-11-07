@@ -241,10 +241,8 @@
       C  D  E
 \end{lstlisting}
 
-    While it is possible to create the structure, any non-migratable key that
-    is created as a child to a migratable key itself becomes migratable
-    automatically.  A more correct structure would be to swap G and C.
-    Then all the non-migratable keys are direct children of the non-migratable A.
+    It is possible to create the structure, but since non-migratable keys 
+    cannot be children of migratable keys C must be made migratable.
 
     \subsubsection{Key hierarchy creation}
 
@@ -390,8 +388,6 @@ tpmbios \\
 (TSS\#1) export TPM\_SERVER\_NAME=10.0.2.14 \\
 export TCSD\_TCP\_DEVICE\_HOSTNAME=10.0.2.14 \\
 
-NOTE: LOAD tpm2\_mig INTO TPM1!!
-
 migrate -hp D5701362 -pwdp pass -pwdo pass -im tpm2\_mig.key -pwdk pass -pwdm pass -ok migBlob -ik B.key\\
 Wrote migration blob and associated data to file.
 
@@ -509,20 +505,151 @@ Current value of PCR 11: dba8c73876627a1e4439627b64c96c8f9c8d404a
     \end{itemize}
 \end{enumerate}
 \subsection{Data binding using the TPM emulator}
+First, we create a migratable bind key:
 \begin{quote}
 createkey -kt bm -ok 6\_key\_binding\_migratable -hp 40000000 \textbackslash \\
 -pwdp pass -pwdm pass -pwdk pass \\
 loadkey -hp 40000000 -ik 6\_key\_binding\_migratable.key -pwdp pass \\
-New Key Handle = B3189040 \\
+New Key Handle = 29714F10 \\
+\end{quote}
+
+Now, create a text file and bind it:
+\begin{quote}
 echo 'CONTENT OF BOUND FILE' > ass6\_bound.txt \\
 bindfile -ik 6\_key\_binding\_migratable.pem -if ass6\_bound.txt \textbackslash \\
 -of ass6\_bound.bound \\
-unbindfile -hk B3189040 -if ass6\_bound.bound -of ass6\_bound.unbound \\
-
-
 \end{quote}
 
+Unbind:
+\begin{quote}
+unbindfile -hk B29714F10 -if ass6\_bound.bound -of ass6\_bound.unbound \\
+\end{quote}
+
+Check contents of unbound file:
+\begin{quote}
+cat ass6\_bound.unbound \\
+CONTENT OF BOUND FILE
+\end{quote}
+
+The key \texttt{6\_key\_binding\_migratable} does not have to be loaded
+into tpm1 when binding, since binding is done outside of a TPM and only uses
+the public part of an asymmetric key. For unbinding the key has to be loaded,
+since this decrypts using the private key.
+
+Create migration blob:
+\begin{quote}
+migrate -hp 40000000 -pwdp pass -pwdo pass -im tpm2\_mig.key \textbackslash \\
+-pwdm pass -pwdk pass -ik 6\_key\_binding\_migratable.key -ok blob\_tpm1\_bind
+Wrote migration blob and associated data to file.
+\end{quote}
+
+Copy migration blob and bound file to TPM2 and change TSS to point to TPM2 (this step
+is performed as before and subsequently not explicitly shown):
+\begin{quote}
+cp blob\_tpm1\_bind ../TPM2/ \\
+cp ass6\_bound.bound ../TPM2/ 
+\end{quote}
+TPM2:
+\begin{quote}
+loadmigrationblob -hp 2E92949F -if blob\_tpm1\_bind -pwdp pass \\
+Successfully loaded key into TPM. \\
+New Key Handle = 8655CB71
+\end{quote}
+
+Unbind file:
+\begin{quote}
+unbindfile -hk 8655CB71 -if ass6\_bound.bound -of ass6\_bound.unbound
+\end{quote}
+
+Control if same file content:
+\begin{quote}
+cat ass6\_bound.unbound \\
+CONTENT OF BOUND FILE
+\end{quote}
+
+Good. Since this operation uses the same private key as before this should,
+and does, not pose any problems.
+
 \subsection{Data sealing using the TPM emulator}
+Create keys (all four types at once) on TPM1:
+\begin{quote}
+createkey -kt e -ok tpm1\_storage\_key -hp 40000000 -pwdp pass \\
+loadkey -hp 40000000 -ik tpm1\_storage\_key.key -pwdp pass \\
+New Key Handle = E7C36D08
+
+createkey -kt l -ok key\_legacy -hp 40000000 -pwdp pass \\
+loadkey -hp 40000000 -ik key\_legacy.key -pwdp pass \\
+New Key Handle = A5C35CAA
+
+createkey -kt b -ok key\_binding -hp 40000000 -pwdp pass \\
+loadkey -hp 40000000 -ik key\_binding.key -pwdp pass \\
+New Key Handle = 4FAB7659
+
+createkey -kt d -ok key\_sign -hp 40000000 -pwdp pass \\
+loadkey -hp 40000000 -ik key\_sign.key -pwdp pass \\
+New Key Handle = 35E3C685
+\end{quote}
+
+Now, sealing. Begin with storage key:
+\begin{quote}
+echo 'STRING IN SEALFILE' > ass6\_sealfile.txt \\
+sealfile -hk E7C36D08 -if ass6\_sealfile.txt -of ass6\_sealfile.seal \\
+unsealfile -hk E7C36D08 -if ass6\_sealfile.seal -of ass6\_sealfile.unseal
+\end{quote}
+
+Check contents of unsealed file.
+\begin{quote}
+cat ass6\_sealfile.unseal \\
+STRING IN SEALFILE
+\end{quote}
+
+Now, sealing with legacy key:
+\begin{quote}
+sealfile -hk A5C35CAA -if ass6\_sealfile.txt -of ass6\_sealfile.seal \\
+Error Invalid key usage from TPM\_Seal
+\end{quote}
+
+Now, sealing with binding key:
+\begin{quote}
+sealfile -hk 4FAB7659 -if ass6\_sealfile.txt -of ass6\_sealfile.seal\\
+Error Invalid key usage from TPM\_Seal
+\end{quote}
+
+Now, sealing with signing key:
+\begin{quote}
+sealfile -hk 35E3C685 -if ass6\_sealfile.txt -of ass6\_sealfile.seal \\
+Error Invalid key usage from TPM\_Seal
+\end{quote}
+
+None of the non-storage type keys worked. 
+
+Try to migrate the storage key:
+\begin{quote}
+migrate -hp 40000000 -pwdp pass -pwdo pass -im tpm2\_mig.key \textbackslash \\
+-pwdm pass -pwdk pass -ik tpm1\_storage\_key.key -ok blob\_tpm1\_storage \\
+CreateMigrationBlob returned 'Authorization failure for 2nd key' (29).
+\end{quote}
+
+Error means that the key is not migratable. 
+Create and load a migratable storage key:
+\begin{quote}
+createkey -kt em -ok key\_migratable\_storage -hp 40000000 -pwdp pass -pwdm pass \\
+loadkey -hp 40000000 -ik key\_migratable\_storage.key -pwdp pass \\
+New Key Handle = 82418204
+\end{quote}
+
+Use migratable storage key for sealing:
+\begin{quote}
+sealfile -hk 82418204 -if ass6\_sealfile.txt -of ass6\_sealfile.seal \\
+Error Invalid key usage from TPM\_Seal
+\end{quote}
+
+So: migratable storage key does not work. Non-migratable legacy, binding or 
+storage keys does not work. Why is this? [INSERT REASON HERE, LUNCH NOW]
+
+\begin{quote}
+\end{quote}
+
 \section{Assignment 7: TPM Authentication}
 
   \subsection{Questions}
@@ -765,6 +892,13 @@ Commands in the connected TSS-command-window.
   \item{tpm\_takeownership -z -y}
   \item{gcc -o tpmcode tpmcode.c -ltspi -std=c99 -Wall}
   \item{./tpmcode}
+\end{itemize}
+
+\section{Improvement sheet}
+\begin{itemize}
+    \item {Completed the assignments that were not completed.}
+    \item {k}
+    \item {j}
 \end{itemize}
 
 \end{document}
