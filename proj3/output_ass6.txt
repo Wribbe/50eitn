@@ -1,0 +1,442 @@
+
+######################################################
+#### 3.6.2 -- File encryption.
+######################################################
+
+
+### Create migratable bind key. ###
+
+>>>>
+Running command:
+    createkey -kt bm -ok 6_key_binding_migratable -hp 40000000 -pwdp sss -pwdm mmm
+Got output:
+    
+<<<<
+
+
+### Load created key. ###
+
+>>>>
+Running command:
+    loadkey -hp 40000000 -ik 6_key_binding_migratable.key -pwdp sss
+Got output:
+    New Key Handle = 29714F10
+<<<<
+
+Got key handle: 29714F10
+
+### Create a file that can be bound. ###
+
+>>>>
+Running command:
+    cat ass6_bound.txt
+Got output:
+    CONTENT OF BOUND FILE
+<<<<
+
+
+### Bind file. ###
+
+>>>>
+Running command:
+    bindfile -ik 6_key_binding_migratable.pem -if ass6_bound.txt -of ass6_bound.bound
+Got output:
+    
+<<<<
+
+
+### Unbinding file. ###
+
+>>>>
+Running command:
+    unbindfile -hk 29714F10 -if ass6_bound.bound -of ass6_bound.unbound
+Got output:
+    
+<<<<
+
+
+### Check contents of unbound file. ###
+
+>>>>
+Running command:
+    cat ass6_bound.unbound
+Got output:
+    CONTENT OF BOUND FILE
+<<<<
+
+
+### Copy bound file to shared folder. ###
+
+>>>>
+Running command:
+    sudo cp ass6_bound.bound shared
+Got output:
+    
+<<<<
+
+
+######################################################
+#### 3.6.2 -- TPM2 -- creating migration key.
+######################################################
+
+
+### Create migration key. ###
+
+>>>>
+Running command:
+    createkey -kt em -ok tpm2_migration_key -hp 40000000 -pwdp sss -pwdm mmm -pwdk kmmm
+Got output:
+    
+<<<<
+
+
+### Load created key. ###
+
+>>>>
+Running command:
+    loadkey -hp 40000000 -ik tpm2_migration_key.key -pwdp sss
+Got output:
+    New Key Handle = 1C93AE62
+<<<<
+
+Got key handle: 1C93AE62
+
+### Store migration key handle for later use. ###
+
+>>>>
+Running command:
+    cat stored_tpm2_migration_handle.txt
+Got output:
+    1C93AE62
+<<<<
+
+
+### Store migration key in shared dir. ###
+
+>>>>
+Running command:
+    sudo rm shared/tpm2_migration_key.key shared/tpm2_migration_key.pem
+Got output:
+    
+<<<<
+
+
+>>>>
+Running command:
+    sudo cp tpm2_migration_key.* shared
+Got output:
+    
+<<<<
+
+
+######################################################
+#### 3.6.2 -- TPM1 -- Using migration key from TPM2.
+######################################################
+
+
+### Grab TPM2 key from shared. ###
+
+>>>>
+Running command:
+    rm -f tpm2_migration_key.key tpm2_migration_key.pem
+Got output:
+    
+<<<<
+
+
+>>>>
+Running command:
+    cp shared/tpm2_migration_key.* .
+Got output:
+    
+<<<<
+
+
+### Create migration blob for key. ###
+
+>>>>
+Running command:
+    migrate -hp 40000000 -pwdp sss -pwdo ooo -im tpm2_migration_key.key -pwdm mmm -pwdk kmmm -ik 6_key_binding_migratable.key -ok blob_tpm1_bind
+Got output:
+    Wrote migration blob and associated data to file.
+<<<<
+
+
+### Copy migration blob to shared folder. ###
+
+>>>>
+Running command:
+    sudo cp blob_tpm1_bind shared
+Got output:
+    
+<<<<
+
+
+######################################################
+#### 3.6.2 -- TPM2 -- Using migration blob from TPM1.
+######################################################
+
+
+### Retrieve migration blob from shared folder. ###
+
+>>>>
+Running command:
+    cp shared/blob_tpm1_bind .
+Got output:
+    
+<<<<
+
+
+### Load the migration blob into TMP2. ###
+
+>>>>
+Running command:
+    loadmigrationblob -hp 1C93AE62 -if blob_tpm1_bind -pwdp kmmm
+Got output:
+    Successfully loaded key into TPM.
+    New Key Handle = 8655CB71
+<<<<
+
+Got key handle: 8655CB71
+
+### Grab encrypted file from shared. ###
+
+>>>>
+Running command:
+    cp shared/ass6_bound.bound .
+Got output:
+    
+<<<<
+
+
+### Unbind file with migrated bind key. ###
+
+>>>>
+Running command:
+    unbindfile -hk 8655CB71 -if ass6_bound.bound -of ass6_bound.unbound
+Got output:
+    
+<<<<
+
+
+### Check contents of unbound file. ###
+
+>>>>
+Running command:
+    cat ass6_bound.unbound
+Got output:
+    CONTENT OF BOUND FILE
+<<<<
+
+
+######################################################
+#### 3.6.3 -- TPM1 -- Data sealing.
+######################################################
+
+
+### Create storage key. ###
+
+>>>>
+Running command:
+    createkey -kt e -ok tpm1_storage_key -hp 40000000 -pwdp sss
+Got output:
+    
+<<<<
+
+
+### Load created storage key. ###
+
+>>>>
+Running command:
+    loadkey -hp 40000000 -ik tpm1_storage_key.key -pwdp sss
+Got output:
+    New Key Handle = E7C36D08
+<<<<
+
+Got key handle: E7C36D08
+
+### Prepare file for sealing. ###
+
+>>>>
+Running command:
+    cat ass6_sealfile.txt
+Got output:
+    STRING IN SEALFILE
+<<<<
+
+
+### Seal the file. ###
+
+>>>>
+Running command:
+    sealfile -hk E7C36D08 -if ass6_sealfile.txt -of ass6_sealfile.seal
+Got output:
+    
+<<<<
+
+
+### Unseal the file. ###
+
+>>>>
+Running command:
+    unsealfile -hk E7C36D08 -if ass6_sealfile.seal -of ass6_sealfile.unseal
+Got output:
+    
+<<<<
+
+
+### Check contents of unsealed file. ###
+
+>>>>
+Running command:
+    cat ass6_sealfile.unseal
+Got output:
+    STRING IN SEALFILE
+<<<<
+
+
+######################################################
+#### 3.6.3 -- TPM1 -- Data sealing, legacy.
+######################################################
+
+
+### Create and load legacy key. ###
+
+>>>>
+Running command:
+    createkey -kt l -ok key_legacy -hp 40000000 -pwdp sss
+Got output:
+    
+<<<<
+
+
+>>>>
+Running command:
+    loadkey -hp 40000000 -ik key_legacy.key -pwdp sss
+Got output:
+    New Key Handle = A5C35CAA
+<<<<
+
+
+### Use legacy key to seal. ###
+
+>>>>
+Running command:
+    sealfile -hk A5C35CAA -if ass6_sealfile.txt -of ass6_sealfile.seal
+Got output:
+    Error Invalid key usage from TPM_Seal
+<<<<
+
+
+######################################################
+#### 3.6.3 -- TPM1 -- Data sealing, binding.
+######################################################
+
+
+### Create and load binding key. ###
+
+>>>>
+Running command:
+    createkey -kt b -ok key_binding -hp 40000000 -pwdp sss
+Got output:
+    
+<<<<
+
+
+>>>>
+Running command:
+    loadkey -hp 40000000 -ik key_binding.key -pwdp sss
+Got output:
+    New Key Handle = 4FAB7659
+<<<<
+
+
+### Use binding key to seal. ###
+
+>>>>
+Running command:
+    sealfile -hk 4FAB7659 -if ass6_sealfile.txt -of ass6_sealfile.seal
+Got output:
+    Error Invalid key usage from TPM_Seal
+<<<<
+
+
+######################################################
+#### 3.6.3 -- TPM1 -- Data sealing, sign.
+######################################################
+
+
+### Create and load sign key. ###
+
+>>>>
+Running command:
+    createkey -kt d -ok key_sign -hp 40000000 -pwdp sss
+Got output:
+    
+<<<<
+
+
+>>>>
+Running command:
+    loadkey -hp 40000000 -ik key_sign.key -pwdp sss
+Got output:
+    New Key Handle = 35E3C685
+<<<<
+
+
+### Use sign key to seal. ###
+
+>>>>
+Running command:
+    sealfile -hk 35E3C685 -if ass6_sealfile.txt -of ass6_sealfile.seal
+Got output:
+    Error Invalid key usage from TPM_Seal
+<<<<
+
+
+######################################################
+#### 3.6.3 -- TPM1 -- Sealing and storage key migration.
+######################################################
+
+
+### Migrate key that was used to seal the file earlier. ###
+
+>>>>
+Running command:
+    migrate -hp 40000000 -pwdp sss -pwdo ooo -im tpm2_migration_key.key -pwdm mmm -pwdk kmmm -ik tpm1_storage_key.key -ok blob_tpm1_storage
+Got output:
+    CreateMigrationBlob returned 'Authorization failure for 2nd key' (29).
+<<<<
+
+
+### Error means that the key is not migratable. ###
+
+### Create and load a migratable storage key. ###
+
+>>>>
+Running command:
+    createkey -kt em -ok key_migratable_storage -hp 40000000 -pwdp sss -pwdm mmm
+Got output:
+    
+<<<<
+
+
+>>>>
+Running command:
+    loadkey -hp 40000000 -ik key_migratable_storage.key -pwdp sss
+Got output:
+    New Key Handle = 82418204
+<<<<
+
+
+### Use migratable storage key for sealing. ###
+
+>>>>
+Running command:
+    sealfile -hk 82418204 -if ass6_sealfile.txt -of ass6_sealfile.seal
+Got output:
+    Error Invalid key usage from TPM_Seal
+<<<<
+
+
+### Can't use a migratable storage key for sealing, no use in trying to migrate it to TPM2 ###
