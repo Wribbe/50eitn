@@ -34,7 +34,7 @@
   \section*{Introduction}
 
     The purpose of the TPM project is to familiarize the students with the
-    TPM12 specification through the interaction with a simulated TPM. The more
+    TPM1.2 specification through the interaction with a simulated TPM. The more
     specific learning goals are:
 
     \begin{itemize}
@@ -441,13 +441,14 @@ in order to be able to created, see above) it is as it should be.
 \begin{enumerate}
     \item {There are other ways to migrate keys. When do you use a key of type TPM\_KEY\_USAGE = TPM\_Migrate? }
 	\begin{itemize}
-	    \item {"TPM\_KEY\_MIGRATE; 0x0016; This SHALL indicate a key in use for TPM\_MigrateKey" - from TPM commands document.}
+        \item { TPM\_MS\_MIGRATE - "A public key that can be used with all TPM 
+        migration commands other than ‘ReWrap’ mode." - From TPM part 2, p. 20.} 
 	\end{itemize}
     \item {What is the rewrap option of the migrate command used for? }
 	\begin{itemize}
         \item {To directly transfer a key to another TPM. The re-wrap flag tells the TPM
         to re-wrap (decrypt->encrypt) the key with a new parent, which enables that parent
-        to load the key as a normal encrypted element}
+        to load the key as a normal encrypted element.}
 	\end{itemize}
 \end{enumerate}
 
@@ -645,10 +646,23 @@ Error Invalid key usage from TPM\_Seal
 \end{quote}
 
 So: migratable storage key does not work. Non-migratable legacy, binding or 
-storage keys does not work. Why is this? [INSERT REASON HERE, LUNCH NOW]
+storage keys does not work. Why is this? Well, firstly the use of migratable keys 
+is not allowed: 
 
-\begin{quote}
-\end{quote}
+"\textit{If the keyHandle points to a migratable key then the TPM MUST
+return the error code TPM\_INVALID\_KEYUSAGE.}"
+- Documentation of TPM\_Seal (TPM-part3 p.63)
+
+See also the answer to question 3 in the beginning of this section.
+
+Secondly, the use of key types other than storage keys is not allowed: 
+
+"\textit{If the keyUsage field of the key indicated by the keyHandle does not
+have the value TPM\_KEY\_STORAGE the TPM must return the error
+code \\TPM\_INVALID\_KEYUSAGE.}" - Documentation of TPM\_Seal (TPM-part 3 p.63)
+
+These are also the error messages that were given above when trying
+to carry out these operations.
 
 \section{Assignment 7: TPM Authentication}
 
@@ -683,8 +697,8 @@ storage keys does not work. Why is this? [INSERT REASON HERE, LUNCH NOW]
       First, TMP1 will need a signing-key.
 
 \begin{verbatim}
-createkey -hp 40000000 -pwdp sss -ok 3_7_2_sign_key -kt s
-loadkey -hp 40000000 -ik 3_7_2_sign_key.key -pwdp sss
+createkey -hp 40000000 -pwdp pass -ok 3_7_2_sign_key -kt s
+loadkey -hp 40000000 -ik 3_7_2_sign_key.key -pwdp pass
 New Key Handle = E8CA7920
 \end{verbatim}
 
@@ -712,8 +726,8 @@ verifyfile -is 3_7_3_file_sign.signature -if 3_7_3_file_sign.txt \
       TPM1.
 
 \begin{verbatim}
-createkey -hp 40000000 -pwdp sss -ok 3_7_2_bind_key -kt b
-loadkey -hp 40000000 -ik 3_7_2_bind_key.key -pwdp sss
+createkey -hp 40000000 -pwdp pass -ok 3_7_2_bind_key -kt b
+loadkey -hp 40000000 -ik 3_7_2_bind_key.key -pwdp pass
 New Key Handle = 64BCA797
 \end{verbatim}
 
@@ -750,14 +764,14 @@ STRING IN BOUND FILE!
     A attestation identity key (AIK) is needed in order to perform any signing.
     Which is created with the following command:
 \begin{verbatim}
-identity -pwdo ooo -la assignment8 -pwds sss -pwdk kkk \
+identity -pwdo pass -la assignment8 -pwds pass -pwdk pass \
   -ok assignment_8_aik
 \end{verbatim}
 
     Then the key needs to be loaded into the TPM:
 
 \begin{verbatim}
-loadkey -hp 40000000 -ik assignment_8_aik.key -pwdp sss
+loadkey -hp 40000000 -ik assignment_8_aik.key -pwdp pass
 New Key Handle = 1F605F33
 \end{verbatim}
 
@@ -799,9 +813,9 @@ New value of PCR: 64995d0f268a5a2788e3567459e205718d057f2d
     Then the new PCR value is used to create and load  a new attestation key.
 
 \begin{verbatim}
-createkey -hp 40000000 -kt e -pwdp sss -ok attestation_encryption_key \
+createkey -hp 40000000 -kt e -pwdp pass -ok attestation_encryption_key \
   -ix 12 64995d0f268a5a2788e3567459e205718d057f2d
-loadkey -hp 40000000 -ik attestation_encryption_key.key -pwdp sss
+loadkey -hp 40000000 -ik attestation_encryption_key.key -pwdp pass
 New Key Handle = C41AD035
 \end{verbatim}
 
@@ -897,8 +911,8 @@ Commands in the connected TSS-command-window.
 \section{Improvement sheet}
 \begin{itemize}
     \item {Completed the assignments that were not completed.}
-    \item {k}
-    \item {j}
+    \item {Various changes according to reviews.}
+    \item {Changes to existing sections to be more correct.}
 \end{itemize}
 
 \end{document}
